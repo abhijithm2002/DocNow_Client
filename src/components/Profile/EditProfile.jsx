@@ -1,0 +1,178 @@
+import React, { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import useEditProfileFormik from '../Auth/formValidation/editProfileValidaton';
+import { editProfile } from '../../services/User/userService';
+import { FaUser } from 'react-icons/fa';
+import uploadImageToCloudinary from '../../utils/uploadCloudinary';
+import toast, { Toaster } from 'react-hot-toast';
+import HashLoader from 'react-spinners/HashLoader';
+import { setCredentials } from '../../ReduxStore/authSlice';
+
+const EditProfile = () => {
+  const { user } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+  const [previewURL, setPreviewURL] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  const handleFileInputChange = async (event) => {
+    const file = event.target.files[0];
+    const data = await uploadImageToCloudinary(file);
+    console.log('imagedata', data);
+    if (data.url) {
+      setPreviewURL(data.url);
+      formik.setFieldValue('photo', data.url);
+    } else {
+      toast.error('Failed to upload image');
+    }
+  };
+
+  const formik = useEditProfileFormik(
+    async (values) => {
+      console.log('Edited data to be sent:', values);
+      setLoading(true);
+      try {
+        const response = await editProfile(values);
+        console.log('response from backend', response);
+        if (response.status === 200) {
+          toast.success('Profile updated successfully!');
+          const updatedUser = { ...user, ...values };
+          dispatch(setCredentials({ user: updatedUser, accessToken: user.accessToken }));
+          localStorage.setItem('userData', JSON.stringify(updatedUser));
+          setPreviewURL('');
+        } else {
+          toast.error('Failed to update profile');
+        }
+      } catch (error) {
+        console.error('Error updating profile:', error);
+        toast.error('Failed to update profile');
+      } finally {
+        setLoading(false);
+      }
+    },
+    {
+      name: user?.name || '',
+      email: user?.email || '',
+      mobile: user?.mobile || '',
+      gender: user?.gender || '',
+      photo: user?.photo || '',
+      role: user?.role || 'patient',
+    }
+  );
+
+  const hasChanges = () => {
+    return (
+      formik.values.name !== user?.name ||
+      formik.values.email !== user?.email ||
+      formik.values.mobile !== user?.mobile ||
+      formik.values.gender !== user?.gender ||
+      formik.values.photo !== user?.photo
+    );
+  };
+
+  return (
+    <section className='px-5 xl:px-0 flex items-center justify-center min-h-screen'>
+      <Toaster position="top-center" reverseOrder={false} />
+      <div className='max-w-[1170px] mx-auto w-full'>
+        <div className='grid grid-cols-1 lg:grid-cols-2 justify-center'>
+          <div className="lg:pl-16 py-10 px-10 rounded-r-lg bg-white shadow-lg w-full flex">
+            <form onSubmit={formik.handleSubmit} className='w-full max-w-[400px]'>
+              <div className='mb-5'>
+                <input
+                  type="text"
+                  placeholder='Full Name'
+                  name='name'
+                  value={formik.values.name}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  className='w-full pr-4 py-3 border-b border-solid border-[#0066ff61] focus:outline-none focus:border-b-primaryColor text-[16px] leading-7 text-headingColor placeholder:text-textColor cursor-pointer'
+                />
+                {formik.touched.name && formik.errors.name ? (
+                  <div className="text-red-500 text-sm">{formik.errors.name}</div>
+                ) : null}
+              </div>
+              <div className='mb-5'>
+                <input
+                  type="email"
+                  placeholder='Email'
+                  name='email'
+                  value={formik.values.email}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  className='w-full pr-4 py-3 border-b border-solid border-[#0066ff61] focus:outline-none focus:border-b-primaryColor text-[16px] leading-7 text-headingColor placeholder:text-textColor cursor-pointer'
+                />
+                {formik.touched.email && formik.errors.email ? (
+                  <div className="text-red-500 text-sm">{formik.errors.email}</div>
+                ) : null}
+              </div>
+              <div className='mb-5'>
+                <input
+                  type="number"
+                  placeholder='Mobile Number'
+                  name='mobile'
+                  value={formik.values.mobile}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  className='w-full pr-4 py-3 border-b border-solid border-[#0066ff61] focus:outline-none focus:border-b-primaryColor text-[16px] leading-7 text-headingColor placeholder:text-textColor cursor-pointer'
+                />
+                {formik.touched.mobile && formik.errors.mobile ? (
+                  <div className="text-red-500 text-sm">{formik.errors.mobile}</div>
+                ) : null}
+              </div>
+              <div className='mb-5 flex items-center justify-between space-x-4'>
+                <label className='text-headingColor font-bold text-[16px] leading-7'>
+                  Gender:
+                  <select
+                    value={formik.values.gender}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    name="gender"
+                    className='text-textColor font-semibold text-[15px] leading-7 px-4 py-3 focus:outline-none'
+                  >
+                    <option value="">Select</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                    <option value="other">Other</option>
+                  </select>
+                  {formik.touched.gender && formik.errors.gender ? (
+                    <div className="text-red-500 text-sm">{formik.errors.gender}</div>
+                  ) : null}
+                </label>
+              </div>
+              <div className='mb-5 flex items-center gap-3'>
+                <figure className='w-[60px] h-[60px] rounded-full border-2 border-solid border-primaryColor flex items-center justify-center'>
+                  {previewURL ? (
+                    <img src={previewURL} alt="Profile" className='w-full h-full rounded-full' />
+                  ) : (
+                    <FaUser className='text-headingColor text-[40px]' />
+                  )}
+                </figure>
+                <div className='relative w-[130px] h-[50px]'>
+                  <input
+                    type="file"
+                    name='photo'
+                    id='customFile'
+                    onChange={handleFileInputChange}
+                    accept='.jpg, .png'
+                    className='absolute top-0 left-0 h-full opacity-0 cursor-pointer'
+                  />
+                  <label htmlFor="customFile" className='absolute top-0 left-0 h-full w-full flex items-center px-[0.75rem] py-[0.375rem] text-[15px] leading-6 overflow-hidden bg-[#0066ff46] text-headingColor font-semibold rounded-lg truncate cursor-pointer'>
+                    Upload Photo
+                  </label>
+                </div>
+              </div>
+              <div className='mt-7 flex'>
+                <button 
+                  disabled={!hasChanges() || loading}
+                  type='submit' className='w-full max-w-[200px] bg-primaryColor text-white text-[18px] leading-[30px] rounded-lg px-4 py-3'>
+                  {loading ? <HashLoader size={35} color='#ffffff' /> : 'Update'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default EditProfile;
