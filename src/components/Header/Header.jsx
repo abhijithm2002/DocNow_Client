@@ -1,9 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { NavLink, Link } from 'react-router-dom';
-import { useSelector } from 'react-redux'; // Import useSelector hook
-import logo from '../../assets/logo/DocNow.png';
-
-
+import { useSelector } from 'react-redux'; 
+import logo from '../../assets/logo/file.png';
 import { BiMenu } from 'react-icons/bi';
 
 const navLinks = [
@@ -16,9 +14,9 @@ const navLinks = [
 const Header = () => {
   const headerRef = useRef(null);
   const menuRef = useRef(null);
-  
-  
-  const { user, isAuthenticated } = useSelector((state) => state.auth); // Access user and isAuthenticated state
+
+  const { user, isAuthenticated } = useSelector((state) => state.auth); 
+  const { doctor, isDoctorAuthenticated } = useSelector((state) => state.doctor);
 
   const handleStickyHeader = () => {
     window.addEventListener('scroll', () => {
@@ -33,7 +31,7 @@ const Header = () => {
   useEffect(() => {
     handleStickyHeader();
     return () => window.removeEventListener('scroll', handleStickyHeader);
-  });
+  }, []);
 
   const toggleMenu = () => menuRef.current.classList.toggle('show__menu');
   
@@ -41,12 +39,10 @@ const Header = () => {
     <header className='header flex items-center w-full' ref={headerRef}>
       <div className='container'>
         <div className='flex items-center justify-between'>
-          {/* ======== logo ======== */}
           <div>
             <img src={logo} alt="DocNow Logo" style={{ width: '100px', height: 'auto' }} />
           </div>
 
-          {/* =============== menu =========== */}
           <div className='navigation' ref={menuRef} onClick={toggleMenu}>
             <ul className='menu flex items-center gap-[2.7rem]'>
               {navLinks.map((link, index) => (
@@ -59,17 +55,30 @@ const Header = () => {
             </ul>
           </div>
 
-          {/* ============= nav right ============= */}
           <div className='flex items-center gap-4'>
-            {isAuthenticated ? (
-              
+            {isAuthenticated && user ? (
               <div className='flex items-center gap-2'>
-                <figure className='w-[35px] h-[35px] rounded-full'>
-                  <img src={user.photo} className='w-full h-full rounded-full' alt="User Avatar" />
-                </figure>
-                {user && user.name && (
+                {user.photo && (
+                  <figure className='w-[35px] h-[35px] rounded-full'>
+                    <img src={user.photo} className='w-full h-full rounded-full' alt="User Avatar" />
+                  </figure>
+                )}
+                {user.name && (
                   <Link to={`/user-profile`}>
-                  <span  className='text-textColor text-[16px] leading-7 font-[600]'>{user.name}</span>
+                    <span className='text-textColor text-[16px] leading-7 font-[600]'>{user.name}</span>
+                  </Link>
+                )}
+              </div>
+            ) : isDoctorAuthenticated && doctor ? (
+              <div className='flex items-center gap-2'>
+                {doctor.photo && (
+                  <figure className='w-[35px] h-[35px] rounded-full'>
+                    <img src={doctor.photo} className='w-full h-full rounded-full' alt="Doctor Avatar" />
+                  </figure>
+                )}
+                {doctor.name && (
+                  <Link to={`/doctor/profile`}>
+                    <span className='text-textColor text-[16px] leading-7 font-[600]'>{doctor.name}</span>
                   </Link>
                 )}
               </div>

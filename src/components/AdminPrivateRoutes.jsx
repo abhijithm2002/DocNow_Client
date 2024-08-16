@@ -1,7 +1,14 @@
 import { Navigate, Outlet } from 'react-router-dom'
 import AdminLeftSidebar from './Admin/AdminLeftSidebar'
+import { useSelector } from 'react-redux'
 
 const AdminPrivateRoutes = () => {
+    // const reduxstate=useSelector(state=>state)
+    // selectIsAuthenticated(reduxstate)
+    // const selectIsAuthenticated = (state) => {
+    //     return state.user.isUserAuthenticated || state.admin.isAdminAuthenticated || state.doctor.isDoctorAuthenticated;
+    // }
+    
     return (
         <>
             <AdminLeftSidebar />

@@ -9,16 +9,23 @@ import * as Yup from 'yup';
 import LoginWithGoogle from '../../utils/LoginWithGoogle';
 import { setCredentials } from '../../ReduxStore/authSlice/index'
 import BackgroundImage from '../../assets/images/login-background.jpg';
+import { IoEye } from "react-icons/io5";
+import { IoEyeOff } from "react-icons/io5";
 
 function Login() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [error, setError] = useState({ email: '', password: '', general: '' });
+  const [showPassword, setShowPassword] = useState(false)
 
   const validationSchema = Yup.object({
     email: Yup.string().email('Invalid email address').required('Email is required'),
     password: Yup.string().required('Password is required'),
   });
+
+  const toggleShowPassword = () => {
+    setShowPassword(!showPassword)
+  }
 
   const formik = useFormik({
     initialValues: {
@@ -103,7 +110,7 @@ function Login() {
 
             <div className="mb-5 relative">  
               <input
-                type="password"
+                type={showPassword ? 'text' : 'password'}
                 placeholder="Enter Your Password"
                 name="password"
                 value={formik.values.password}
@@ -114,6 +121,9 @@ function Login() {
                 } text-[16px] leading-7 text-headingColor placeholder:text-textColor rounded-md cursor-pointer`}
                 required
               />
+              <div onClick={toggleShowPassword} className='absolute inset-y-0 right-0 flex items-center px-3 cursor-pointer'>
+                {showPassword ? <IoEyeOff size={20} /> : <IoEye size={20} />}
+              </div>
               {(formik.touched.password && formik.errors.password) || error.password ? (
                 <div className="text-red-500 text-sm">{formik.errors.password || error.password}</div>
               ) : null}
@@ -147,6 +157,12 @@ function Login() {
               Don't have an account?
               <Link to="/register" className="text-primaryColor font-medium ml-1">
                 Register
+              </Link>
+            </p>
+            <p className="mt-5 text-textColor text-center">
+              
+              <Link to="/doctor/login" className="text-primaryColor font-medium ml-1">
+                Doctor Login
               </Link>
             </p>
           </form>

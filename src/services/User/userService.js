@@ -3,7 +3,7 @@ import Api, { authInstance } from '../../api/axiosInstance'
 export const editProfile = async (formData) => {
     console.log('coming to editprofile');
 
-    const response = await Api.post("api/patient/edit-profile", formData);
+    const response = await Api.patch("api/patient/edit-profile", formData);
     console.log('response editprofile',response)
     return response;
 

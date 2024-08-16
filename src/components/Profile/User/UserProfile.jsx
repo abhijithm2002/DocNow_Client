@@ -4,7 +4,7 @@ import MyBookings from './MyBookings';
 import EditProfile from './EditProfile';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { logout } from '../../ReduxStore/authSlice';
+import { logout } from '../../../ReduxStore/authSlice';
 
 const UserProfile = () => {
   const [tab, setTab] = useState('bookings');

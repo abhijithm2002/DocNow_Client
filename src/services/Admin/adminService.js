@@ -29,3 +29,11 @@ export const BlockAndUnblockDoctor = async (userId, status) => {
     console.log('block/unblock response:', response);
     return response;
 };
+
+
+export const verifyDoctor = async (doctorId) => {
+        console.log('Sending request to verify doctor');
+        const response = await Api.patch(`/api/admin/doctor/${doctorId}/verify`);
+        console.log('Response from verifyDoctor:', response);
+        return response;
+};

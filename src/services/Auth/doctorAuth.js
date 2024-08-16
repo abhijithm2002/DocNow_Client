@@ -49,6 +49,7 @@ export const resendDoctorOtp = async (state) => {
 
 export const doctorLogin = async (formData) => {
     const response = await Api.post('api/doctor/doctor-login', formData);
+    console.log('response of logged in', response)
     return response;
  
 };

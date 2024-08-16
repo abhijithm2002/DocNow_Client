@@ -2,8 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { BlockAndUnblockDoctor, fetchDoctorsList } from '../../services/Admin/adminService';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
-
+import { useNavigate } from 'react-router-dom';
 const MySwal = withReactContent(Swal);
+import { FaUserCircle } from 'react-icons/fa';
 
 const DoctorList = () => {
     const [doctors, setDoctors] = useState([]);
@@ -11,6 +12,7 @@ const DoctorList = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [error, setError] = useState(null);
     const itemsPerPage = 7;
+    const navigate = useNavigate();
 
     useEffect(() => {
         fetchdoctors();
@@ -44,7 +46,7 @@ const DoctorList = () => {
             try {
                 const response = await BlockAndUnblockDoctor(userId, !currentStatus);
                 if (response.status === 200) {
-                    setDoctors(doctors.map(user => 
+                    setDoctors(doctors.map(user =>
                         user._id === userId ? { ...user, is_blocked: !currentStatus } : user
                     ));
                     MySwal.fire(
@@ -64,6 +66,11 @@ const DoctorList = () => {
                 );
             }
         }
+    };
+
+    const handleViewDoctor = (doctor) => {
+        // Navigate to the doctor's verification page with the doctor details
+        navigate(`/admin/doctors-verification/${doctor._id}`, { state: { doctorDetails: doctor } });
     };
 
     const filtereddoctors = doctors.filter(user =>
@@ -102,13 +109,16 @@ const DoctorList = () => {
                         <th scope="col" className="px-6 py-3">Name</th>
                         <th scope="col" className="px-6 py-3">Email</th>
                         <th scope="col" className="px-6 py-3">Status</th>
+                        <th scope='col' className='px-6 py-3'>Documents verification</th>
                         <th scope="col" className="px-6 py-3">Action</th>
+                        <th scope="col" className="px-6 py-3">Request</th>
+
                     </tr>
                 </thead>
                 <tbody>
                     {error ? (
                         <tr>
-                            <td colSpan="4" className="px-6 py-4 text-center text-red-500">
+                            <td colSpan="5" className="px-6 py-4 text-center text-red-500">
                                 {error}
                             </td>
                         </tr>
@@ -116,7 +126,11 @@ const DoctorList = () => {
                         currentdoctors.map(user => (
                             <tr key={user._id} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600">
                                 <th scope="row" className="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                                    <img className="w-10 h-10 rounded-full" src={user.photo} alt="User" />
+                                    {user.photo ? 
+                                    <img className="w-10 h-10 rounded-full" src={user.photo} alt="User" /> : 
+                                    <FaUserCircle size={30}/>
+                                    }
+                                    
                                     <div className="pl-3">
                                         <div className="text-base font-semibold">{user.name}</div>
                                     </div>
@@ -132,6 +146,16 @@ const DoctorList = () => {
                                         {user.is_blocked ? 'Blocked' : 'Active'}
                                     </div>
                                 </td>
+                                <td className='px-6 py-4'>
+                                        <div className='flex items-center'>
+                                            {user.documents_verified ? (
+                                                <div className='h-2.5 w-2.5 rounded-full bg-green-500 mr-2'></div>
+                                            ) : (
+                                                <div className="h-2.5 w-2.5 rounded-full bg-red-500 mr-2"></div>
+                                            )}
+                                            {user.documents_verified ? 'verified' : 'not verified'}
+                                        </div>
+                                </td>
                                 <td className="px-6 py-4">
                                     <button
                                         className="text-black bg-yellow-300 border border-yellow-500 hover:bg-yellow-400 hover:border-yellow-500 px-4 py-2 rounded"
@@ -140,14 +164,23 @@ const DoctorList = () => {
                                         {user.is_blocked ? 'Unblock' : 'Block'}
                                     </button>
                                 </td>
+                                <td className="px-6 py-4">
+                                    <button
+                                        className="text-black bg-yellow-300 border border-yellow-500 hover:bg-yellow-400 hover:border-yellow-500 px-4 py-2 rounded"
+                                        onClick={() => handleViewDoctor(user)}
+                                    >
+                                        View
+                                    </button>
+                                </td>
                             </tr>
                         ))
                     ) : (
                         <tr>
-                            <td colSpan="4" className="px-6 py-4 text-center text-gray-900 dark:text-white">No doctors found</td>
+                            <td colSpan="5" className="px-6 py-4 text-center text-gray-900 dark:text-white">No doctors found</td>
                         </tr>
                     )}
                 </tbody>
+
             </table>
             {totalPages > 1 && (
                 <nav className="flex items-center justify-between p-4" aria-label="Table navigation">
@@ -164,11 +197,10 @@ const DoctorList = () => {
                         {Array.from({ length: totalPages }).map((_, index) => (
                             <li key={index}>
                                 <button
-                                    className={`px-3 py-2 leading-tight border ${
-                                        currentPage === index + 1
+                                    className={`px-3 py-2 leading-tight border ${currentPage === index + 1
                                             ? 'text-black bg-yellow-400 border-yellow-500 hover:bg-yellow-500 hover:text-black dark:border-yellow-500 dark:bg-yellow-400 dark:text-black'
                                             : 'text-gray-500 bg-white border-gray-300 hover:bg-yellow-400 hover:text-black dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-yellow-400 dark:hover:text-black'
-                                    }`}
+                                        }`}
                                     onClick={() => setCurrentPage(index + 1)}
                                 >
                                     {index + 1}

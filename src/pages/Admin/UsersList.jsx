@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { fetchUserList, BlockAndUnblockUser } from '../../services/Admin/adminService';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
+import { FaUserCircle } from 'react-icons/fa';
 
 const MySwal = withReactContent(Swal);
 
@@ -116,7 +117,8 @@ const UsersList = () => {
                         currentUsers.map(user => (
                             <tr key={user._id} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600">
                                 <th scope="row" className="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                                    <img className="w-10 h-10 rounded-full" src={user.photo} alt="User" />
+                                   {user.photo ? <img className="w-10 h-10 rounded-full" src={user.photo} alt="User" /> :
+                                   <FaUserCircle  size={30}/> } 
                                     <div className="pl-3">
                                         <div className="text-base font-semibold">{user.name}</div>
                                     </div>
@@ -166,8 +168,8 @@ const UsersList = () => {
                                 <button
                                     className={`px-3 py-2 leading-tight border ${
                                         currentPage === index + 1
-                                            ? 'text-black bg-yellow-400 border-yellow-500 hover:bg-yellow-500 hover:text-black dark:border-yellow-500 dark:bg-yellow-400 dark:text-black'
-                                            : 'text-gray-500 bg-white border-gray-300 hover:bg-yellow-400 hover:text-black dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-yellow-400 dark:hover:text-black'
+                                            ? 'text-black bg-yellow-400 border-yellow-500  hover:text-black dark:border-yellow-500 dark:bg-yellow-400 dark:text-black'
+                                            : 'text-gray-500 bg-white border-gray-300 hover:border-yellow-400 hover:text-black dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400  dark:hover:text-white'
                                     }`}
                                     onClick={() => setCurrentPage(index + 1)}
                                 >

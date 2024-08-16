@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import signupImg from '../../assets/images/signup.gif';
 import { otpGenerator } from '../../services/Auth/doctorAuth';
@@ -6,8 +6,12 @@ import toast from 'react-hot-toast';
 import LoginWithGoogle from '../../utils/LoginWithGoogle';
 import GoogleSvg from '../../assets/images/icons8-google.svg';
 import useDoctorSignupFormik from '../../components/Auth/formValidation/FormValidationDoctor';
+import { IoEye } from "react-icons/io5";
+import { IoEyeOff } from "react-icons/io5";
 
 function DoctorSignup() {
+    const [showPassword, setShowPassword] = useState(false)
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false)
     const navigate = useNavigate();
 
     const formik = useDoctorSignupFormik(async (values) => {
@@ -38,6 +42,14 @@ function DoctorSignup() {
             toast.error('Google login failed. Please try again');
         }
     };
+
+    const toggleShowPassword = () => {
+        setShowPassword(!showPassword)
+    }
+
+    const toggleShowConfirmPassword = () => {
+        setShowConfirmPassword(!showConfirmPassword)
+    }
 
     return (
         <section className='px-5 xl:px-0'>
@@ -160,9 +172,9 @@ function DoctorSignup() {
                                 ) : null}
                             </div>
 
-                            <div className='mb-5'>
+                            <div className='mb-5 relative'>
                                 <input
-                                    type="password"
+                                    type={showPassword ? 'text' : 'password'}
                                     placeholder='Password'
                                     name='password'
                                     value={formik.values.password}
@@ -170,13 +182,16 @@ function DoctorSignup() {
                                     onBlur={formik.handleBlur}
                                     className='w-full pr-4 py-3 border-b border-solid border-[#0066ff61] focus:outline-none focus:border-b-primaryColor text-[16px] leading-7 text-headingColor placeholder:text-textColor cursor-pointer'
                                 />
+                                <div onClick={toggleShowPassword} className='absolute inset-y-0 right-0 flex items-center px-3 cursor-pointer'>
+                                    {showPassword ? <IoEyeOff size={20}/> : <IoEye size={20}/>}
+                                </div>
                                 {formik.touched.password && formik.errors.password ? (
                                     <div className="text-red-500 text-sm">{formik.errors.password}</div>
                                 ) : null}
                             </div>
-                            <div className='mb-5'>
+                            <div className='mb-5 relative'>
                                 <input
-                                    type="password"
+                                    type={showConfirmPassword ? 'text' : 'password'}
                                     placeholder='Confirm Password'
                                     name='confirmpassword'
                                     value={formik.values.confirmpassword}
@@ -184,6 +199,9 @@ function DoctorSignup() {
                                     onBlur={formik.handleBlur}
                                     className='w-full pr-4 py-3 border-b border-solid border-[#0066ff61] focus:outline-none focus:border-b-primaryColor text-[16px] leading-7 text-headingColor placeholder:text-textColor cursor-pointer'
                                 />
+                                 <div onClick={toggleShowConfirmPassword} className='absolute inset-y-0 right-0 flex items-center px-3 cursor-pointer'>
+                                    {toggleShowConfirmPassword ? <IoEyeOff size={20}/> : <IoEye size={20}/>}
+                                </div>
                                 {formik.touched.confirmpassword && formik.errors.confirmpassword ? (
                                     <div className="text-red-500 text-sm">{formik.errors.confirmpassword}</div>
                                 ) : null}

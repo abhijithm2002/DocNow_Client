@@ -29,8 +29,8 @@
   }
 
   .header {
-    @apply bg-gradient-to-r from-lightBlue via-white to-lightBlue w-full bg-no-repeat bg-center bg-cover h-[100px] leading-[100px]; 
-    /* @apply bg-[url('./assets/images/mask.png')] w-full bg-no-repeat bg-center bg-cover h-[100px] leading-[100px] ; */
+    /* @apply bg-gradient-to-r from-lightBlue via-white to-lightBlue w-full bg-no-repeat bg-center bg-cover h-[100px] leading-[100px];  */
+    @apply bg-[url('./assets/images/mask.png')] w-full bg-no-repeat bg-center bg-cover h-[100px] leading-[100px] ;
   }
 }
 

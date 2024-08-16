@@ -6,8 +6,9 @@ import Login from '../../pages/Users/Login';
 import Otp from '../../components/Auth/otp/Otp';
 import PrivateRoute from '../../components/PrivateRoute';
 import Home from '../../pages/Users/Home'
-import UserProfile from '../../components/Profile/UserProfile';
+import UserProfile from '../../components/Profile/User/UserProfile';
 import PublicRoutes from '../../components/publicRoutes';
+import DoctorsList from '../../components/Doctor/DoctorList';
 
 const RouteFile = () => {
   return (
@@ -23,6 +24,8 @@ const RouteFile = () => {
       <Route element={ <PrivateRoute />}>
        
         <Route path='/user-profile' element= {<UserProfile />}/>
+        <Route path='/doctors' element= {<DoctorsList />}/>
+        
 
       </Route>
     </Routes>

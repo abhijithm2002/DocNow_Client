@@ -5,6 +5,7 @@ import Dashboard from '../../pages/Admin/Dashboard';
 import Userslist from '../../pages/Admin/UsersList';
 import AdminPrivateRoutes from '../../components/AdminPrivateRoutes';
 import DoctorList from '../../pages/Admin/DoctorList';
+import DoctorVerification from '../../pages/Admin/DoctorVerification';
 
 
 function AdminRoutes() {
@@ -17,6 +18,7 @@ function AdminRoutes() {
         <Route path='/dashboard' element={<Dashboard />}/>
         <Route path='/users-list' element={<Userslist />}/>
         <Route path='/doctors-list' element={<DoctorList />}/>
+        <Route path='/doctors-verification/:id' element={<DoctorVerification />}/>
         
         </Route>
       </Routes>

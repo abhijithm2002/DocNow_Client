@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import useEditProfileFormik from '../Auth/formValidation/editProfileValidaton';
-import { editProfile } from '../../services/User/userService';
+import useEditProfileFormik from '../../Auth/formValidation/editProfileValidaton'
+import { editProfile } from '../../../services/User/userService'
 import { FaUser } from 'react-icons/fa';
-import uploadImageToCloudinary from '../../utils/uploadCloudinary';
+import uploadImageToCloudinary from '../../../utils/uploadCloudinary';
 import toast, { Toaster } from 'react-hot-toast';
 import HashLoader from 'react-spinners/HashLoader';
-import { setCredentials } from '../../ReduxStore/authSlice';
+import { setCredentials } from '../../../ReduxStore/authSlice';
 
 const EditProfile = () => {
   const { user } = useSelector((state) => state.auth);
@@ -20,7 +20,7 @@ const EditProfile = () => {
     console.log('imagedata', data);
     if (data.url) {
       setPreviewURL(data.url);
-      formik.setFieldValue('photo', data.url);
+      // formik.setFieldValue('photo', data.url);
     } else {
       toast.error('Failed to upload image');
     }
@@ -95,6 +95,8 @@ const EditProfile = () => {
                   type="email"
                   placeholder='Email'
                   name='email'
+                  readOnly
+                  aria-readonly
                   value={formik.values.email}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
