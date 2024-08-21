@@ -9,6 +9,7 @@ import Home from '../../pages/Users/Home'
 import UserProfile from '../../components/Profile/User/UserProfile';
 import PublicRoutes from '../../components/publicRoutes';
 import DoctorsList from '../../components/Doctor/DoctorList';
+import DoctorDetails from '../../pages/Doctors/DoctorDetails';
 
 const RouteFile = () => {
   return (
@@ -25,6 +26,7 @@ const RouteFile = () => {
        
         <Route path='/user-profile' element= {<UserProfile />}/>
         <Route path='/doctors' element= {<DoctorsList />}/>
+        <Route path='/doctor-details/:doctorId' element= {<DoctorDetails />}/>
         
 
       </Route>

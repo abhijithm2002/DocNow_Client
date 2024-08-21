@@ -17,4 +17,22 @@ export const refreshAccessToken = async () => {
     return response.data;
 }
 
+export const fetchDoctorDetails = async(id) => {
+    console.log('coming to fetchDoctor details', id)
+    const response = await Api.get(`api/patient/fetchDoctorDetails?id=${id}`);
+    console.log('response doctor details', response);
+    
+    return response;
+  }
+
+  export const fetchSlots = async (id, date) => {
+   
+    const response = await Api.get(`api/patient/fetchSlots`, {
+      params: { id, date }
+    });
+    
+    console.log('response fetched slots', response);
+    return response;
+  };
+  
 

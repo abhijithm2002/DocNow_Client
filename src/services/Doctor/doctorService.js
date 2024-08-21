@@ -46,8 +46,7 @@ export const updateSlots = async (slotsData) => {
 
 
 export const fetchSlots = async (id, date) => {
-    console.log('entered fetchSlots');
-    
+   
     const response = await DoctorApi.get(`api/doctor/fetchSlots`, {
       params: { id, date }
     });
@@ -56,3 +55,12 @@ export const fetchSlots = async (id, date) => {
     return response;
   };
   
+
+  export const deleteSlots = async(slotId, selectedShifts) => {
+    const response = await DoctorApi.patch(`api/doctor/deleteSlots`, {slotId, selectedShifts})
+    console.log('delete slot response ', response)
+    return response
+  }
+
+
+

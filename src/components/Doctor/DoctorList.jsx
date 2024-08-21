@@ -14,7 +14,7 @@ const DoctorsList = () => {
                 const response = await fetchDoctorsList();
                 if (response.status === 200) {
                     const { doctorData } = response.data;
-                    const filteredDoctors = doctorData.filter(doctor => 
+                    const filteredDoctors = doctorData.filter(doctor =>
                         doctor.documents_verified === true && doctor.is_blocked === false
                     );
                     setDoctors(filteredDoctors);
@@ -46,11 +46,11 @@ const DoctorsList = () => {
 
     return (
         <>
-            <div className="flex items-center justify-between flex-col md:flex-row flex-wrap space-y-4 md:space-y-0 py-4 bg-white px-5">
+            <div className="flex items-center justify-center flex-col md:flex-row flex-wrap space-y-4 md:space-y-0 py-4 bg-softGray px-5">
                 <label htmlFor="table-search" className="sr-only">Search</label>
-                <div className="relative">
+                <div className="relative w-full max-w-md">
                     <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                        <svg className="w-4 h-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                        <svg className="w-5 h-5 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                             <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
                         </svg>
                     </div>
@@ -59,13 +59,14 @@ const DoctorsList = () => {
                         id="table-search-doctors"
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
-                        className="block pt-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                        className="block w-full pl-10 pr-4 py-2 text-base text-gray-700 placeholder-gray-500 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-beige focus:border-transparent transition-shadow"
                         placeholder="Search for doctors"
                     />
                 </div>
             </div>
 
-            <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-5 lg:gap-[30px] mt-[30px] lg:mt-[55px] px-4 md:px-8 lg:px-16'>
+
+            <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-5 lg:gap-[20px] mt-[30px] lg:mt-[55px] px-4 md:px-8 lg:px-16'>
                 {currentDoctors.map(doctor => (
                     <DoctorCard key={doctor._id} doctor={doctor} />
                 ))}
@@ -78,7 +79,7 @@ const DoctorsList = () => {
                             <button
                                 onClick={() => handlePageChange(currentPage - 1)}
                                 disabled={currentPage === 1}
-                                className={`px-3 py-1 rounded-lg ${currentPage === 1 ? 'bg-gray-300 text-gray-500' : 'bg-blue-500 text-white hover:bg-blue-600'}`}
+                                className={`px-3 py-1 rounded-lg ${currentPage === 1 ? 'bg-gray-300 text-gray-500' : 'bg-deepBlue text-white hover:bg-skyBlue'}`}
                             >
                                 Previous
                             </button>
@@ -87,7 +88,7 @@ const DoctorsList = () => {
                             <li key={number}>
                                 <button
                                     onClick={() => handlePageChange(number)}
-                                    className={`px-3 py-1 rounded-lg ${currentPage === number ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-800 hover:bg-gray-300'}`}
+                                    className={`px-3 py-1 rounded-lg ${currentPage === number ? 'bg-deepBlue text-white' : 'bg-gray-200 text-gray-800 hover:bg-gray-300'}`}
                                 >
                                     {number}
                                 </button>
@@ -97,7 +98,7 @@ const DoctorsList = () => {
                             <button
                                 onClick={() => handlePageChange(currentPage + 1)}
                                 disabled={currentPage === totalPages}
-                                className={`px-3 py-1 rounded-lg ${currentPage === totalPages ? 'bg-gray-300 text-gray-500' : 'bg-blue-500 text-white hover:bg-blue-600'}`}
+                                className={`px-3 py-1 rounded-lg ${currentPage === totalPages ? 'bg-gray-300 text-gray-500' : 'bg-deepBlue text-white hover:bg-skyBlue'}`}
                             >
                                 Next
                             </button>

@@ -3,9 +3,9 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { addDays, eachDayOfInterval } from 'date-fns';
 import { motion } from 'framer-motion';
-import toast,{Toaster} from 'react-hot-toast';
+import toast, { Toaster } from 'react-hot-toast';
 import { useSelector } from 'react-redux';
-import { fetchSlots, updateSlots } from '../../services/Doctor/doctorService';
+import { fetchSlots, updateSlots, deleteSlots } from '../../services/Doctor/doctorService';
 
 const CreateSlots = () => {
   const [startDate, setStartDate] = useState(null);
@@ -16,6 +16,10 @@ const CreateSlots = () => {
   const [breakTime, setBreakTime] = useState(10);
   const [selectedDateForView, setSelectedDateForView] = useState(null);
   const [fetchedShifts, setFetchedShifts] = useState([]);
+  const [selectedShifts, setSelectedShifts] = useState([]);
+  const [allSelected, setAllSelected] = useState(false);
+  const [slotId, setSlotId] = useState(null);
+
 
   const { doctor } = useSelector((state) => state.doctor);
 
@@ -35,7 +39,6 @@ const CreateSlots = () => {
       endTime,
       duration,
       breakTime,
-     
     }));
 
     try {
@@ -56,19 +59,20 @@ const CreateSlots = () => {
     if (!selectedDateForView) return;
 
     const formattedDate = selectedDateForView.toISOString().split('T')[0];
-    console.log('Doctor ID:', doctor._id);
-    console.log('Selected Date:', formattedDate);
-
     try {
       const fetchedSlotsResponse = await fetchSlots(doctor._id, formattedDate);
-      const fetchedSlots = fetchedSlotsResponse.data.slots; 
-
+      const fetchedSlots = fetchedSlotsResponse.data.slots;
+      
+      
       if (fetchedSlots && fetchedSlots.length > 0) {
+        const fetchedId = fetchedSlots[0]._id;
+        setSlotId(fetchedId);
         setFetchedShifts(fetchedSlots[0].shifts || []);
-        console.log('Fetched Shifts:', fetchedSlots[0].shifts);
+        setSelectedShifts([]);
       } else {
+        setSlotId(null)
         setFetchedShifts([]);
-        console.log('No shifts found for this date.');
+        setSelectedShifts([]);
       }
     } catch (error) {
       console.error('Error fetching slots:', error);
@@ -76,9 +80,52 @@ const CreateSlots = () => {
     }
   };
 
+  const handleSelectShift = (shift) => {
+    console.log('shift', shift)
+    setSelectedShifts(prev => 
+      prev.includes(shift) 
+        ? prev.filter(item => item !== shift) 
+        : [...prev, shift]
+    );
+  };
+
+  const handleSelectAll = () => {
+    if (allSelected) {
+      setSelectedShifts([]);
+    } else {
+      setSelectedShifts(fetchedShifts);
+    }
+    setAllSelected(!allSelected);
+  };
+
+  const handleDeleteSlots = async () => {
+    if (selectedShifts.length === 0) {
+      toast.error('No shifts selected');
+      return;
+    }
+  
+    try {
+      
+      console.log('fetched shifts',fetchedShifts)
+      console.log('slot id delete',slotId)
+      console.log('selected shifts', selectedShifts)
+      const response = await deleteSlots(slotId, selectedShifts);
+  
+      if (response.status === 200) {
+        toast.success('Selected shifts deleted successfully');
+        fetchAndDisplaySlots();
+        setSelectedShifts([]);
+        setAllSelected(false);
+      } else {
+        toast.error('Failed to delete selected shifts');
+      }
+    } catch (error) {
+      console.error('Error deleting shifts:', error);
+      toast.error('Error deleting shifts');
+    }
+  };
+
   useEffect(() => {
-    console.log('Selected Date for View:', selectedDateForView);
-    console.log('Fetched Shifts:', fetchedShifts);
     fetchAndDisplaySlots();
   }, [selectedDateForView]);
 
@@ -108,6 +155,7 @@ const CreateSlots = () => {
           selectsStart
           startDate={startDate}
           endDate={endDate}
+          minDate={new Date()}
           className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-400"
         />
       </motion.div>
@@ -194,26 +242,40 @@ const CreateSlots = () => {
         />
       </motion.div>
 
-      {fetchedShifts.length > 0 ? (
+      {fetchedShifts.length > 0 && (
         <div className="mt-8">
-          <h3 className="text-2xl font-semibold text-blue-600 mb-4">Available Shifts:</h3>
+          <div className="flex items-center mb-4">
+            <input
+              type="checkbox"
+              checked={allSelected}
+              onChange={handleSelectAll}
+              className="mr-2"
+            />
+            <label className="text-blue-600 font-semibold">Select All</label>
+          </div>
+
           <ul className="grid grid-cols-2 gap-4">
             {fetchedShifts.map((shift, idx) => (
               <li
                 key={idx}
-                className="bg-gradient-to-r from-green-400 to-blue-400 text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300"
+                onClick={() => handleSelectShift(shift)}
+                className={`cursor-pointer py-2 px-4 rounded-lg shadow-md transition-shadow duration-300 ${selectedShifts.includes(shift) ? 'bg-red-400 text-white' : 'bg-gradient-to-r from-green-400 to-blue-400 text-white'}`}
               >
                 {shift}
               </li>
             ))}
           </ul>
-        </div>
-      ) : (
-        selectedDateForView && (
-          <p className="text-gray-500 mt-4">No shifts available for this date.</p>
-        )
-      )}
 
+          {selectedShifts.length > 0 && (
+            <motion.button
+              onClick={handleDeleteSlots}
+              className="mt-4 w-full bg-red-500 text-white font-semibold py-3 px-6 rounded-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition-transform duration-300"
+            >
+              Delete Selected Slots
+            </motion.button>
+          )}
+        </div>
+      )}
     </motion.div>
   );
 };
