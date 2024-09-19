@@ -4,6 +4,7 @@ import { CiLogout } from "react-icons/ci";
 import { Link } from 'react-router-dom';
 import { FaUserMd } from 'react-icons/fa';
 import { AiOutlineMenu, AiOutlineClose } from 'react-icons/ai';
+import { FaUserDoctor } from "react-icons/fa6";
 
 const AdminLeftSidebar = () => {
    const [isExpanded, setIsExpanded] = useState(false);
@@ -42,16 +43,18 @@ const AdminLeftSidebar = () => {
                </li>
                <li>
                   <Link to="/admin/doctors-list" className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-yellow-500 group">
-                     <FaUserMd className="w-7 h-7" />
+                     {/* <FaUserMd className="w-7 h-7" /> */}
+                     <FaUserDoctor className="w-7 h-7 color-gray-600" />
+                     
                      <span className={`flex-1 ms-3 whitespace-nowrap ${!isExpanded && 'hidden'} sm:block`}>Doctors List</span>
                   </Link>
                </li>
                <li>
-                  <Link to="/admin/doctors-verification" className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-yellow-500 group">
+                  <Link to="/admin/banner" className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-yellow-500 group">
                      <svg className="flex-shrink-0 w-7 h-7 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 20">
                         <path d="M15 0H3a3 3 0 0 0-3 3v14a3 3 0 0 0 3 3h12a3 3 0 0 0 3-3V3a3 3 0 0 0-3-3ZM5 2h8a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Zm4 16a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3Zm5-4H4V8h10v6Z" />
                      </svg>
-                     <span className={`flex-1 ms-3 whitespace-nowrap ${!isExpanded && 'hidden'} sm:block`}>Report Management</span>
+                     <span className={`flex-1 ms-3 whitespace-nowrap ${!isExpanded && 'hidden'} sm:block`}>Banner Management</span>
                   </Link>
                </li>
                <li>

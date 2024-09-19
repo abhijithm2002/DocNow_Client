@@ -62,5 +62,16 @@ export const fetchSlots = async (id, date) => {
     return response
   }
 
+  export const fetchAppointments = async (doctorId) => {
+    const response = await DoctorApi.get(`/api/doctor/fetchAppointments/${doctorId}`);
+    console.log('response from fetch appointments:', response);
+    return response;
+}
 
+export const fetchWalletHistory = async(doctorId) => {
+  console.log('doctor id fetch wallet', doctorId)
+  const response = await DoctorApi.get(`api/doctor/wallet-history/${doctorId}`)
+  console.log('response fetcching wallet history', response);
+  return response;
+}
 

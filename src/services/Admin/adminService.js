@@ -18,7 +18,7 @@ export const BlockAndUnblockUser = async (userId, status) => {
 
 export const fetchDoctorsList = async () => {
     console.log('fetch doctor list');
-    const response = await Api.get('/api/admin/fetchDoctorList'); // This should match the backend route
+    const response = await Api.get('/api/admin/fetchDoctorList'); 
     console.log('response of doctorlist', response);
     return response;
 }
@@ -37,3 +37,23 @@ export const verifyDoctor = async (doctorId) => {
         console.log('Response from verifyDoctor:', response);
         return response;
 };
+
+export const createBanner = async(formData) => {
+    console.log('entered create banner');
+    const response = await Api.post(`/api/admin/createBanner`, formData);
+    console.log('response banner',response)
+    return response;
+}
+
+export const blockAndUnblockBanner = async(bannerId, status) => {
+    console.log('banner id and status', bannerId, status)
+    const response = await Api.patch(`/api/admin/banner/${bannerId}/blockUnblockBanner`, {status})
+    return response;
+}
+export const fetchBanner = async () => {
+    console.log('fetch doctor list');
+    const response = await Api.get('/api/admin/fetchBanner'); 
+    console.log('response of doctorlist', response);
+    return response;
+}
+fetchBanner

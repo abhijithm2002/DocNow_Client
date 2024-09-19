@@ -63,7 +63,7 @@ const DoctorDetails = () => {
 
             {/* BookingPage moved underneath photo section on small and medium screens */}
             <div className='block md:hidden mt-[10px] md:mt-[10px] w-[90%] mx-auto'>
-              <BookingPage bookingfees = {doctor.bookingfees}/>
+              <BookingPage doctor = {doctor}/>
             </div>
 
             <div className='mt-5 md:mt-[50px] border-b border-solid border-[#0066ff34]'>
@@ -127,7 +127,7 @@ const DoctorDetails = () => {
 
           {/* Right column containing BookingPage on large screens */}
           <div className='hidden md:block'>
-            <BookingPage bookingfees={doctor.bookingfees}/>
+            <BookingPage doctor={doctor}/>
           </div>
         </div>
       </div>
@@ -136,3 +136,8 @@ const DoctorDetails = () => {
 }
 
 export default DoctorDetails;
+
+
+
+
+

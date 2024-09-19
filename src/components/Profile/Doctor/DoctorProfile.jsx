@@ -8,6 +8,8 @@ import { FaUserCircle, FaUserMd } from 'react-icons/fa'; // Import a doctor icon
 import { useDispatch } from 'react-redux';
 import CreateSlots from '../../Doctor/CreateSlots';
 import { getUploadedDocuments } from '../../../services/Doctor/doctorService';
+import Appointments from './Appointments';
+import WalletHistory from './WalletHistory';
 
 const DoctorProfile = () => {
   const [tab, setTab] = useState('overview');
@@ -86,10 +88,11 @@ const DoctorProfile = () => {
                 </div>
               )}
 
-              {tab === 'appointments' && <div>'Appointments'</div>}
+              {tab === 'appointments' && <Appointments />}
               {tab === 'settings' && <DoctorEditProfile />}
               {tab === 'upload-documents' && <UploadDocuments />}
               {tab === 'update-slot' && <CreateSlots />}
+              {tab === 'wallet-history' && <WalletHistory />}
             </div>
           </div>
         </div>

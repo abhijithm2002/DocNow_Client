@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import useEditProfileFormik from '../../Auth/formValidation/editProfileValidaton'
-import { editProfile } from '../../../services/User/userService'
+import useEditProfileFormik from '../../Auth/formValidation/editProfileValidaton';
+import { editProfile } from '../../../services/User/userService';
 import { FaUser } from 'react-icons/fa';
 import uploadImageToCloudinary from '../../../utils/uploadCloudinary';
 import toast, { Toaster } from 'react-hot-toast';
@@ -17,10 +17,9 @@ const EditProfile = () => {
   const handleFileInputChange = async (event) => {
     const file = event.target.files[0];
     const data = await uploadImageToCloudinary(file);
-    console.log('imagedata', data);
     if (data.url) {
       setPreviewURL(data.url);
-      // formik.setFieldValue('photo', data.url);
+      formik.setFieldValue('photo', data.url);
     } else {
       toast.error('Failed to upload image');
     }
@@ -28,11 +27,9 @@ const EditProfile = () => {
 
   const formik = useEditProfileFormik(
     async (values) => {
-      console.log('Edited data to be sent:', values);
       setLoading(true);
       try {
         const response = await editProfile(values);
-        console.log('response from backend', response);
         if (response.status === 200) {
           toast.success('Profile updated successfully!');
           const updatedUser = { ...user, ...values };
@@ -54,7 +51,7 @@ const EditProfile = () => {
       email: user?.email || '',
       mobile: user?.mobile || '',
       gender: user?.gender || '',
-      photo: user?.photo || '',
+      photo: user?.photo || '', 
       role: user?.role || 'patient',
     }
   );
@@ -70,12 +67,12 @@ const EditProfile = () => {
   };
 
   return (
-    <section className='px-5 xl:px-0 flex items-center justify-center min-h-screen'>
+    <section className='px-5 xl:px-0 flex flex-col items-center min-h-screen py-10'>
       <Toaster position="top-center" reverseOrder={false} />
-      <div className='max-w-[1170px] mx-auto w-full'>
-        <div className='grid grid-cols-1 lg:grid-cols-2 justify-center'>
-          <div className="lg:pl-16 py-10 px-10 rounded-r-lg bg-white shadow-lg w-full flex">
-            <form onSubmit={formik.handleSubmit} className='w-full max-w-[400px]'>
+      <div className='w-full max-w-[600px]'>
+        <div className='flex justify-center'>
+          <div className="py-10 px-10 rounded-lg bg-white shadow-lg w-full flex flex-col items-center">
+            <form onSubmit={formik.handleSubmit} className='w-full'>
               <div className='mb-5'>
                 <input
                   type="text"
@@ -120,26 +117,6 @@ const EditProfile = () => {
                   <div className="text-red-500 text-sm">{formik.errors.mobile}</div>
                 ) : null}
               </div>
-              <div className='mb-5 flex items-center justify-between space-x-4'>
-                <label className='text-headingColor font-bold text-[16px] leading-7'>
-                  Gender:
-                  <select
-                    value={formik.values.gender}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    name="gender"
-                    className='text-textColor font-semibold text-[15px] leading-7 px-4 py-3 focus:outline-none'
-                  >
-                    <option value="">Select</option>
-                    <option value="male">Male</option>
-                    <option value="female">Female</option>
-                    <option value="other">Other</option>
-                  </select>
-                  {formik.touched.gender && formik.errors.gender ? (
-                    <div className="text-red-500 text-sm">{formik.errors.gender}</div>
-                  ) : null}
-                </label>
-              </div>
               <div className='mb-5 flex items-center gap-3'>
                 <figure className='w-[60px] h-[60px] rounded-full border-2 border-solid border-primaryColor flex items-center justify-center'>
                   {previewURL ? (
@@ -162,10 +139,11 @@ const EditProfile = () => {
                   </label>
                 </div>
               </div>
-              <div className='mt-7 flex'>
+              <div className='mt-7 flex justify-center'>
                 <button 
                   disabled={!hasChanges() || loading}
-                  type='submit' className='w-full max-w-[200px] bg-primaryColor text-white text-[18px] leading-[30px] rounded-lg px-4 py-3'>
+                  type='submit' 
+                  className='w-full max-w-[200px] bg-primaryColor text-white text-[18px] leading-[30px] rounded-lg px-4 py-3'>
                   {loading ? <HashLoader size={35} color='#ffffff' /> : 'Update'}
                 </button>
               </div>

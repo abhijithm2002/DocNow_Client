@@ -34,7 +34,7 @@ function Login() {
     },
     validationSchema,
     onSubmit: async (values) => {
-      setError({ email: '', password: '', general: '' }); // Reset errors before submission
+      setError({ email: '', password: '', general: '' }); 
       try {
         const response = await userLogin(values);
         if (response.status === 200) {

@@ -5,6 +5,7 @@ import EditProfile from './EditProfile';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { logout } from '../../../ReduxStore/authSlice';
+import UserWalletHistory from './UserWalletHistory';
 
 const UserProfile = () => {
   const [tab, setTab] = useState('bookings');
@@ -18,47 +19,60 @@ const UserProfile = () => {
   };
 
   return (
-    <div className='max-w-[1170px] px-5 mx-auto mt-4'>
-      <div className='grid md:grid-cols-3 gap-10'>
-        <div className='pb-[50px] px-[30px] rounded-md'>
-          <div className='flex items-center justify-center'>
-            <figure className='w-[100px] h-[100px] rounded-full border-2 border-solid border-primaryColor'>
+    <div className="max-w-[1170px] mx-auto mt-4 px-4 md:px-0">
+      <div className="grid md:grid-cols-4 gap-8">
+        {/* Sidebar */}
+        <div className="md:col-span-1 bg-white rounded-lg shadow-md p-6 flex flex-col min-h-[500px]">
+          <div className="text-center mb-6 flex-shrink-0">
+            <figure className="w-[100px] h-[100px] mx-auto rounded-full border-2 border-gray-200 overflow-hidden">
               {user.photo ? (
-                <img src={user.photo} alt="Profile" className='w-full h-full rounded-full' />
+                <img src={user.photo} alt="Profile" className="w-full h-full object-cover" />
               ) : (
-                <FaUser className='text-headingColor text-[100px]' />
+                <FaUser className="text-gray-400 text-[100px]" />
               )}
             </figure>
+            <h3 className="text-[18px] mt-4 text-headingColor font-bold">{user.name}</h3>
+            <p className="text-textColor text-[15px] mt-2">{user.email}</p>
           </div>
-          <div className='text-center mt-4'>
-            <h3 className='text-[18px] leading-[30px] text-headingColor font-bold'>{user.name}</h3>
-            <p className='text-textColor text-[15px] leading-6 font-medium'>{user.email}</p>
-          </div>
-          <div className='mt-[50px] md:mt[100px]'>
-            <button onClick={handleLogout} className='w-full bg-red-600 p-3 text-[16px] leading-7 rounded-md text-white'>
-              Logout
-            </button>
-          </div>
-        </div>
-        <div className='md:col-span-2 md:px-[30px]'>
-          <div>
-            <button 
-              onClick={() => setTab('bookings')} 
-              className={` ${tab === 'bookings' && 'bg-primaryColor text-white font-normal'} 
-                p-2 mr-5 px-5 rounded-md text-headingColor font-semibold text-[16px] leading-7 border border-solid border-primaryColor`}
+          <nav className="flex-grow">
+            <button
+              onClick={() => setTab('bookings')}
+              className={`w-full text-center p-3 rounded-md  ${
+                tab === 'bookings' ? 'bg-primaryColor text-white' : 'text-headingColor bg-gray-100 font-semibold'
+              } mb-2`}
             >
               My Bookings
             </button>
-            <button 
-              onClick={() => setTab('settings')} 
-              className={` ${tab === 'settings' && 'bg-primaryColor text-white font-normal'} 
-                py-2 px-5 rounded-md text-headingColor font-semibold text-[16px] leading-7 border border-solid border-primaryColor`}
+            <button
+              onClick={() => setTab('settings')}
+              className={`w-full text-center p-3 rounded-md ${
+                tab === 'settings' ? 'bg-primaryColor text-white' : 'text-headingColor bg-gray-100 font-semibold'
+              } mb-2`}
             >
               Settings
             </button>
-          </div>
+            <button
+              onClick={() => setTab('userWalletHistory')}
+              className={`w-full text-center p-3 rounded-md ${
+                tab === 'userWalletHistory' ? 'bg-primaryColor text-white' : 'text-headingColor bg-gray-100 font-semibold'
+              } mb-2`}
+            >
+              Wallet History
+            </button>
+            <button
+              onClick={handleLogout}
+              className="w-full text-center p-3 rounded-md text-white bg-red-600 mt-8"
+            >
+              Logout
+            </button>
+          </nav>
+        </div>
+
+        {/* Main Content */}
+        <div className="md:col-span-3 flex justify-center items-center">
           {tab === 'bookings' && <MyBookings />}
           {tab === 'settings' && <EditProfile />}
+          {tab === 'userWalletHistory' && <UserWalletHistory />}
         </div>
       </div>
     </div>

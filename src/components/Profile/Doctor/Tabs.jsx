@@ -58,6 +58,13 @@ const Tabs = ({ tab, setTab }) => {
                         : 'bg-transparent text-headingColor'} w-full btn mt-0 rounded-md`}>
                     Update the Slots
                 </button>
+                <button
+                    onClick={() => setTab('wallet-history')}
+                    className={` ${tab == 'wallet-history'
+                        ? 'bg-indigo-100 text-primaryColor'
+                        : 'bg-transparent text-headingColor'} w-full btn mt-0 rounded-md`}>
+                    Wallet
+                </button>
 
                 <div className='mt[100px] w-full mt-4'>
                     <button onClick={handleLogout} className='w-full bg-red-600 hover:bg-red-400 mt-4 p-3 text-[16px] leading-7 rounded-md text-white'>

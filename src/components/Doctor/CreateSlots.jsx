@@ -20,7 +20,6 @@ const CreateSlots = () => {
   const [allSelected, setAllSelected] = useState(false);
   const [slotId, setSlotId] = useState(null);
 
-
   const { doctor } = useSelector((state) => state.doctor);
 
   const handleCreateSlots = async () => {
@@ -28,19 +27,43 @@ const CreateSlots = () => {
       toast.error('Please fill in all required fields');
       return;
     }
-
+  
+    // Create dates in local time to avoid shifting to the previous day in UTC
+    const start = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate());
+    const end = new Date(endDate.getFullYear(), endDate.getMonth(), endDate.getDate());
+  
+    // Normalize startTime and endTime to maintain the correct time relative to local date
+    const normalizedStartTime = new Date(
+      start.getFullYear(),
+      start.getMonth(),
+      start.getDate(),
+      startTime.getHours(),
+      startTime.getMinutes()
+    );
+  
+    const normalizedEndTime = new Date(
+      end.getFullYear(),
+      end.getMonth(),
+      end.getDate(),
+      endTime.getHours(),
+      endTime.getMinutes()
+    );
+  
+    // Adjusting to keep the day in local time without shifting to previous day in UTC
     const slotsData = eachDayOfInterval({
-      start: startDate,
-      end: endDate,
+      start,
+      end,
     }).map((day) => ({
       doctorId: doctor._id,
-      day,
-      startTime,
-      endTime,
+      day: new Date(day.setHours(12, 0, 0, 0)).toISOString(), // Ensure day is centered on noon to avoid UTC shifts
+      startTime: normalizedStartTime.toISOString(),
+      endTime: normalizedEndTime.toISOString(),
       duration,
       breakTime,
     }));
-
+  
+    console.log('slotdata', slotsData);
+  
     try {
       const response = await updateSlots(slotsData);
       if (response.status === 201) {
@@ -54,23 +77,31 @@ const CreateSlots = () => {
       toast.error('Error creating slots');
     }
   };
+  
+  
+  
+  
+  
 
   const fetchAndDisplaySlots = async () => {
     if (!selectedDateForView) return;
-
-    const formattedDate = selectedDateForView.toISOString().split('T')[0];
+  
+    // Convert selectedDateForView to local date string
+    const localDate = new Date(selectedDateForView.getTime() - selectedDateForView.getTimezoneOffset() * 60000);
+    const formattedDate = localDate.toISOString().split('T')[0];
+    
     try {
-      const fetchedSlotsResponse = await fetchSlots(doctor._id, formattedDate);
-      const fetchedSlots = fetchedSlotsResponse.data.slots;
-      
-      
+      const response = await fetchSlots(doctor._id, formattedDate);
+      console.log('Fetched slots response:', response);
+  
+      const fetchedSlots = response.data.slots;
+  
       if (fetchedSlots && fetchedSlots.length > 0) {
-        const fetchedId = fetchedSlots[0]._id;
-        setSlotId(fetchedId);
+        setSlotId(fetchedSlots[0]._id);
         setFetchedShifts(fetchedSlots[0].shifts || []);
         setSelectedShifts([]);
       } else {
-        setSlotId(null)
+        setSlotId(null);
         setFetchedShifts([]);
         setSelectedShifts([]);
       }
@@ -79,12 +110,13 @@ const CreateSlots = () => {
       toast.error('Error fetching slots');
     }
   };
+  
+  
 
   const handleSelectShift = (shift) => {
-    console.log('shift', shift)
-    setSelectedShifts(prev => 
-      prev.includes(shift) 
-        ? prev.filter(item => item !== shift) 
+    setSelectedShifts((prev) =>
+      prev.includes(shift)
+        ? prev.filter((item) => item !== shift)
         : [...prev, shift]
     );
   };
@@ -103,14 +135,10 @@ const CreateSlots = () => {
       toast.error('No shifts selected');
       return;
     }
-  
+
     try {
-      
-      console.log('fetched shifts',fetchedShifts)
-      console.log('slot id delete',slotId)
-      console.log('selected shifts', selectedShifts)
       const response = await deleteSlots(slotId, selectedShifts);
-  
+
       if (response.status === 200) {
         toast.success('Selected shifts deleted successfully');
         fetchAndDisplaySlots();
@@ -136,7 +164,7 @@ const CreateSlots = () => {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, ease: 'easeOut' }}
     >
-      <Toaster position='top-center'/>
+      <Toaster position='top-center' />
       <motion.h2
         className="text-3xl font-extrabold text-blue-600 mb-6"
         initial={{ scale: 0.8 }}
@@ -147,81 +175,81 @@ const CreateSlots = () => {
       </motion.h2>
 
       {/* Slot Creation Form */}
-      <motion.div className="mb-4">
-        <label className="block text-blue-600 font-semibold mb-2">Start Date</label>
-        <DatePicker
-          selected={startDate}
-          onChange={(date) => setStartDate(date)}
-          selectsStart
-          startDate={startDate}
-          endDate={endDate}
-          minDate={new Date()}
-          className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-400"
-        />
-      </motion.div>
+      <motion.div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+        <div>
+          <label className="block text-blue-600 font-semibold mb-2">Start Date</label>
+          <DatePicker
+            selected={startDate}
+            onChange={(date) => setStartDate(date)}
+            selectsStart
+            startDate={startDate}
+            endDate={endDate}
+            minDate={new Date()}
+            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-400"
+          />
+        </div>
 
-      <motion.div className="mb-4">
-        <label className="block text-blue-600 font-semibold mb-2">End Date</label>
-        <DatePicker
-          selected={endDate}
-          onChange={(date) => setEndDate(date)}
-          selectsEnd
-          startDate={startDate}
-          endDate={endDate}
-          minDate={startDate}
-          className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-400"
-        />
-      </motion.div>
+        <div>
+          <label className="block text-blue-600 font-semibold mb-2">End Date</label>
+          <DatePicker
+            selected={endDate}
+            onChange={(date) => setEndDate(date)}
+            selectsEnd
+            startDate={startDate}
+            endDate={endDate}
+            minDate={startDate}
+            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-400"
+          />
+        </div>
 
-      <motion.div className="mb-4">
-        <label className="block text-blue-600 font-semibold mb-2">Start Time</label>
-        <DatePicker
-          selected={startTime}
-          onChange={(date) => setStartTime(date)}
-          showTimeSelect
-          showTimeSelectOnly
-          timeIntervals={15}
-          timeCaption="Time"
-          dateFormat="h:mm aa"
-          className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-400"
-        />
-      </motion.div>
+        <div>
+          <label className="block text-blue-600 font-semibold mb-2">Start Time</label>
+          <DatePicker
+            selected={startTime}
+            onChange={(date) => setStartTime(date)}
+            showTimeSelect
+            showTimeSelectOnly
+            timeIntervals={15}
+            timeCaption="Time"
+            dateFormat="h:mm aa"
+            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-400"
+          />
+        </div>
 
-      <motion.div className="mb-4">
-        <label className="block text-blue-600 font-semibold mb-2">End Time</label>
-        <DatePicker
-          selected={endTime}
-          onChange={(date) => setEndTime(date)}
-          showTimeSelect
-          showTimeSelectOnly
-          timeIntervals={15}
-          timeCaption="Time"
-          dateFormat="h:mm aa"
-          className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-400"
-        />
-      </motion.div>
+        <div>
+          <label className="block text-blue-600 font-semibold mb-2">End Time</label>
+          <DatePicker
+            selected={endTime}
+            onChange={(date) => setEndTime(date)}
+            showTimeSelect
+            showTimeSelectOnly
+            timeIntervals={15}
+            timeCaption="Time"
+            dateFormat="h:mm aa"
+            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-400"
+          />
+        </div>
 
-      <motion.div className="mb-4">
-        <label className="block text-blue-600 font-semibold mb-2">Duration (minutes)</label>
-        <input
-          type="number"
-          value={duration}
-          onChange={(e) => setDuration(parseInt(e.target.value))}
-          className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-400"
-        />
-      </motion.div>
+        <div>
+          <label className="block text-blue-600 font-semibold mb-2">Duration (minutes)</label>
+          <input
+            type="number"
+            value={duration}
+            onChange={(e) => setDuration(parseInt(e.target.value))}
+            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-400"
+          />
+        </div>
 
-      <motion.div className="mb-4">
-        <label className="block text-blue-600 font-semibold mb-2">Break Time (minutes)</label>
-        <input
-          type="number"
-          value={breakTime}
-          onChange={(e) => setBreakTime(parseInt(e.target.value))}
-          className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-400"
-        />
+        <div>
+          <label className="block text-blue-600 font-semibold mb-2">Break Time (minutes)</label>
+          <input
+            type="number"
+            value={breakTime}
+            onChange={(e) => setBreakTime(parseInt(e.target.value))}
+            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-400"
+          />
+        </div>
       </motion.div>
-
-     
 
       <motion.button
         onClick={handleCreateSlots}
@@ -254,7 +282,7 @@ const CreateSlots = () => {
             <label className="text-blue-600 font-semibold">Select All</label>
           </div>
 
-          <ul className="grid grid-cols-2 gap-4">
+          <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {fetchedShifts.map((shift, idx) => (
               <li
                 key={idx}

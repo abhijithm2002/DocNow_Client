@@ -10,6 +10,8 @@ import UserProfile from '../../components/Profile/User/UserProfile';
 import PublicRoutes from '../../components/publicRoutes';
 import DoctorsList from '../../components/Doctor/DoctorList';
 import DoctorDetails from '../../pages/Doctors/DoctorDetails';
+import Payment from '../../pages/Doctors/Payment';
+import Appointments from '../../components/Profile/Doctor/Appointments';
 
 const RouteFile = () => {
   return (
@@ -25,8 +27,12 @@ const RouteFile = () => {
       <Route element={ <PrivateRoute />}>
        
         <Route path='/user-profile' element= {<UserProfile />}/>
-        <Route path='/doctors' element= {<DoctorsList />}/>
+        <Route path='/doctors/:specialization?' element= {<DoctorsList />}/>
         <Route path='/doctor-details/:doctorId' element= {<DoctorDetails />}/>
+        <Route path='/payment' element={<Payment />} />
+        <Route path='/appointments' element={<Appointments />} />
+        
+        
         
 
       </Route>
