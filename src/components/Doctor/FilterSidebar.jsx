@@ -11,13 +11,7 @@ const FilterSidebar = ({ onFilterChange }) => {
         onFilterChange({ specialization: e.target.value, minPrice, maxPrice });
     };
 
-    const handlePriceChange = (e) => {
-        const { name, value } = e.target;
-        if (name === 'minPrice') setMinPrice(value);
-        if (name === 'maxPrice') setMaxPrice(value);
-        onFilterChange({ specialization: selectedSpecialization, minPrice, maxPrice });
-    };
-
+    
     return (
         <div className="w-full max-w-xs p-6 bg-white border border-gray-200 rounded-lg shadow-lg transition duration-300 ease-in-out hover:shadow-2xl">
             <div className="flex items-center space-x-2 mb-6">
@@ -47,7 +41,7 @@ const FilterSidebar = ({ onFilterChange }) => {
             </div>
 
             {/* Price Filter */}
-            <div className="mb-6">
+            {/* <div className="mb-6">
                 <div className="flex items-center space-x-2">
                     <FaMoneyBillWave className="text-green-500 w-5 h-5" />
                     <h3 className="font-medium text-gray-700">Price Range</h3>
@@ -70,7 +64,7 @@ const FilterSidebar = ({ onFilterChange }) => {
                         className="w-1/2 p-3 border border-gray-300 rounded-lg bg-gray-50 focus:ring-2 focus:ring-green-300 transition duration-200"
                     />
                 </div>
-            </div>
+            </div> */}
         </div>
     );
 };

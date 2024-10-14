@@ -47,8 +47,10 @@ const LoginWithGoogle = async (userType) => {
             let response;
             if (userType === 'doctor') {
                 response = await googleDoctorLogin(user.email, user.displayName);
+                console.log('response of docto google login',response)
             } else {
                 response = await googleLogin(user.email, user.displayName);
+                console.log('response of patient google login ', response)
             }
             return response;
         }

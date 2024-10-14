@@ -56,6 +56,8 @@ export const userLogin = async (formData) => {
 
 export const googleLogin = async(email, name) => {
     console.log('coming to google patient login');
+    console.log('email and name', email, name);
+    
     const response = await authInstance.post('api/patient/google-login', {email, name});
     console.log('response', response)
     return response

@@ -8,11 +8,14 @@ import GoogleSvg from '../../assets/images/icons8-google.svg';
 import useDoctorSignupFormik from '../../components/Auth/formValidation/FormValidationDoctor';
 import { IoEye } from "react-icons/io5";
 import { IoEyeOff } from "react-icons/io5";
+import { useDispatch } from 'react-redux';
+import { setCredentials } from '../../ReduxStore/doctorSlice';
 
 function DoctorSignup() {
     const [showPassword, setShowPassword] = useState(false)
     const [showConfirmPassword, setShowConfirmPassword] = useState(false)
     const navigate = useNavigate();
+    const dispatch = useDispatch()
 
     const formik = useDoctorSignupFormik(async (values) => {
         try {
@@ -33,10 +36,15 @@ function DoctorSignup() {
 
     const GoogleSignIn = async () => {
         try {
-            const result = await LoginWithGoogle();
+            const result = await LoginWithGoogle('doctor');
             if (result) {
                 toast.success('Google login successful!');
-                navigate('/doctor');
+                const {data} = result;
+                console.log(data.doctor)
+                // console.log('doctor accesstoken', data.accessToken);
+                console.log('resulttttt', result);
+                dispatch(setCredentials({ doctor: data.doctor, accessToken: data.accessToken }));
+                navigate('/doctor/profile');
             }
         } catch (error) {
             toast.error('Google login failed. Please try again');

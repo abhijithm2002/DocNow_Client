@@ -4,25 +4,31 @@ import { useSelector } from 'react-redux';
 import DoctorAbout from './DoctorAbout';
 import DoctorEditProfile from './DoctorEditProfile';
 import UploadDocuments from './UploadDocuments';
-import { FaUserCircle, FaUserMd } from 'react-icons/fa'; // Import a doctor icon from React Icons
+import { FaCloudShowersHeavy, FaDoorClosed, FaUserCircle, FaUserMd } from 'react-icons/fa';
 import { useDispatch } from 'react-redux';
 import CreateSlots from '../../Doctor/CreateSlots';
 import { getUploadedDocuments } from '../../../services/Doctor/doctorService';
 import Appointments from './Appointments';
 import WalletHistory from './WalletHistory';
+import Message from './Message';
+import Chat from '../../Doctor/Communication/Chat';
+import Loading from '../../Loader/Loading';
 
 const DoctorProfile = () => {
   const [tab, setTab] = useState('overview');
   const { doctor } = useSelector((state) => state.doctor);
   const [documentsVerified, setDocumentsVerified] = useState(null)
+  const [isLoading, setisLoading] = useState(true);
 
-  useEffect(()=> {
-    const fetchDocuments = async() => {
+
+  useEffect(() => {
+    const fetchDocuments = async () => {
       try {
 
         const response = await getUploadedDocuments(doctor.email)
         if (response.status === 200) {
           setDocumentsVerified(response.data.data.documents_verified);
+          setisLoading(false)
         } else {
           console.error('Failed to fetch document status');
         }
@@ -35,13 +41,17 @@ const DoctorProfile = () => {
   }, []);
 
   return (
-    <section>
+    <>
+    {isLoading ? (
+      <Loading />
+    ): (
+      <section>
       <div className='max-w-[1170px] px-5 mx-auto'>
         <div className='grid lg:grid-cols-3 gap-[30px] lg:gap-[50px]'>
           <Tabs tab={tab} setTab={setTab} />
 
           <div className='lg:col-span-2'>
-          {!documentsVerified && (
+            {!documentsVerified && (
               <div className='flex p-4 mb-4 text-yellow-800 bg-yellow-50 rounded-lg'>
                 <svg
                   aria-hidden='true'
@@ -71,19 +81,22 @@ const DoctorProfile = () => {
                       {doctor.photo ? (
                         <img src={doctor.photo} alt="" className='w-full' />
                       ) : (
-                        <FaUserCircle className='text-gray-400 w-[150px] h-[200px]' />  // Default icon if no photo
+                        <FaUserCircle className='text-gray-400 w-[150px] h-[200px]' />
                       )}
                     </figure>
 
                     <div>
-                      <span className='bg-[#CCF0f3] text-irishBlueColor py-1 px-4 lg:py-2 lg:px-6 rounded text-[12px] leading-4 lg:text-[16px] lg:leading-6 font-semibold'>
-                        {doctor.expertise}
-                      </span>
+                      {doctor.expertise && (
+                        <span className='bg-[#CCF0f3] text-irishBlueColor py-1 px-4 lg:py-2 lg:px-6 rounded text-[12px] leading-4 lg:text-[16px] lg:leading-6 font-semibold'>
+                          {doctor.expertise}
+                        </span>
+                      )}
+
                       <h3 className='text-[22px] leading-9 font-bold text-headingColor mt-3'>Dr. {doctor.name}</h3>
                     </div>
                   </div>
                   <div className='mt-7'>
-                    <DoctorAbout name={doctor.name} bio={doctor.bio} education={doctor.education} experience={doctor.experience} currentWorkingHospital= {doctor.currentWorkingHospital} />
+                    <DoctorAbout name={doctor.name} bio={doctor.bio} education={doctor.education} experience={doctor.experience} currentWorkingHospital={doctor.currentWorkingHospital} />
                   </div>
                 </div>
               )}
@@ -93,11 +106,16 @@ const DoctorProfile = () => {
               {tab === 'upload-documents' && <UploadDocuments />}
               {tab === 'update-slot' && <CreateSlots />}
               {tab === 'wallet-history' && <WalletHistory />}
+              {tab === 'chat' && <Chat />}
             </div>
           </div>
         </div>
       </div>
     </section>
+    )}
+    </>
+    
+    
   );
 };
 

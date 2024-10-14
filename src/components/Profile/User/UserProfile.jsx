@@ -6,6 +6,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { logout } from '../../../ReduxStore/authSlice';
 import UserWalletHistory from './UserWalletHistory';
+import Chat from '../../User/Communication/Chat';
 
 const UserProfile = () => {
   const [tab, setTab] = useState('bookings');
@@ -16,6 +17,11 @@ const UserProfile = () => {
   const handleLogout = () => {
     dispatch(logout());
     navigate('/login');
+  };
+
+  const handleChatClick = () => {
+    setTab('chat');
+    navigate('/chat'); // Navigate to chat route
   };
 
   return (
@@ -58,6 +64,14 @@ const UserProfile = () => {
               } mb-2`}
             >
               Wallet History
+            </button>
+            <button
+              onClick={handleChatClick} // Navigating to chat route
+              className={`w-full text-center p-3 rounded-md ${
+                tab === 'chat' ? 'bg-primaryColor text-white' : 'text-headingColor bg-gray-100 font-semibold'
+              } mb-2`}
+            >
+              Messages
             </button>
             <button
               onClick={handleLogout}

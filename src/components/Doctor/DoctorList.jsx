@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import { fetchDoctorsList } from '../../services/Admin/adminService';
 import DoctorCard from './DoctorCard';
 import FilterSidebar from './FilterSidebar';
+import PaginationComponent from '../Pagination/PaginationComponent';
 
 const DoctorsList = () => {
     const { specialization } = useParams();
@@ -151,41 +152,12 @@ const DoctorsList = () => {
 
             {/* Pagination */}
             {filteredDoctors.length > 0 && (
-                <div className="flex justify-center mt-8">
-                    <nav aria-label="Page navigation">
-                        <ul className="inline-flex items-center space-x-1">
-                            <li>
-                                <button
-                                    onClick={() => handlePageChange(currentPage - 1)}
-                                    disabled={currentPage === 1}
-                                    className={`px-3 py-1 rounded-lg ${currentPage === 1 ? 'bg-gray-300 text-gray-500' : 'bg-deepBlue text-white hover:bg-skyBlue'}`}
-                                >
-                                    Previous
-                                </button>
-                            </li>
-                            {Array.from({ length: totalPages }, (_, index) => index + 1).map(number => (
-                                <li key={number}>
-                                    <button
-                                        onClick={() => handlePageChange(number)}
-                                        className={`px-3 py-1 rounded-lg ${currentPage === number ? 'bg-deepBlue text-white' : 'bg-gray-200 text-gray-800 hover:bg-gray-300'}`}
-                                    >
-                                        {number}
-                                    </button>
-                                </li>
-                            ))}
-                            <li>
-                                <button
-                                    onClick={() => handlePageChange(currentPage + 1)}
-                                    disabled={currentPage === totalPages}
-                                    className={`px-3 py-1 rounded-lg ${currentPage === totalPages ? 'bg-gray-300 text-gray-500' : 'bg-deepBlue text-white hover:bg-skyBlue'}`}
-                                >
-                                    Next
-                                </button>
-                            </li>
-                        </ul>
-                    </nav>
-                </div>
-            )}
+        <PaginationComponent
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={handlePageChange}
+        />
+      )}
         </div>
     );
 }

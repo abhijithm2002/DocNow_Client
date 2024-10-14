@@ -2,11 +2,20 @@ import { useState, useEffect } from 'react';
 import { AiOutlineWallet } from 'react-icons/ai';
 import { useSelector } from 'react-redux';
 import { fetchWalletHistory } from '../../../services/Doctor/doctorService';
+import PaginationComponent from '../../Pagination/PaginationComponent';
 
 const WalletHistory = () => {
   const [walletAmount, setWalletAmount] = useState(0);
   const [walletHistory, setWalletHistory] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
   const doctorId = useSelector((state) => state.doctor.doctor._id);
+  const itemsPerPage = 5;
+  
+  const indexOfLastWallet = currentPage * itemsPerPage;
+  const indexOfFirstWallet = indexOfLastWallet - itemsPerPage;
+
+  const currentWallet = walletHistory.slice(indexOfFirstWallet, indexOfLastWallet);
+  const totalPages = Math.ceil(walletHistory.length / itemsPerPage);
 
   useEffect(() => {
     const getWalletHistory = async (doctorId) => {
@@ -16,7 +25,7 @@ const WalletHistory = () => {
         const sortedWalletHistory = walletData.WalletHistory.sort(
           (a, b) => new Date(b.date) - new Date(a.date)
         );
-  
+
         setWalletAmount(walletData.Wallet || 0);
         setWalletHistory(sortedWalletHistory);
       } catch (error) {
@@ -30,7 +39,7 @@ const WalletHistory = () => {
   }, [doctorId]);
 
   return (
-    <div className="font-sans p-4 space-y-6">
+    <div className="font-sans mt-top space-y-6">
       <div className="mt-0 relative flex items-center justify-between p-4 bg-blue-300 shadow-lg rounded-lg border border-gray-200 transform transition-transform duration-300 hover:scale-105">
         <div className="flex items-center space-x-3">
           <AiOutlineWallet className="text-3xl text-white animate-bounce" />
@@ -51,8 +60,8 @@ const WalletHistory = () => {
             </tr>
           </thead>
           <tbody>
-            {walletHistory.length > 0 ? (
-              walletHistory.map((transaction, index) => {
+            {currentWallet.length > 0 ? (
+              currentWallet.map((transaction, index) => {
                 const isCancelled = transaction.message.toLowerCase().includes("cancelled");
 
                 return (
@@ -67,8 +76,9 @@ const WalletHistory = () => {
                       {transaction.message}
                     </td>
                     <td
-                      className={`px-4 py-2 md:px-6 md:py-4 font-semibold ${isCancelled ? 'text-red-400' : transaction.amount >= 0 ? 'text-green-400' : ''
-                        }`}
+                      className={`px-4 py-2 md:px-6 md:py-4 font-semibold ${
+                        isCancelled ? 'text-red-400' : transaction.amount >= 0 ? 'text-green-400' : ''
+                      }`}
                     >
                       {isCancelled ? `- ${Math.abs(transaction.amount)}` : `+ ${transaction.amount}`}
                     </td>
@@ -83,8 +93,15 @@ const WalletHistory = () => {
               </tr>
             )}
           </tbody>
-
         </table>
+
+        {walletHistory.length > 0 && (
+          <PaginationComponent
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={(page) => setCurrentPage(page)}
+          />
+        )}
       </div>
     </div>
   );

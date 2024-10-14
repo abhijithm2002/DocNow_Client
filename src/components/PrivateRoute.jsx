@@ -24,8 +24,10 @@ const PrivateRoute = () => {
   return (
     <>
     <Header />
+    
     <Outlet />
     <Footer />
+    
 </>
   )
 }

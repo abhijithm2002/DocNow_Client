@@ -8,11 +8,14 @@ import GoogleSvg from '../../assets/images/icons8-google.svg';
 import useSignupFormik from '../../components/Auth/formValidation/FormValidation';
 import { IoEye } from "react-icons/io5";
 import { IoEyeOff } from "react-icons/io5";
+import { useDispatch } from 'react-redux';
+import { setCredentials } from '../../ReduxStore/authSlice';
 
 function Signup() {
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false)
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const formik = useSignupFormik(async (values) => {
         try {
@@ -37,8 +40,12 @@ function Signup() {
         try {
             const result = await LoginWithGoogle();
             if (result) {
-                toast.success('Google login successful!');
-                navigate('/');
+              toast.success('Google login successful!');
+              const { data } = result;
+              console.log(data.user)
+              console.log('tokennn',data.accessToken)
+              dispatch(setCredentials({ user: data.user, accessToken: data.accessToken }));
+              navigate('/');
             }
         } catch (error) {
             toast.error('Google login failed. Please try again');
@@ -111,7 +118,7 @@ function Signup() {
                             </div>
                             <div className='mb-5 relative'>
                                 <input
-                                    type={showPassword ? 'text': 'password'}
+                                    type={showPassword ? 'text' : 'password'}
                                     placeholder='Password'
                                     name='password'
                                     value={formik.values.password}
@@ -121,7 +128,7 @@ function Signup() {
                                     autoComplete='new-password'
                                 />
                                 <div onClick={toggleShowPassword} className='absolute inset-y-0 right-0 flex items-center px-3 cursor-pointer'>
-                                    {showPassword ? <IoEyeOff size={20}/> : <IoEye size={20}/> }
+                                    {showPassword ? <IoEyeOff size={20} /> : <IoEye size={20} />}
                                 </div>
                                 {formik.touched.password && formik.errors.password ? (
                                     <div className="text-red-500 text-sm">{formik.errors.password}</div>
@@ -140,7 +147,7 @@ function Signup() {
                                     autoComplete='new-password'
                                 />
                                 <div onClick={toggleShowConfirmPassword} className='absolute inset-y-0 right-0 flex items-center px-3 cursor-pointer'>
-                                    {showConfirmPassword ? <IoEyeOff size={20}/> : <IoEye size={20}/>}
+                                    {showConfirmPassword ? <IoEyeOff size={20} /> : <IoEye size={20} />}
                                 </div>
                                 {formik.touched.confirmpassword && formik.errors.confirmpassword ? (
                                     <div className="text-red-500 text-sm">{formik.errors.confirmpassword}</div>
