@@ -1,53 +1,55 @@
-import useGetConversations from "../../../../socket/hooks/useGetConversations";
+import { FaUserCircle } from "react-icons/fa";
+import { useSocketContext } from "../../../../socket/SocketContext";
 import { useConversation } from "../../../../socket/zustand/useConversation";
 import { useSelector } from "react-redux";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 function Conversation({ conversation, lastIdx }) {
-
-  const {selectedConversations, setSelectedConversations} = useConversation();
+  const { selectedConversation, setSelectedConversation } = useConversation();
   const doctor = useSelector((state) => state.doctor.doctor);
-  const isSelected = selectedConversations._id = conversation._id;
-  const handleSelectUser = () =>{
-    setSelectedConversations(conversation);
-  }
+  
+  const isSelected = selectedConversation?._id === conversation._id;
 
-    return (
-      <>
+  useEffect(()=> {
+    setSelectedConversation(conversation)
+  },[])
+
+  const handleSelectUser = (conversation) => {
+    setSelectedConversation(conversation);
+    // Assuming `markAsRead` is part of the SocketContext (re-enable this if needed)
+    // markAsRead(doctor?._id, conversation?._id);
+  };
+  console.log('photo///', conversation.photo)
+ 
+
+  return (
+    <div key={conversation._id}>
       <div
         className={`flex gap-2 items-center hover:bg-sky-500 p-2 py-2 cursor-pointer ${
           isSelected ? "bg-gray-500" : ""
         }`}
-        onClick={handleSelectUser}
+        onClick={() => handleSelectUser(conversation)}
       >
-        {/* <div className={`avatar ${isOnline ? "online" : ""}`}> */}
-          <div className={`w-12 rounded-full`}>
+        <div className="w-12 h-12 rounded-full flex items-center justify-center bg-gray-200">
+          {conversation?.photo ? (
             <img
-              // src={conversation?.photo || "/assets/user.png"}
+              src={conversation.photo}
               alt="user avatar"
+              className="w-12 h-12 rounded-full"
             />
-          </div>
-        {/* </div> */}
+          ) : (
+            <FaUserCircle className="text-gray-500 w-full h-full " />
+          )}
+        </div>
         <div className="flex flex-col flex-1">
           <div className="flex gap-3 justify-between">
             <p className="font-semibold">{conversation?.name}</p>
-            {/* {isOnline ? (
-              <span className="text-green-500 font-bold text-sm">Online</span>
-            ) : (
-              <span className="text-gray-500 font-bold text-sm">Offline</span>
-            )} */}
-            {/* {hasUnreadMessages && (
-              <span className="text-green-500 font-bold text-sm">
-                Messages {unreadCount}
-              </span>
-            )} */}
           </div>
         </div>
       </div>
       {!lastIdx && <div className="divider my-0 py-0 h-1" />}
-    </>
-    );
-  }
-  
-  export default Conversation;
-  
+    </div>
+  );
+}
+
+export default Conversation;

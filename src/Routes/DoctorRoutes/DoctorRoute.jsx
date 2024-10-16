@@ -8,6 +8,7 @@ import Home from '../../pages/Users/Home';
 import Message from '../../components/Profile/Doctor/Message';
 import Chat from '../../components/Doctor/Communication/Chat'
 import DoctorPublicRoute from '../../components/DoctorPublicRoute'
+
 const DoctorRoute = () => {
   return (
     <Routes>

@@ -2,11 +2,31 @@ import React, { useState } from "react";
 import { BsSend, BsEmojiSmile, BsMic, BsStop, BsImage } from "react-icons/bs";
 import EmojiPicker from "emoji-picker-react";
 import { ReactMediaRecorder } from "react-media-recorder";
+import useSendMessage from "../../../../socket/hooks/useSendMessage";
+import { useSocketContext } from "../../../../socket/SocketContext";
 
 function MessageInput() {
+
+    const [message, setMessage] = useState('');
     const [showEmojiPicker, setShowEmojiPicker] = useState(false);
     const [isRecording, setIsRecording] = useState(false);
     const [audioUrl, setAudioUrl] = useState(null);
+    const [imageFile, setImageFile] = useState(null);
+    const {loading, sendMessage} = useSendMessage();
+
+    const handleSubmit = async(e) =>{
+
+        e.preventDefault();
+        console.log('message',message)
+        if(!message && !imageFile) return;
+        if(message) {
+            await sendMessage(message)
+        } else if(imageFile) {
+            await sendMessage(imageFile)
+        }
+        setMessage('');
+        setImageFile(null);
+    }
 
     const handleToggleRecording = (startRecording, stopRecording) => {
         if (isRecording) {
@@ -19,12 +39,14 @@ function MessageInput() {
     };
 
     return (
-        <form className="px-4 my-3">
+        <form className="px-4 my-3" onSubmit={handleSubmit}>
             <div className="w-full relative bg-white border-t">
                 <input
                     type="text"
+                    value={message}
                     className="border text-sm rounded-lg block w-full p-2.5 focus:outline-none focus:ring focus:ring-green-500"
                     placeholder="Send a message"
+                    onChange={(e) => setMessage(e.target.value)}
                 />
                 <button
                     type="button"

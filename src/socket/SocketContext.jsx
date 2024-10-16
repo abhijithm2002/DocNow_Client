@@ -19,17 +19,17 @@ export const SocketContextProvider = ({children}) => {
 
 const userId = User?._id || Doctor?._id;
 
-useEffect(() =>{
-    if(userId) {
-        const newSocket = io(CONSTANTS_COMMON.API_BASE_URL, {query: {userId}});
-        setSocket(newSocket);
+// useEffect(() =>{
+//     if(userId) {
+//         const newSocket = io(CONSTANTS_COMMON.API_BASE_URL, {query: {userId}});
+//         setSocket(newSocket);
 
-        newSocket.on('getOnlineUsers',(users) =>{
-            setOnlineUsers(users)
-        })
+//         newSocket.on('getOnlineUsers',(users) =>{
+//             setOnlineUsers(users)
+//         })
     
-    }
-},[userId])
+//     }
+// },[userId])
 
 
 const sendnewMessage = useCallback((to, from) => {
@@ -41,6 +41,7 @@ const sendnewMessage = useCallback((to, from) => {
 return (
     <SocketContext.Provider
         value={{
+            socket,
             sendnewMessage
         }}
     >
