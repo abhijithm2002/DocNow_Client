@@ -10,26 +10,34 @@ Modal.setAppElement("#root");
 function Message({ message }) {
   const authUser = useSelector((state) => state.doctor.doctor);
   const { selectedConversation } = useConversation();
-
+  console.log('message in message of doctor', message)
   // Check if the message is from the authenticated user
   const fromMe = message.senderId.toString() === authUser?._id.toString();
   const chatClassName = fromMe ? "justify-end" : "justify-start";
   const bubbleColor = fromMe ? "bg-blue-500" : "bg-gray-700";
 
   // Check if selectedConversation and its participants are defined
+
+
   const showThisMessage =
-    selectedConversation &&
-    selectedConversation.participants &&
-    (message.senderId.toString() === selectedConversation.participants[0]?.toString() ||
-     message.senderId.toString() === selectedConversation.participants[1]?.toString()) &&
-    (message.receiverId.toString() === authUser._id.toString() ||
-     message.receiverId.toString() === selectedConversation._id.toString());
+    (message.senderId === selectedConversation._id ||
+      message.senderId === authUser._id) &&
+    (message.recieverId === authUser._id ||
+      message.recieverId === selectedConversation._id);
+
+console.log("selectedConversation:", selectedConversation);
+console.log("message.senderId:", message.senderId);
+console.log("message.receiverId:", message.recieverId);
+
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   if (!showThisMessage) {
-    return null; // Don't render if the message shouldn't be shown
+    console.log('message is not there') // Don't render if the message shouldn't be shown
+  } else {
+    console.log('messaage is there')
   }
+  
 
   const formattedTime = format(new Date(message.createdAt), "p");
   const isVoiceMessage = message.messageType === "voice";

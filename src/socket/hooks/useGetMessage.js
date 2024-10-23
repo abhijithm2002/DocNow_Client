@@ -25,7 +25,6 @@ const useGetMessage = () => {
       setLoading(true);
       try {
         const response = await axios.post(`${CONSTANTS_COMMON.API_BASE_URL}api/message/${selectedConversation._id}/${senderId}`);
-        console.log('response messages2222', response)
         const data = response.data.message || []; 
         setMessages(data);
       } catch (error) {

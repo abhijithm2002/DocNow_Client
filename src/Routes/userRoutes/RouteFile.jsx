@@ -58,6 +58,8 @@ import Appointments from '../../components/Profile/Doctor/Appointments';
 import { AnimatePresence, motion } from 'framer-motion';
 import Chat from '../../components/User/Communication/Chat';
 import Header from '../../components/Header/Header';
+import FavouriteDoctors from '../../pages/Users/FavouriteDoctors';
+import Footer from '../../components/Footer/Footer';
 // Animation variants for the input div
 const divVariants = {
   hidden: {
@@ -247,6 +249,25 @@ const RouteFile = () => {
                 className="w-full h-screen" 
               >
                 <Chat />
+              </motion.div>
+            </>
+          }
+        />
+
+<Route
+          path="/favourite-doctors"
+          element={
+            <>
+              <Header /> 
+              <motion.div
+                initial="hidden"
+                animate="visible"
+                exit="hidden"
+                variants={divVariants}
+                transition={divTransition}
+                className="w-full h-screen" 
+              >
+                <FavouriteDoctors />
               </motion.div>
             </>
           }

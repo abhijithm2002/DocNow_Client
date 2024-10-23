@@ -7,6 +7,7 @@ import CONSTANTS_COMMON from "../../constants/common";
 import toast from "react-hot-toast";
 
 
+
 const useSendMessage = () => {
     const [loading, setLoading] = useState(false);
     
@@ -17,12 +18,14 @@ const useSendMessage = () => {
 
     const sendMessage = async(messageContent) => {
         setLoading(true);
+        console.log('message from usesend message', messageContent)
+            console.log('message from sele message', selectedConversation._id)
         try {
             let senderId = user ? user._id : doctor ? doctor._id : null;
-            console.log('idto send', senderId);
-            console.log('message sended', messageContent)
-            if(!senderId) throw new Error('User Id is not found');
-            const formData = new FormData();
+            console.log('senderid',senderId)
+             if (!senderId) throw new Error("User ID not found");
+             sendnewMessage(selectedConversation?._id, senderId, messageContent);
+          const formData = new FormData();
             if(typeof messageContent == 'string') {
                 formData.append('message', messageContent)
             } else if (messageContent instanceof File) {
@@ -30,7 +33,7 @@ const useSendMessage = () => {
             } else if (messageContent instanceof Blob) {
                 formData.append('voiceMessage', messageContent)
             }
-
+            
             const response = await axios.post(`${CONSTANTS_COMMON.API_BASE_URL}api/message/send/${selectedConversation._id}/${senderId}`,
                 formData,
                 {
@@ -39,7 +42,7 @@ const useSendMessage = () => {
                     }
                 }
             );
-
+            console.log('message resp',response.data)
             const data = response.data.newMessage;
             setMessages([...messages, data])
 

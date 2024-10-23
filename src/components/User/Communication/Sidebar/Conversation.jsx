@@ -1,15 +1,54 @@
+import { useSelector } from "react-redux";
 import useGetConversations from "../../../../socket/hooks/useGetConversations";
 import { useConversation } from "../../../../socket/zustand/useConversation";
-function Conversation({ conversation, lastIdx }) {
+import { useEffect } from "react";
 
-  const {selectedConversations, setSelectedConversations} = useConversation()
-    return (
-      <div className="p-4 border-b">
-        <h4 className="font-semibold">{conversation.name}</h4>
-        <p className="text-sm text-gray-500">{conversation.lastMessage}</p>
+function Conversation({ conversation, lastIdx }) {
+  const { selectedConversation, setSelectedConversation } = useConversation();
+  const User = useSelector((state) => state.auth.user);
+  
+  const isSelected = selectedConversation?._id === conversation._id;
+
+  useEffect(()=> {
+    setSelectedConversation(conversation)
+  },[])
+
+  const handleSelectUser = (conversation) => {
+    setSelectedConversation(conversation);
+    // Assuming `markAsRead` is part of the SocketContext (re-enable this if needed)
+    // markAsRead(doctor?._id, conversation?._id);
+  };
+  console.log('photo///', conversation.photo)
+ 
+
+  return (
+    <div key={conversation._id}>
+      <div
+        className={`flex gap-2 items-center hover:bg-sky-500 p-2 py-2 cursor-pointer ${
+          isSelected ? "bg-gray-500" : ""
+        }`}
+        onClick={() => handleSelectUser(conversation)}
+      >
+        <div className="w-12 h-12 rounded-full flex items-center justify-center bg-gray-200">
+          {conversation?.photo ? (
+            <img
+              src={conversation.photo}
+              alt="user avatar"
+              className="w-12 h-12 rounded-full"
+            />
+          ) : (
+            <FaUserCircle className="text-gray-500 w-full h-full " />
+          )}
+        </div>
+        <div className="flex flex-col flex-1">
+          <div className="flex gap-3 justify-between">
+            <p className="font-semibold">{conversation?.name}</p>
+          </div>
+        </div>
       </div>
-    );
-  }
-  
-  export default Conversation;
-  
+      {!lastIdx && <div className="divider my-0 py-0 h-1" />}
+    </div>
+  );
+}
+
+export default Conversation

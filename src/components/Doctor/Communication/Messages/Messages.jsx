@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import useGetMessage from "../../../../socket/hooks/useGetMessage";
 import MessageSkeletons from "../Skeleton/MessageSkeletons";
 import Message from "./Message";
@@ -7,21 +7,23 @@ import { useConversation } from "../../../../socket/zustand/useConversation";
 
 function Messages() {
   const { selectedConversation } = useConversation();
-  const { messages=[], loading } = useGetMessage(); 
+  const { messages = [], loading } = useGetMessage();
   useListenMessages();
-  const lastMessageRef = useRef();
+  const lastMessageRef = useRef(null);
 
   useEffect(() => {
     setTimeout(() => {
-      lastMessageRef.current?.scrollIntoView({ behavior: "smooth" });
+      if (lastMessageRef.current) {
+        lastMessageRef.current.scrollIntoView({ behavior: "smooth" });
+      }
     }, 100);
   }, [messages]);
 
   return (
-    <div className="px-4 flex-1 overflow-auto">
+    <div className="flex-1 overflow-y-auto px-4">
       {!loading && messages.length > 0 ? (
-        messages.map((message) => (
-          <div key={message._id}>
+        messages.map((message, index) => (
+          <div key={message._id} ref={index === messages.length - 1 ? lastMessageRef : null}>
             <Message message={message} />
           </div>
         ))
@@ -32,7 +34,6 @@ function Messages() {
       )}
     </div>
   );
-  
 }
 
 export default Messages;

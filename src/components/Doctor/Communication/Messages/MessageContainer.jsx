@@ -21,7 +21,7 @@ function MessageContainer() {
       {!selectedConversation ? (
         <NoChatSelected />
       ) : (
-        <div className="flex flex-col h-full">
+        <div className="flex flex-col h-full overflow-hidden">
           <div className="flex items-center justify-between p-4 bg-blue-300 text-white">
             <div className="flex items-center">
               <img
@@ -50,11 +50,11 @@ function MessageContainer() {
               </Link>
             </div>
           </div>
-          <div className="flex-1">
+          <div className="flex-1 overflow-y-auto">
             {/* Messages component */}
             <Messages />
           </div>
-          <div className="w-full">
+          <div className="w-full border-t">
             {/* MessageInput component */}
             <MessageInput />
           </div>

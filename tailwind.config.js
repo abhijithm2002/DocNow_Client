@@ -1,8 +1,10 @@
+import { nextui } from '@nextui-org/react';
 /** @type {import('tailwindcss').Config} */
 export default {
   content: [
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
+    "./node_modules/@nextui-org/**/*.{js,ts,jsx,tsx}" 
   ],
   theme: {
     extend: {
@@ -36,9 +38,10 @@ export default {
       },
       boxShadow: {
         panelShadow: "rgba(17, 12, 46, 0.15) 0px 48px 100px 0px;"
-      }
+      },
+     
     },
   },
-  plugins: [],
+  plugins: [nextui(),],
 };
 

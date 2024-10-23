@@ -105,6 +105,7 @@ import { NavLink, Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { BiMenu } from 'react-icons/bi';
 import logo from '../../assets/logo/logo2.png';
+import { Tooltip } from '@nextui-org/react';
 
 const navLinks = [
   { path: '/', display: 'Home' },
@@ -150,6 +151,7 @@ const Header = () => {
           <div className="flex items-center lg:order-2">
             {isAuthenticated && user ? (
               <div className='flex items-center gap-2'>
+
                 {user.photo && (
                   <figure className='w-[35px] h-[35px] rounded-full'>
                     <img src={user.photo} className='w-full h-full rounded-full' alt="User Avatar" />
@@ -160,7 +162,23 @@ const Header = () => {
                     <span className='text-gray-800 text-[16px] leading-7 font-[600]'>{user.name}</span>
                   </Link>
                 )}
+                <Link to={'/favourite-doctors'}>
+                <Tooltip content="Favourite Doctors" rounded color='primary' offset={7}>
+                  <div className='px-3'>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    className="relative h-8 w-8 fill-red-500 transition-transform duration-300 ease-in-out hover:scale-110"
+                  >
+                    <path d="M16.4,4C14.6,4,13,4.9,12,6.3C11,4.9,9.4,4,7.6,4C4.5,4,2,6.5,2,9.6C2,14,12,22,12,22s10-8,10-12.4C22,6.5,19.5,4,16.4,4z"></path>
+                  </svg>
+                  </div>
+                  
+                </Tooltip>
+                </Link>
+
               </div>
+
             ) : isDoctorAuthenticated && doctor ? (
               <div className='flex items-center gap-2'>
                 {doctor.photo && (

@@ -123,7 +123,7 @@ const DoctorsList = () => {
                 {/* Doctor Cards */}
                 <div className="flex-grow">
                     {filteredDoctors.length > 0 ? (
-                        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-5">
+                        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3  lg:grid-cols-4 gap-5">
                             {currentDoctors.map(doctor => (
                                 <DoctorCard key={doctor._id} doctor={doctor} />
                             ))}

@@ -22,11 +22,23 @@ const Appointments = () => {
         const response = await fetchAppointments(doctorId);
         console.log('fetched appointments', response)
         const fetchedAppointments = response.data.data;
-        const upcomingAppointments = fetchedAppointments.map(appointment => ({
-          ...appointment,
-          status: appointment.status === 'Completed' ? 'Completed' : 'Upcoming'
-        }));
-        setAppointments(upcomingAppointments);
+        const updatedAppointments = fetchedAppointments.map(appointment => {
+          let status;
+          if (appointment.status === 'Completed') {
+            status = 'Completed';
+          } else if (appointment.status === 'Canceled') {
+            status = 'Canceled';
+          } else {
+            status = 'Upcoming';
+          }
+  
+          return {
+            ...appointment,
+            status,
+          };
+        });
+  
+        setAppointments(updatedAppointments);
       } catch (error) {
         console.log('Error fetching appointments', error);
       }
@@ -39,8 +51,10 @@ const Appointments = () => {
 
   const statusStyles = {
     Upcoming: 'text-white font-normal text-xs px-2 bg-blue-400 p-1 rounded-full transition-colors duration-300',
-    Completed: 'text-green-600 bg-green-200 p-1 rounded transition-colors duration-300'
+    Completed: 'text-green-600 bg-green-200 p-1 rounded transition-colors duration-300',
+    Canceled: 'text-white font-normal text-xs px-2 bg-red-400 p-1 rounded-full transition-colors duration-300' 
   };
+  
 
   return (
     <>
