@@ -7,7 +7,7 @@ import { useLocation } from 'react-router-dom'
 const Chat = () => {
   
   return (
-    <div className='flex h-[88vh] bg-gray-200'>
+    <div className='flex h-dvh bg-gray-200'>
         <Sidebar />
         <MessageContainer />
     </div>

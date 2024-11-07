@@ -105,4 +105,9 @@ export const getFavouriteDoctors = async (patientId) => {
 }
 
 
-
+export const fetchDoctorsList = async () => {
+  console.log('fetch doctor list');
+  const response = await Api.get('api/patient/fetchDoctorList'); 
+  console.log('response of doctorlist', response);
+  return response;
+}

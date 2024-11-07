@@ -59,7 +59,9 @@ import { AnimatePresence, motion } from 'framer-motion';
 import Chat from '../../components/User/Communication/Chat';
 import Header from '../../components/Header/Header';
 import FavouriteDoctors from '../../pages/Users/FavouriteDoctors';
+import VideoModal from '../../components/User/VideoModal'
 import Footer from '../../components/Footer/Footer';
+import CallReject from '../../components/User/CallReject';
 // Animation variants for the input div
 const divVariants = {
   hidden: {
@@ -72,7 +74,6 @@ const divVariants = {
   },
 };
 
-// Transition settings
 const divTransition = {
   type: 'tween',
   ease: 'easeOut',
@@ -273,7 +274,45 @@ const RouteFile = () => {
           }
         />
 
+        <Route
+          path="/redirectToCall"
+          element={
+            <>
+              <Header /> 
+              <motion.div
+                initial="hidden"
+                animate="visible"
+                exit="hidden"
+                variants={divVariants}
+                transition={divTransition}
+                className="w-full h-screen" 
+              >
+                <VideoModal />
+              </motion.div>
+            </>
+          }
+        />
+
+      <Route
+          path="/callReject"
+          element={
+            <>
+              <Header /> 
+              <motion.div
+                initial="hidden"
+                animate="visible"
+                exit="hidden"
+                variants={divVariants}
+                transition={divTransition}
+                className="w-full h-screen" 
+              >
+                <CallReject />
+              </motion.div>
+            </>
+          }
+        />
       </Routes>
+
     </AnimatePresence>
   );
 };

@@ -6,12 +6,15 @@ import toast from 'react-hot-toast';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import LoginWithGoogle from '../../utils/LoginWithGoogle';
+import { useDispatch } from 'react-redux';
+import { setAdminCredentials } from '../../ReduxStore/adminSlice';
 
 
 
 function AdminLogin() {
   const navigate = useNavigate();
   const [error, setError] = useState({ email: '', password: '' });
+  const dispatch = useDispatch();
 
   const validationSchema = Yup.object({
     email: Yup.string().email('Invalid email address').required('Email is required'),
@@ -25,10 +28,16 @@ function AdminLogin() {
     },
     validationSchema,
     onSubmit: async (values) => {
-      setError({ email: '', password: '' }); // Reset errors before submission
+      setError({ email: '', password: '' }); 
       try {
         const response = await adminLogin(values);
+        console.log('admin login',response)
         if (response.status === 200) {
+          const { data } = response;
+          console.log('data',data)
+          console.log('user',data)
+          console.log('accesstoken',data.tokens.accessToken)
+          dispatch(setAdminCredentials({ user: data, accessToken: data.tokens.accessToken }));
           toast.success('Login successful!');
           navigate('/admin/dashboard');
         } else {
@@ -40,7 +49,12 @@ function AdminLogin() {
       } catch (error) {
         if (error.response && error.response.data) {
           const field = error.response.data.field;
-          setError(prevError => ({ ...prevError, [field]: error.response.data.message }));
+          setError((prevError) => ({ ...prevError, [field]: error.response.data.message }));
+          if (error.response.status === 403) {
+            toast.error('User is blocked');
+          } else {
+            toast.error('Login failed. Please check your credentials.');
+          }
         } else {
           toast.error('Login failed. Please check your credentials.');
         }

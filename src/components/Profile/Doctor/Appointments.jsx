@@ -5,9 +5,13 @@ import PaginationComponent from '../../Pagination/PaginationComponent';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { CalendarX } from 'lucide-react';
+import PrescriptionModal from '../Doctor/PrescriptionModal';
 
 const Appointments = () => {
   const [appointments, setAppointments] = useState([]);
+  const [isPrescriptionModalOpen, setPrescriptionModalOpen] = useState(false);
+  const [selectedAppointment, setSelectedAppointment] = useState(null);
+
   const doctorId = useSelector((state) => state.doctor.doctor?._id);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 7;
@@ -20,9 +24,8 @@ const Appointments = () => {
     const getAppointments = async () => {
       try {
         const response = await fetchAppointments(doctorId);
-        console.log('fetched appointments', response)
         const fetchedAppointments = response.data.data;
-        const updatedAppointments = fetchedAppointments.map(appointment => {
+        const updatedAppointments = fetchedAppointments.map((appointment) => {
           let status;
           if (appointment.status === 'Completed') {
             status = 'Completed';
@@ -31,13 +34,11 @@ const Appointments = () => {
           } else {
             status = 'Upcoming';
           }
-  
           return {
             ...appointment,
             status,
           };
         });
-  
         setAppointments(updatedAppointments);
       } catch (error) {
         console.log('Error fetching appointments', error);
@@ -51,10 +52,14 @@ const Appointments = () => {
 
   const statusStyles = {
     Upcoming: 'text-white font-normal text-xs px-2 bg-blue-400 p-1 rounded-full transition-colors duration-300',
-    Completed: 'text-green-600 bg-green-200 p-1 rounded transition-colors duration-300',
-    Canceled: 'text-white font-normal text-xs px-2 bg-red-400 p-1 rounded-full transition-colors duration-300' 
+    Completed: 'text-white font-normal text-xs px-2 bg-green-400 p-1 rounded-full transition-colors duration-300',
+    Canceled: 'text-white font-normal text-xs px-2 bg-red-400 p-1 rounded-full transition-colors duration-300',
   };
-  
+
+  const openPrescriptionModal = (appointment) => {
+    setSelectedAppointment(appointment);
+    setPrescriptionModalOpen(true);
+  };
 
   return (
     <>
@@ -87,15 +92,24 @@ const Appointments = () => {
                   </td>
                   <td className="px-2 py-2 md:px-4 md:py-4 font-semibold">{appointment.fee}</td>
                   <td className="px-2 py-2 md:px-4 md:py-4 font-semibold">
-                    <Link
-                      to={{
-                        pathname: "/doctor/chat",
-                      }}
-                      state={{data :appointment}}
-                      className="text-white bg-green-400 p-1 rounded transition-colors duration-300 "
-                    >
-                      Intake
-                    </Link>
+                    {appointment.status === 'Completed' ? (
+                      <button
+                        onClick={() => openPrescriptionModal(appointment)}
+                        className="text-white bg-blue-400 p-1 rounded transition-colors duration-300"
+                      >
+                        Prescribe
+                      </button>
+                    ) : (
+                      <Link
+                        to={{
+                          pathname: "/doctor/chat",
+                        }}
+                        state={{ data: appointment }}
+                        className="text-white bg-green-400 p-1 rounded transition-colors duration-300"
+                      >
+                        Intake
+                      </Link>
+                    )}
                   </td>
                 </tr>
               ))}
@@ -123,6 +137,16 @@ const Appointments = () => {
             <p className="text-gray-500 font-sans">It looks like your schedule is clear for now.</p>
           </motion.div>
         </div>
+      )}
+
+      {/* Prescription Modal */}
+      {isPrescriptionModalOpen && (
+        <PrescriptionModal
+        isOpen={isPrescriptionModalOpen}
+        onClose={() => setPrescriptionModalOpen(false)}
+        appointment={selectedAppointment}
+      />
+      
       )}
     </>
   );

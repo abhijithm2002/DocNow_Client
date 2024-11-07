@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { BsSend, BsEmojiSmile, BsMic, BsStop, BsImage } from "react-icons/bs";
 import EmojiPicker from "emoji-picker-react";
 import { ReactMediaRecorder } from "react-media-recorder";
 import useSendMessage from "../../../../socket/hooks/useSendMessage";
 import { useSocketContext } from "../../../../socket/SocketContext";
-
+import {useConversation} from '../../../../socket/zustand/useConversation'
 function MessageInput() {
 
     const [message, setMessage] = useState('');
@@ -13,6 +13,25 @@ function MessageInput() {
     const [audioUrl, setAudioUrl] = useState(null);
     const [imageFile, setImageFile] = useState(null);
     const {loading, sendMessage} = useSendMessage();
+    const {startTyping, stopTyping} = useSocketContext()
+    const {selectedConversation} = useConversation();
+
+    useEffect(() => {
+        if (!message) {
+            return stopTyping({ conversationId: selectedConversation._id });
+        }
+
+        startTyping({ conversationId: selectedConversation._id });
+        
+        
+        const typingTimeout = setTimeout(() => {
+            stopTyping({ conversationId: selectedConversation._id });
+        }, 1500);
+
+        return () => clearTimeout(typingTimeout); 
+    }, [message, startTyping, stopTyping, selectedConversation._id]);
+    
+
 
     const handleSubmit = async(e) =>{
 

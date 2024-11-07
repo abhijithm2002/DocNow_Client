@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { fetchDoctorsList } from '../../services/Admin/adminService';
+import { fetchDoctorsList } from '../../services/User/userService'
 import DoctorCard from './DoctorCard';
 import FilterSidebar from './FilterSidebar';
 import PaginationComponent from '../Pagination/PaginationComponent';

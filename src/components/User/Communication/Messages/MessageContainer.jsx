@@ -7,10 +7,15 @@ import Messages from "./Messages";
 import MessageInput from "./MessageInput";
 import { useSocketContext } from "../../../../socket/SocketContext";
 import { useConversation } from "../../../../socket/zustand/useConversation";
+import TypingAnimation from "../../../Animation/TypingAnimation";
 
 function MessageContainer() {
   const navigate = useNavigate();
   const { selectedConversation, setSelectedConversation } = useConversation(); 
+  const {onlineUsers, typingUsers, startTyping, stopTyping} = useSocketContext()
+
+
+  const isOnline = onlineUsers.includes(selectedConversation?._id)
 
   useEffect(() => {
     return () => setSelectedConversation(null); 
@@ -31,7 +36,11 @@ function MessageContainer() {
               />
               <div className="flex flex-col">
                 <h3 className="text-lg font-semibold">{selectedConversation?.name}</h3>
-                <span className="text-sm text-white-300">Online/Typing...</span>
+                <span className="text-sm text-white-300">
+                  {typingUsers.some(
+                    (user) => user?.userId == selectedConversation?._id
+                  ) ? <TypingAnimation /> : isOnline ? "Online": ""}
+                </span>
               </div>
             </div>
           </div>
@@ -55,7 +64,8 @@ export default MessageContainer;
 
 
 const NoChatSelected = () => {
-  const authUser = useSelector((state) => state.doctor.doctorData);
+  const authUser = useSelector((state) => state.auth.user);
+  console.log('userData', authUser)
   return (
     <div className="flex items-center justify-center w-full h-full bg-gray-700">
       <div className="px-4 text-center sm:text-xl text-green-200 font-semibold flex flex-col items-center gap-2">

@@ -1,50 +1,11 @@
-// import {createContext, useState, useEffect, useContext, useCallback } from "react";
-// import io from 'socket.io-client'
-// import { useSelector } from "react-redux";
-// import CONSTANTS_COMMON from "../constants/common";
-
-// const SocketContext = createContext();
-
-// export const useSocketContext = () =>{
-//     return useContext(SocketContext)
-// }
-// export const SocketContextProvider = ({children}) => {
-//     const User = useSelector((state) => state.auth.user);
-//     const Doctor = useSelector((state) => state.doctor.doctor);
-//     const [socket, setSocket] = useState(null);
-//     const [onlineUsers, setOnlineUsers]= useState([]);
-//     const [typingUsers, setTypingUsers] = useState([])
-//     const [unreadMessages, setUnreadMessages] = useState({})
-
-
-// const userId = User?._id || Doctor?._id;
-
-
-
-// const sendnewMessage = useCallback((to, from) => {
-//     if(socket) {
-//         socket.emit('sendnewMessage', {to, from})
-//     }
-// })
-
-// return (
-//     <SocketContext.Provider
-//         value={{
-//             socket,
-//             sendnewMessage
-//         }}
-//     >
-//         {children}
-//     </SocketContext.Provider>
-// )
-
-// }
-
-
 import { createContext, useState, useEffect, useContext, useCallback } from "react";
+import toast from "react-hot-toast";
+import { BiPhoneCall, BiPhoneOff } from "react-icons/bi";
 import { io } from "socket.io-client";
 import { useSelector } from "react-redux";
 import CONSTANTS_COMMON from "../constants/common";
+import CallReject from "../components/User/CallReject";
+
 
 // Create the context
 const SocketContext = createContext();
@@ -70,7 +31,7 @@ export const SocketContextProvider = ({ children }) => {
         if (userId) {
             const newSocket = io(CONSTANTS_COMMON.API_BASE_URL, {
                 withCredentials: true,
-                query: { userId }, 
+                query: { userId },
             });
 
             setSocket(newSocket);
@@ -82,54 +43,90 @@ export const SocketContextProvider = ({ children }) => {
         }
     }, [userId]);
 
-    // Handle incoming events like online users, typing notifications, and unread messages
     useEffect(() => {
         if (socket) {
-            // Notify server that a new user has connected
             socket.emit("addUser", userId);
 
-            // Listening for online users update
+            
             socket.on("getOnlineUsers", (users) => {
                 setOnlineUsers(users);
             });
 
-            // Listening for typing users
-            socket.on("userTyping", (typingUser) => {
+            
+            socket.on("typing", (typingUser) => {
+                console.log('Received typing event', typingUser);
                 setTypingUsers((prevTypingUsers) => {
-                    // Check if user is already in the typing list to avoid duplicates
-                    if (!prevTypingUsers.some((user) => user._id === typingUser._id)) {
+                    // Add the user to the typing list if they are not already there
+                    if (!prevTypingUsers.some((user) => user.userId === typingUser.userId)) {
                         return [...prevTypingUsers, typingUser];
                     }
                     return prevTypingUsers;
                 });
             });
 
-            // Listening for stop typing event
-            socket.on("userStopTyping", (stoppedTypingUser) => {
-                setTypingUsers((prevTypingUsers) => 
-                    prevTypingUsers.filter((user) => user._id !== stoppedTypingUser._id)
+            
+            socket.on("stopTyping", (stoppedTypingUser) => {
+                console.log('Received stop typing event', stoppedTypingUser);
+                setTypingUsers((prevTypingUsers) =>
+                    prevTypingUsers.filter((user) => user.userId !== stoppedTypingUser.userId)
                 );
             });
 
-            // Listening for unread messages
+            
             socket.on("getUnreadMessages", (messages) => {
                 setUnreadMessages(messages);
             });
 
-            // Cleanup listeners on unmount or socket change
+            socket.on("incomingCall", ({ Caller, personalLink }) => {
+                console.log('entered incoming call and ', Caller, personalLink)
+                console.log(Caller.name);
+                
+                toast(
+                  (t) => (
+                    <div className="p-4 bg-white rounded-lg shadow-md">
+                      <BiPhoneCall className="h-8 w-8 text-green-500" />
+                      <p className="mb-2 text-lg font-semibold text-gray-800">
+                        Incoming Call from {Caller.name}
+                      </p>
+                      <div className="flex justify-between">
+                        <button className="px-4 py-2 mr-2 font-semibold text-white bg-blue-500 rounded hover:bg-blue-700">
+                          <a href={personalLink}>Join Now</a>
+                        </button>
+                        <CallReject t={t.id} Caller={Caller} />
+                      </div>
+                    </div>
+                  ),
+                  { duration: 20000 }
+                );
+              });
+
+              socket.on("callRejected", () => {
+                toast(
+                    (t) => (
+                        <div className="p-4 bg-red-50 rounded-lg shadow-md flex items-center space-x-3 max-w-sm mx-auto">
+                            <BiPhoneOff className="h-6 w-6 text-red-500" />
+                            <p className="text-md font-semibold text-gray-700">
+                                Call Declined
+                            </p>
+                        </div>
+                    ),
+                    { duration: 4000 }
+                );
+            });
+           
             return () => {
                 socket.off("getOnlineUsers");
-                socket.off("userTyping");
-                socket.off("userStopTyping");
+                socket.off("typing");
+                socket.off("stopTyping");
                 socket.off("getUnreadMessages");
             };
         }
     }, [socket, userId]);
 
-    // Function to send a new message, using useCallback to memoize
+    
     const sendnewMessage = useCallback(
         (to, from, message) => {
-        
+
             if (socket) {
                 socket.emit("sendnewMessage", { to, from, message });
             }
@@ -137,7 +134,7 @@ export const SocketContextProvider = ({ children }) => {
         [socket]
     );
 
-    // Function to mark a message as read
+    
     const markAsRead = useCallback(
         (to, from) => {
             if (socket) {
@@ -152,39 +149,50 @@ export const SocketContextProvider = ({ children }) => {
         [socket]
     );
 
-    // Function to start typing
-    const startTyping = useCallback(() => {
+    
+    const startTyping = useCallback(({ conversationId }) => {
+        console.log("Emitted start typing");
         if (socket) {
-            socket.emit("typing");
+            socket.emit("typing", {
+                userId,
+                conversationId
+            });
         }
-    }, [socket]);
+    }, [socket, userId]);
 
-    // Function to stop typing
-    const stopTyping = useCallback(() => {
+
+    const stopTyping = useCallback(({ conversationId }) => {
+        console.log("Emitted stop typing");
         if (socket) {
-            socket.emit("stopTyping");
+            socket.emit("stopTyping", {
+                userId,
+                conversationId
+            });
         }
-    }, [socket]);
+    }, [socket, userId]);
 
-    // Function to initiate a video call
+
+
     const startVideoCall = useCallback(
-        (userId, personalLink) => {
+        (Caller, userId, personalLink) => {
             if (socket) {
-                socket.emit("callingUser", { userId, personalLink });
+                socket.emit("callingUser", {Caller, userId, personalLink });
             }
         },
         [socket]
     );
 
-    // Function to handle call rejection
-    const rejectCall = useCallback(
-        (caller) => {
-            if (socket) {
-                socket.emit("onRejected", { caller });
-            }
+
+    const onCallRejected = useCallback(
+        (Caller) => {
+          if (socket) {
+            socket.emit("onRejected", { Caller });
+          }
         },
         [socket]
-    );
+      );
+
+
 
     return (
         <SocketContext.Provider
@@ -198,7 +206,7 @@ export const SocketContextProvider = ({ children }) => {
                 startTyping,
                 stopTyping,
                 startVideoCall,
-                rejectCall,
+                onCallRejected,
             }}
         >
             {children}

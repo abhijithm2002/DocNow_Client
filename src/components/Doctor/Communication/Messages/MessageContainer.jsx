@@ -7,17 +7,54 @@ import Messages from "./Messages";
 import MessageInput from "./MessageInput";
 import { useSocketContext } from "../../../../socket/SocketContext";
 import { useConversation } from "../../../../socket/zustand/useConversation";
+import TypingAnimation from "../../../Animation/TypingAnimation";
+import { updateBooking } from "../../../../services/Doctor/doctorService";
+import toast, {Toaster} from 'react-hot-toast'
+import Swal from "sweetalert2";
 
-function MessageContainer() {
+function MessageContainer({bookingId}) {
+  console.log('bookingidin message container', bookingId);
+  
   const navigate = useNavigate();
-  const { selectedConversation, setSelectedConversation } = useConversation(); // Corrected destructuring
+  const { selectedConversation, setSelectedConversation } = useConversation(); 
+  const {onlineUsers, typingUsers, startTyping, stopTyping} = useSocketContext();
+  console.log('selected conversation id mescont', selectedConversation?._id)
+
+  const handleConsultationCompleted = async () => {
+    try {
+      const confirmed = await Swal.fire({
+        title: "Are you sure?",
+        text: "Once completed, this action cannot be undone!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, mark it as completed!",
+      });
+
+      if (confirmed.isConfirmed) {
+        const response = await updateBooking(bookingId._id)
+        if (response.status === 200) {
+          toast.success("Consultation marked as completed successfully");
+          navigate("/doctor/profile?tab=appointments");
+        } else {
+          toast.error("Failed to mark consultation as completed");
+        }
+      }
+    } catch (error) {
+      console.error("Error marking consultation as completed:", error);
+      toast.error("Failed to mark consultation as completed");
+    }
+  };
 
   useEffect(() => {
-    return () => setSelectedConversation(null); // Clear selected conversation on component unmount
+    return () => setSelectedConversation(null); 
   }, [setSelectedConversation]);
+  const isOnline = onlineUsers.includes(selectedConversation?._id);
 
   return (
     <div className="flex-1 flex flex-col">
+      <Toaster position="top-center"/>
       {!selectedConversation ? (
         <NoChatSelected />
       ) : (
@@ -31,18 +68,25 @@ function MessageContainer() {
               />
               <div className="flex flex-col">
                 <h3 className="text-lg font-semibold">{selectedConversation?.name}</h3>
-                <span className="text-sm text-white-300">Online/Typing...</span>
+                <span className="text-sm text-white-300">
+                  {
+                    typingUsers.some(
+                      (user) => user?.userId === selectedConversation._id
+                    ) ? <TypingAnimation /> : isOnline ? "Online" : "Offline"
+                  }
+                </span>
               </div>
             </div>
             <div className="flex items-center gap-2">
               <div>
                 <p className="text-sm text-gray-300">Consulting over?</p>
-                <button className="px-4 py-2 bg-green-500 text-white rounded-lg shadow-md hover:bg-green-600 transition duration-200 ease-in-out transform hover:scale-105">
+                <button onClick={handleConsultationCompleted} className="px-4 py-2 bg-green-500 text-white rounded-lg shadow-md hover:bg-green-600 transition duration-200 ease-in-out transform hover:scale-105">
                   Completed
                 </button>
               </div>
               <Link
-                to={"/doctor/videoCall"}
+                to={"/doctor/video-call"}
+                state={{data: selectedConversation?._id}}
                 className="px-4 py-2 bg-blue-500 mt-5 text-white rounded-lg shadow-md hover:bg-blue-600 transition duration-200 ease-in-out transform hover:scale-105 flex items-center gap-1"
               >
                 <FaVideo className="text-white" />

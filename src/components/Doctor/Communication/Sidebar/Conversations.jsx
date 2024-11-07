@@ -8,11 +8,12 @@ function Conversations() {
   console.log("selectedConversation111", selectedConversation)
   console.log('conversations@@@@@@@', conversations )
   const reorderedConversations = selectedConversation
-    ? [
-      selectedConversation,
-      ...conversations.filter((c) => c._id !== selectedConversation._id),
-    ]
-    : conversations;
+  ? [
+    selectedConversation,
+    ...conversations.filter((c) => c._id !== selectedConversation._id),
+  ]
+  : conversations;
+
 
     console.log('recordedconversation', reorderedConversations)
   return (

@@ -75,3 +75,18 @@ export const fetchWalletHistory = async(doctorId) => {
   return response;
 }
 
+
+export const updateBooking = async(bookingId) =>{
+  console.log('update booking', bookingId)
+  const response = await DoctorApi.patch(`api/doctor/updateBooking`,{bookingId})
+  return response
+}
+
+export const postPrescription = async({id,prescriptions}) => {
+  console.log('id ', id)
+  console.log('formdata ', prescriptions)
+  const response = await DoctorApi.post(`api/doctor/postPrescription`,{id, prescriptions} )
+  console.log('response from sub', response)
+  return response;
+}
+

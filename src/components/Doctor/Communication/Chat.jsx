@@ -10,10 +10,12 @@ const Chat = () => {
   const { setSelectedConversation } = useConversation();
   console.log('patientid',location.state?.data.patientId)
   useEffect(() => {
-    if(location.state?.data) {
-      setSelectedConversation(location.state?.data.patientId)
+    if (location.state?.data?.patientId) {
+      setSelectedConversation(location.state.data.patientId);
     }
-  },[location.state, setSelectedConversation])
+  }, [location.state, setSelectedConversation]);
+  
+  
   return (
     <div className='flex h-[88vh] bg-gray-200'>
         <Sidebar />

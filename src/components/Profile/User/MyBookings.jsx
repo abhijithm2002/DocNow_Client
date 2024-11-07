@@ -3,12 +3,16 @@ import { useSelector } from "react-redux";
 import Swal from "sweetalert2";
 import { fetchMyBookings, cancelBooking } from "../../../services/User/userService";
 import PaginationComponent from "../../Pagination/PaginationComponent";
+import PrescriptionModal from "./PrescriptionModal";
 
 const MyBookings = () => {
   const patientId = useSelector((state) => state.auth.user._id);
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [isPrescriptionModalOpen, setPrescriptionModalOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
+  const [selectedBooking, setSelectedBooking] = useState(null);
+
   const itemsPerPage = 7;
 
   const IndexOfLastBooking = currentPage * itemsPerPage;
@@ -59,6 +63,16 @@ const MyBookings = () => {
     }
   };
 
+
+  const handleOpenPrescriptionModal = (booking) => {
+    setSelectedBooking(booking);
+    setPrescriptionModalOpen(true);
+  };
+
+  const handleClosePrescriptionModal = () => {
+    setPrescriptionModalOpen(false);
+  };
+
   const statusStyles = {
     Pending: "text-white bg-yellow-500 p-1 rounded transition-colors duration-300",
     Confirmed: "text-white bg-blue-500 p-1 rounded transition-colors duration-300",
@@ -99,6 +113,13 @@ const MyBookings = () => {
                     <td className="px-4 py-2 md:px-6 md:py-4 font-semibold">
                       {booking.status === "Canceled" ? (
                         <span className={statusStyles[booking.status]}>{booking.status}</span>
+                      ) : booking.status === "Completed" ? (
+                        <button
+                          className="text-white bg-green-500 p-1 rounded transition-colors duration-300 hover:bg-green-700"
+                          onClick={()=>handleOpenPrescriptionModal(booking)} // Replace with your action
+                        >
+                          Prescription
+                        </button>
                       ) : (
                         <button
                           className="text-white bg-red-500 p-1 rounded transition-colors duration-300 hover:bg-red-700"
@@ -148,9 +169,16 @@ const MyBookings = () => {
                   <span className={`text-xs font-bold py-1 px-2 rounded ${statusStyles[booking.status]}`}>
                     {booking.status}
                   </span>
-                  {booking.status !== "Canceled" && (
+                  {booking.status === "Completed" ? (
                     <button
-                      className="text-white bg-red-500 py-2 px-4 rounded transition-colors duration-300 hover:bg-red-700 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50 text-xs"
+                      className="text-white bg-green-500 py-2 px-4 rounded transition-colors duration-300 hover:bg-green-700 hover:shadow-md text-xs"
+                      onClick={()=>handleOpenPrescriptionModal(booking)} // Replace with your action
+                    >
+                      Prescription
+                    </button>
+                  ) : booking.status !== "Canceled" && (
+                    <button
+                      className="text-white bg-red-500 py-2 px-4 rounded transition-colors duration-300 hover:bg-red-700 hover:shadow-md text-xs"
                       onClick={() => handleCancelBooking(booking._id)}
                     >
                       Cancel
@@ -163,7 +191,7 @@ const MyBookings = () => {
             <p className="text-center text-gray-500">No bookings found.</p>
           )}
         </div>
-
+        <PrescriptionModal isOpen={isPrescriptionModalOpen} onClose={handleClosePrescriptionModal}  booking={selectedBooking} />
         <PaginationComponent
           currentPage={currentPage}
           totalPages={totalPages}

@@ -14,14 +14,20 @@ function Conversation({ conversation, lastIdx }) {
     setSelectedConversation(conversation)
   },[])
 
-  const handleSelectUser = (conversation) => {
-    setSelectedConversation(conversation);
-    // Assuming `markAsRead` is part of the SocketContext (re-enable this if needed)
-    // markAsRead(doctor?._id, conversation?._id);
-  };
-  console.log('photo///', conversation.photo)
+  // const handleSelectUser = (conversation) => {
+  //   setSelectedConversation(conversation);
+  //   // Assuming `markAsRead` is part of the SocketContext (re-enable this if needed)
+  //   // markAsRead(doctor?._id, conversation?._id);
+  // };
+  // console.log('photo///', conversation.photo)
  
-
+  const handleSelectUser = (conversation) => {
+    if (selectedConversation?._id !== conversation._id) {
+      setSelectedConversation(conversation);
+    }
+  };
+  
+  
   return (
     <div key={conversation._id}>
       <div

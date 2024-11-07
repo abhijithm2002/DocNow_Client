@@ -8,6 +8,9 @@ import Home from '../../pages/Users/Home';
 import Message from '../../components/Profile/Doctor/Message';
 import Chat from '../../components/Doctor/Communication/Chat'
 import DoctorPublicRoute from '../../components/DoctorPublicRoute'
+import Header from '../../components/Header/Header';
+import VideoModal from '../../components/Doctor/VideoModal';
+import Appointments from '../../components/Profile/Doctor/Appointments';
 
 const DoctorRoute = () => {
   return (
@@ -22,9 +25,11 @@ const DoctorRoute = () => {
       <Route element={<DoctorPrivateRoute />}>
       <Route path='/profile' element={<DoctorProfile />} />
       <Route path='/message' element={<Message />} />
-      <Route path='/chat' element={<Chat />} />
+      <Route path='/video-call' element={<VideoModal />} />
+      <Route path='/appointments' element={<Appointments />} />
       
       </Route>
+      <Route path='/chat' element={ <><Header /> <Chat /></>} />
 
     </Routes>
   );

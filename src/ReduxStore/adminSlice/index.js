@@ -5,7 +5,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
     admin: JSON.parse(localStorage.getItem('adminData')) || null,
     accessToken: localStorage.getItem('adminAccessToken') || null,
-    isAuthenticated: !!localStorage.getItem('adminAccessToken')
+    isAdminAuthenticated: !!localStorage.getItem('adminAccessToken') && !!localStorage.getItem('adminData')
 }
 
 const adminSlice = createSlice({
@@ -17,16 +17,18 @@ const adminSlice = createSlice({
             const { accessToken, user } = action.payload
             state.accessToken = accessToken
             state.admin = user
-            state.isAuthenticated = true
+            state.isAdminAuthenticated = true
             if (accessToken) {
                 localStorage.setItem('adminAccessToken', accessToken)
+                localStorage.setItem('adminData', JSON.stringify(user));
             }
         },
         adminLogout: (state) => {
-            state.isAuthenticated = false;
+            state.isAdminAuthenticated = false;
             state.accessToken = null;
             state.admin = null
             localStorage.removeItem('adminAccessToken')
+            localStorage.removeItem('adminData')
         },
     }
 })
