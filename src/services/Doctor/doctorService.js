@@ -90,3 +90,8 @@ export const postPrescription = async({id,prescriptions}) => {
   return response;
 }
 
+export const drAppointments = async(date, doctorId) => {
+  const response = await DoctorApi.get(`api/doctor/drAppointments`, {params:{date, doctorId}})
+  return response;
+}
+

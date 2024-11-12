@@ -75,3 +75,9 @@ export const Bookings = async() =>{
     const response = await AdminApi.get(`/api/admin/bookings`)
     return response;
 }
+
+
+export const bookingList = async(userData) =>{
+    const response = await AdminApi.get(`/api/admin/bookingList`,{params: userData})
+    return response;
+}

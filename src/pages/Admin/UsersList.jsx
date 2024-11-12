@@ -3,6 +3,7 @@ import { fetchUserList, BlockAndUnblockUser } from '../../services/Admin/adminSe
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import { FaUserCircle } from 'react-icons/fa';
+import AdminHeader from '../../components/Admin/AdminHeader';
 
 const MySwal = withReactContent(Swal);
 
@@ -78,7 +79,11 @@ const UsersList = () => {
     const totalPages = Math.ceil(filteredUsers.length / itemsPerPage);
 
     return (
-        <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
+        <>
+        <div>
+            <AdminHeader />
+        </div>
+        <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-16">
             <div className="flex items-center justify-between flex-column md:flex-row flex-wrap space-y-4 md:space-y-0 py-4 bg-gray-900 dark:bg-primaryColor-900 px-5">
                 <label htmlFor="table-search" className="sr-only">Search</label>
                 <div className="relative">
@@ -190,6 +195,8 @@ const UsersList = () => {
                 </nav>
             )}
         </div>
+        </>
+
     );
 };
 

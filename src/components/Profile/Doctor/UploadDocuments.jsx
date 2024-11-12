@@ -4,6 +4,8 @@ import toast, { Toaster } from 'react-hot-toast';
 import uploadImageToCloudinary from '../../../utils/uploadCloudinary';
 import { documentsUpload, getUploadedDocuments } from '../../../services/Doctor/doctorService';
 import {AiOutlineCheckCircle, AiOutlineExclamationCircle} from 'react-icons/ai';
+import { Button } from '@nextui-org/react';
+import { IoDocuments } from "react-icons/io5";
 
 export default function UploadDocuments() {
   const [isOpen, setIsOpen] = useState(false);
@@ -109,12 +111,19 @@ export default function UploadDocuments() {
 
   return (
     <>
-      <button
+     <p className="mb-4 text-xl font-semibold text-gray-700 dark:text-gray-300 ">
+                    Click here to upload Documents
+                </p>
+      <Button
         onClick={() => setIsOpen(true)}
-        className="px-4 py-2 text-sm font-medium text-primary-foreground border border-input rounded-lg hover:bg-muted focus:outline-none focus:ring-2 focus:ring-ring"
+       size='lg'
+       variant='shadow'
+       color='danger'
+       className='text-white'
+       endContent={<IoDocuments />}
       >
         Upload Documents
-      </button>
+      </Button>
       <Toaster position="top-center" />
       {isOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">

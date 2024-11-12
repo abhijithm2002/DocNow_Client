@@ -4,14 +4,20 @@ import Swal from "sweetalert2";
 import { fetchMyBookings, cancelBooking } from "../../../services/User/userService";
 import PaginationComponent from "../../Pagination/PaginationComponent";
 import PrescriptionModal from "./PrescriptionModal";
+import RatingModal from "./RatingModal";
+import { Button } from '@nextui-org/react'
+import { useNavigate } from "react-router-dom";
 
 const MyBookings = () => {
   const patientId = useSelector((state) => state.auth.user._id);
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isPrescriptionModalOpen, setPrescriptionModalOpen] = useState(false);
-  const [currentPage, setCurrentPage] = useState(1);
   const [selectedBooking, setSelectedBooking] = useState(null);
+  const [selectedBookingForRating, setSelectedBookingForRating] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const navigate = useNavigate();
 
   const itemsPerPage = 7;
 
@@ -63,7 +69,6 @@ const MyBookings = () => {
     }
   };
 
-
   const handleOpenPrescriptionModal = (booking) => {
     setSelectedBooking(booking);
     setPrescriptionModalOpen(true);
@@ -72,6 +77,19 @@ const MyBookings = () => {
   const handleClosePrescriptionModal = () => {
     setPrescriptionModalOpen(false);
   };
+
+  const handleOpenRatingModal = (booking) => {
+    setSelectedBookingForRating(booking);
+  };
+
+  const handleCloseRatingModal = () => {
+    setSelectedBookingForRating(null);
+  };
+
+  const handleViewClick = (booking) => {
+    navigate(`/booking-details` , {state: booking});
+  };
+  
 
   const statusStyles = {
     Pending: "text-white bg-yellow-500 p-1 rounded transition-colors duration-300",
@@ -94,6 +112,8 @@ const MyBookings = () => {
                 <th scope="col" className="px-4 py-3 md:px-6 md:py-3">Date</th>
                 <th scope="col" className="px-4 py-3 md:px-6 md:py-3">Shift</th>
                 <th scope="col" className="px-4 py-3 md:px-6 md:py-3">Status / Actions</th>
+                <th scope="col" className="px-4 py-3 md:px-6 md:py-3">Rating</th>
+                <th scope="col" className="px-4 py-3 md:px-6 md:py-3">Details</th>
               </tr>
             </thead>
             <tbody>
@@ -116,7 +136,7 @@ const MyBookings = () => {
                       ) : booking.status === "Completed" ? (
                         <button
                           className="text-white bg-green-500 p-1 rounded transition-colors duration-300 hover:bg-green-700"
-                          onClick={()=>handleOpenPrescriptionModal(booking)} // Replace with your action
+                          onClick={() => handleOpenPrescriptionModal(booking)}
                         >
                           Prescription
                         </button>
@@ -128,6 +148,24 @@ const MyBookings = () => {
                           Cancel
                         </button>
                       )}
+                    </td>
+                    <td className="px-4 py-2 md:px-6 md:py-4 font-semibold">
+                      {booking.status === "Completed" && (
+                        <Button color='primary' variant='bordered' size="sm" onClick={() => handleOpenRatingModal(booking)}>
+                          Review
+                        </Button>
+                      )}
+                    </td>
+                    <td className="px-4 py-2 md:px-6 md:py-4 font-semibold">
+                      <Button
+                        color="warning"
+                        size="sm"
+                        variant="bordered"
+                        onClick={() => handleViewClick(booking)}
+                      >
+                        View
+                      </Button>
+
                     </td>
                   </tr>
                 ))
@@ -143,7 +181,7 @@ const MyBookings = () => {
         </div>
 
         {/* Mobile View */}
-        <div className="block lg:hidden">
+        <div className="block lg:hidden space-y-4">
           {currentBookings.length > 0 ? (
             currentBookings.map((booking) => (
               <div
@@ -165,33 +203,71 @@ const MyBookings = () => {
                 <p className="text-sm text-gray-600 mb-4">
                   <strong>Shift:</strong> {booking.shift}
                 </p>
-                <div className="flex justify-between items-center">
+                <div className="flex justify-between items-center space-x-4">
                   <span className={`text-xs font-bold py-1 px-2 rounded ${statusStyles[booking.status]}`}>
                     {booking.status}
                   </span>
                   {booking.status === "Completed" ? (
-                    <button
-                      className="text-white bg-green-500 py-2 px-4 rounded transition-colors duration-300 hover:bg-green-700 hover:shadow-md text-xs"
-                      onClick={()=>handleOpenPrescriptionModal(booking)} // Replace with your action
+                    <Button
+                      color="success"
+                      variant='bordered'
+                      size="sm"
+                      onClick={() => handleOpenPrescriptionModal(booking)}
                     >
                       Prescription
-                    </button>
+                    </Button>
                   ) : booking.status !== "Canceled" && (
-                    <button
-                      className="text-white bg-red-500 py-2 px-4 rounded transition-colors duration-300 hover:bg-red-700 hover:shadow-md text-xs"
+                    <Button
+                      color="danger"
+                      variant="bordered"
+                      size="sm"
                       onClick={() => handleCancelBooking(booking._id)}
                     >
                       Cancel
-                    </button>
+                    </Button>
                   )}
                 </div>
+                <div className="mt-3 flex justify-between">
+                  {booking.status === "Completed" && (
+                    <Button
+                      color="primary"
+                      variant="bordered"
+                      size="sm"
+                      onClick={() => handleOpenRatingModal(booking)}
+                    >
+                      Review
+                    </Button>
+                  )}
+                  <Button
+                    color="warning"
+                    size="sm"
+                    variant="bordered"
+                    onClick={() => handleViewClick(booking)}
+                  >
+                    View
+                  </Button>
+
+                </div>
+
+
               </div>
             ))
           ) : (
             <p className="text-center text-gray-500">No bookings found.</p>
           )}
         </div>
-        <PrescriptionModal isOpen={isPrescriptionModalOpen} onClose={handleClosePrescriptionModal}  booking={selectedBooking} />
+
+        <PrescriptionModal
+          isOpen={isPrescriptionModalOpen}
+          onClose={handleClosePrescriptionModal}
+          booking={selectedBooking}
+        />
+        <RatingModal
+          booking={selectedBookingForRating}
+          onClose={handleCloseRatingModal}
+          isOpen={!!selectedBookingForRating}
+        />
+
         <PaginationComponent
           currentPage={currentPage}
           totalPages={totalPages}
@@ -203,3 +279,6 @@ const MyBookings = () => {
 };
 
 export default MyBookings;
+
+
+

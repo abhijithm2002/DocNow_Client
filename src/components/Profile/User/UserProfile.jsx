@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FaUser } from 'react-icons/fa';
 import MyBookings from './MyBookings';
 import EditProfile from './EditProfile';
@@ -7,13 +7,37 @@ import { useNavigate } from 'react-router-dom';
 import { logout } from '../../../ReduxStore/authSlice';
 import UserWalletHistory from './UserWalletHistory';
 import Chat from '../../User/Communication/Chat';
+import { fetchMyBookings } from '../../../services/User/userService';
+import toast,{Toaster} from 'react-hot-toast';
 
 const UserProfile = () => {
   const [tab, setTab] = useState('bookings');
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { user } = useSelector((state) => state.auth);
+  const date = new Date()
 
+  useEffect(() => {
+    fetchAppointments()
+  },[date])
+
+  const fetchAppointments=async()=>{
+    const response=await fetchMyBookings(user._id)
+    const selectedDateISO = date.toISOString().split("T")[0]; 
+    if(response.status===200){
+     const todayappointment= response.data.data.filter((item) => {
+        const itemDateString = item.date.split("T")[0]; 
+        return itemDateString === selectedDateISO && item.status==='Active'; 
+      })
+      if (todayappointment.length > 0) {
+        todayappointment.forEach((appointment) => {
+          toast.success(`Gentle reminder that you have an appointment today at ${appointment.shift}`,{duration: 5000});
+        });
+      }
+    }else{
+      toast.error('Something Went Wrong')
+    }
+  }
   const handleLogout = () => {
     dispatch(logout());
     navigate('/login');
@@ -23,6 +47,10 @@ const UserProfile = () => {
     setTab('chat');
     navigate('/chat'); // Navigate to chat route
   };
+
+  
+
+
 
   return (
     <div className="max-w-[1170px] mx-auto mt-4 px-4 md:px-0">

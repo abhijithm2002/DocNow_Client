@@ -78,10 +78,10 @@ function AdminLogin() {
 
   return (
    
-   
-      <section className="flex items-center justify-center min-h-screen px-5 lg:px-0 ">
-        <div className="w-full max-w-[400px] mx-auto rounded-lg shadow-md bg-white md:p-10">
-          <h3 className="text-headingColor text-[22px] leading-9 font-bold mb-10">
+
+      <section className="flex items-center justify-center min-h-screen px-5 lg:px-0 [background:radial-gradient(125%_125%_at_50%_10%,#000_40%,#63e_100%)] ">
+        <div className="w-full max-w-[400px] mx-auto rounded-lg shadow-md bg-[radial-gradient(circle_farthest-side,rgba(255,0,182,.15),rgba(255,255,255,0))] md:p-10">
+          <h3 className="text-white text-[22px] leading-9 font-bold mb-10">
             Admin <span className="text-primaryColor">Login</span> !
           </h3>
 
@@ -94,7 +94,7 @@ function AdminLogin() {
                 value={formik.values.email}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                className={`w-full py-3 border-b border-solid border-[#0066ff61] focus:outline-none ${(formik.touched.email && formik.errors.email) || error.email ? 'border-b-red-500' : 'focus:border-b-primaryColor'
+                className={`w-full text-center py-3 border-b border-solid border-[#0066ff61] focus:outline-none ${(formik.touched.email && formik.errors.email) || error.email ? 'border-b-red-500' : 'focus:border-b-primaryColor'
                   } text-[16px] leading-7 text-headingColor placeholder:text-textColor rounded-md cursor-pointer`}
                 required
               />
@@ -111,7 +111,7 @@ function AdminLogin() {
                 value={formik.values.password}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                className={`w-full py-3 border-b border-solid border-[#0066ff61] focus:outline-none ${(formik.touched.password && formik.errors.password) || error.password ? 'border-b-red-500' : 'focus:border-b-primaryColor'
+                className={`w-full text-center py-3 border-b border-solid border-[#0066ff61] focus:outline-none ${(formik.touched.password && formik.errors.password) || error.password ? 'border-b-red-500' : 'focus:border-b-primaryColor'
                   } text-[16px] leading-7 text-headingColor placeholder:text-textColor rounded-md cursor-pointer`}
                 required
               />

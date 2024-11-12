@@ -6,6 +6,7 @@ import { fetchBanner } from '../../services/Admin/adminService';
 import { blockAndUnblockBanner } from '../../services/Admin/adminService';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
+import AdminHeader from '../../components/Admin/AdminHeader';
 const MySwal = withReactContent(Swal);
 
 const BannerManagement = () => {
@@ -122,7 +123,10 @@ const BannerManagement = () => {
 
     return (
         <>
-            <div className="flex flex-col items-center mt-8">
+        <div>
+            <AdminHeader />
+        </div>
+            <div className="flex flex-col items-center mt-16">
                 <Toaster position='top-center' />
                 <p className="mb-4 text-xl font-semibold text-gray-700 dark:text-gray-300 ">
                     Click here to create a banner

@@ -4,6 +4,7 @@ import { BsArrowRight } from 'react-icons/bs';
 import { useSelector } from 'react-redux';
 import { addFavouriteDoctor, getFavouriteDoctors } from '../../services/User/userService';
 import toast from 'react-hot-toast';
+import { RiStarSFill, RiStarSLine } from "react-icons/ri";
 
 const DoctorCard = ({ doctor }) => {
     const {
@@ -11,7 +12,8 @@ const DoctorCard = ({ doctor }) => {
         name,
         photo,
         expertise,
-        currentWorkingHospital
+        currentWorkingHospital,
+        rating
     } = doctor;
     console.log('doctor id', _id)
 
@@ -57,6 +59,7 @@ const DoctorCard = ({ doctor }) => {
                         Dr. {name}
                     </h2>
                 </div>
+                
                 <div className='mt-4'>
                     <label className="relative block cursor-pointer select-none">
                         <input
@@ -76,6 +79,22 @@ const DoctorCard = ({ doctor }) => {
                 </div>
 
             </div>
+            <div className="rating mt-2 flex">
+                        {[1, 2, 3, 4, 5].map((i) => (
+                          <span key={i} className="text-2xl">
+                            {i <= rating ? (
+                              <RiStarSFill style={{ color: "#FFD700" }} />
+                            ) : (
+                              <RiStarSLine
+                                style={{
+                                  color: "gray",
+                                  
+                                }}
+                              />
+                            )}
+                          </span>
+                        ))}
+                      </div>
 
             <div className='mt-2 lg:mt-3 flex items-center justify-between'>
                

@@ -111,3 +111,9 @@ export const fetchDoctorsList = async () => {
   console.log('response of doctorlist', response);
   return response;
 }
+
+
+export const postRating = async(data) => {
+  const response  = await Api.post(`api/patient/postRating`,data)
+  return response;
+}

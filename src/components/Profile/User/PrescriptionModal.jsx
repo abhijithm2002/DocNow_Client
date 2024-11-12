@@ -5,7 +5,6 @@ import { jsPDF } from "jspdf";
 import { useSelector } from "react-redux";
 
 export default function PrescriptionModal({ isOpen, onClose, booking }) {
-    console.log('booking in odal', booking)
     const patient = useSelector((state) => state.auth.user)
     const formatDate = (dateString) => {
         const date = new Date(dateString);

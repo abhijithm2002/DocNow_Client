@@ -62,6 +62,7 @@ import FavouriteDoctors from '../../pages/Users/FavouriteDoctors';
 import VideoModal from '../../components/User/VideoModal'
 import Footer from '../../components/Footer/Footer';
 import CallReject from '../../components/User/CallReject';
+import BookingDetails from '../../components/Profile/User/BookingDetails';
 // Animation variants for the input div
 const divVariants = {
   hidden: {
@@ -240,14 +241,14 @@ const RouteFile = () => {
           path="/chat"
           element={
             <>
-              <Header /> 
+              <Header />
               <motion.div
                 initial="hidden"
                 animate="visible"
                 exit="hidden"
                 variants={divVariants}
                 transition={divTransition}
-                className="w-full h-screen" 
+                className="w-full h-screen"
               >
                 <Chat />
               </motion.div>
@@ -255,18 +256,18 @@ const RouteFile = () => {
           }
         />
 
-<Route
+        <Route
           path="/favourite-doctors"
           element={
             <>
-              <Header /> 
+              <Header />
               <motion.div
                 initial="hidden"
                 animate="visible"
                 exit="hidden"
                 variants={divVariants}
                 transition={divTransition}
-                className="w-full h-screen" 
+                className="w-full h-screen"
               >
                 <FavouriteDoctors />
               </motion.div>
@@ -278,14 +279,14 @@ const RouteFile = () => {
           path="/redirectToCall"
           element={
             <>
-              <Header /> 
+              <Header />
               <motion.div
                 initial="hidden"
                 animate="visible"
                 exit="hidden"
                 variants={divVariants}
                 transition={divTransition}
-                className="w-full h-screen" 
+                className="w-full h-screen"
               >
                 <VideoModal />
               </motion.div>
@@ -293,25 +294,45 @@ const RouteFile = () => {
           }
         />
 
-      <Route
+        <Route
           path="/callReject"
           element={
             <>
-              <Header /> 
+              <Header />
               <motion.div
                 initial="hidden"
                 animate="visible"
                 exit="hidden"
                 variants={divVariants}
                 transition={divTransition}
-                className="w-full h-screen" 
+                className="w-full h-screen"
               >
                 <CallReject />
               </motion.div>
             </>
           }
         />
+
+      <Route
+          path="/booking-details"
+          element={
+            <>
+              <Header />
+              <motion.div
+                initial="hidden"
+                animate="visible"
+                exit="hidden"
+                variants={divVariants}
+                transition={divTransition}
+                className="w-full h-screen"
+              >
+                <BookingDetails />
+              </motion.div>
+            </>
+          }
+        />
       </Routes>
+
 
     </AnimatePresence>
   );

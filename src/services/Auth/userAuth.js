@@ -62,3 +62,5 @@ export const googleLogin = async(email, name) => {
     console.log('response', response)
     return response
 }
+
+
