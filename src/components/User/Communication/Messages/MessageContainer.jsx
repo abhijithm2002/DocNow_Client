@@ -39,7 +39,7 @@ function MessageContainer() {
                 <span className="text-sm text-white-300">
                   {typingUsers.some(
                     (user) => user?.userId == selectedConversation?._id
-                  ) ? <TypingAnimation /> : isOnline ? "Online": ""}
+                  ) ? <TypingAnimation /> : isOnline ? "Online": "Offline"}
                 </span>
               </div>
             </div>

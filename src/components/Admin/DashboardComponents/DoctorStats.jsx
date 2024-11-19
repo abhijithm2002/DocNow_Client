@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { fetchDoctorsList } from '../../../services/Admin/adminService';
+import { fetchDoctors } from '../../../services/Admin/adminService'
 import toast from 'react-hot-toast';
 import { FaUserCircle } from 'react-icons/fa';
 import moment from 'moment';
@@ -13,8 +13,8 @@ const DoctorStats = ({ Appointments }) => {
     const [showDetails, setShowDetails] = useState(false);
 
     useEffect(() => {
-        const fetchDoctors = async () => {
-            const response = await fetchDoctorsList();
+        const fetchDoctor = async () => {
+            const response = await fetchDoctors();
             if (response.status === 200) {
                 setDoctors(response.data.doctorData);
             } else {
@@ -22,7 +22,7 @@ const DoctorStats = ({ Appointments }) => {
             }
         };
         setBookings(Appointments);
-        fetchDoctors();
+        fetchDoctor();
     }, [Appointments]);
 
     const handleDoctorSelect = (doctor) => {

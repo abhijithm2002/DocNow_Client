@@ -25,7 +25,6 @@ function Conversations() {
           lastIdx={idx === reorderedConversations.length - 1}
         />
       ))}
-
       {loading ? <span className="loading loading-spinner mx-auto">Loading..</span> : null}
     </div>
   );

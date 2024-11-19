@@ -23,6 +23,7 @@ export const SocketContextProvider = ({ children }) => {
     const [onlineUsers, setOnlineUsers] = useState([]);
     const [typingUsers, setTypingUsers] = useState([]);
     const [unreadMessages, setUnreadMessages] = useState({});
+    const [newBooking, setNewBooking] = useState(null);
 
     const userId = User?._id || Doctor?._id;
 
@@ -113,12 +114,24 @@ export const SocketContextProvider = ({ children }) => {
                     { duration: 4000 }
                 );
             });
+            socket.on("newBooking", (data) => {
+                console.log('coming to new booking notification', data)
+                setNewBooking({
+                    message: data.message,
+                    bookingDetails: data.bookingDetails, 
+                });
+            });
+            
+    
+            
            
             return () => {
                 socket.off("getOnlineUsers");
                 socket.off("typing");
                 socket.off("stopTyping");
                 socket.off("getUnreadMessages");
+                socket.off("newBooking");
+
             };
         }
     }, [socket, userId]);
@@ -207,6 +220,7 @@ export const SocketContextProvider = ({ children }) => {
                 stopTyping,
                 startVideoCall,
                 onCallRejected,
+                newBooking
             }}
         >
             {children}

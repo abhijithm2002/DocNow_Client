@@ -1,25 +1,56 @@
+import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
-import useGetConversations from "../../../../socket/hooks/useGetConversations";
 import { useConversation } from "../../../../socket/zustand/useConversation";
-import { useEffect } from "react";
+import { useSocketContext } from "../../../../socket/SocketContext";
+import { styled } from '@mui/material/styles';
+import Badge from '@mui/material/Badge';
+import Avatar from '@mui/material/Avatar';
+import { FaUserCircle } from "react-icons/fa";
+
+const StyledBadge = styled(Badge)(({ theme }) => ({
+  '& .MuiBadge-badge': {
+    backgroundColor: '#44b700',
+    color: '#44b700',
+    boxShadow: `0 0 0 2px ${theme.palette.background.paper}`,
+    '&::after': {
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      width: '100%',
+      height: '100%',
+      borderRadius: '50%',
+      animation: 'ripple 1.2s infinite ease-in-out',
+      border: '1px solid currentColor',
+      content: '""',
+    },
+  },
+  '@keyframes ripple': {
+    '0%': {
+      transform: 'scale(.8)',
+      opacity: 1,
+    },
+    '100%': {
+      transform: 'scale(2.4)',
+      opacity: 0,
+    },
+  },
+}));
 
 function Conversation({ conversation, lastIdx }) {
   const { selectedConversation, setSelectedConversation } = useConversation();
   const User = useSelector((state) => state.auth.user);
-  
+  const { onlineUsers } = useSocketContext();
+
+  const isOnline = onlineUsers.includes(conversation._id);
   const isSelected = selectedConversation?._id === conversation._id;
 
-  useEffect(()=> {
-    setSelectedConversation(conversation)
-  },[])
+  useEffect(() => {
+    setSelectedConversation(conversation);
+  }, []);
 
   const handleSelectUser = (conversation) => {
     setSelectedConversation(conversation);
-    // Assuming `markAsRead` is part of the SocketContext (re-enable this if needed)
-    // markAsRead(doctor?._id, conversation?._id);
   };
-  console.log('photo///', conversation.photo)
- 
 
   return (
     <div key={conversation._id}>
@@ -29,15 +60,18 @@ function Conversation({ conversation, lastIdx }) {
         }`}
         onClick={() => handleSelectUser(conversation)}
       >
-        <div className="w-12 h-12 rounded-full flex items-center justify-center bg-gray-200">
+        <div className="w-12 h-12">
           {conversation?.photo ? (
-            <img
-              src={conversation.photo}
-              alt="user avatar"
-              className="w-12 h-12 rounded-full"
-            />
+            <StyledBadge
+              overlap="circular"
+              anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+              variant="dot"
+              invisible={!isOnline} // Show green dot only if online
+            >
+              <Avatar src={conversation.photo} alt="user avatar" className="w-12 h-12" />
+            </StyledBadge>
           ) : (
-            <FaUserCircle className="text-gray-500 w-full h-full " />
+            <FaUserCircle className="text-gray-500 w-full h-full" />
           )}
         </div>
         <div className="flex flex-col flex-1">
@@ -51,4 +85,4 @@ function Conversation({ conversation, lastIdx }) {
   );
 }
 
-export default Conversation
+export default Conversation;

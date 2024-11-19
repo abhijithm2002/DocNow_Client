@@ -91,7 +91,7 @@ export default function PrescriptionModal({ isOpen, onClose, booking }) {
     };
     return (
         <div className="flex items-center justify-center h-1">
-            <Modal backdrop="blur" isOpen={isOpen} onClose={onClose} scrollBehavior='inside' placement='top' className="w-full max-w-s sm:max-w-sm md:max-w-md lg:max-w-3xl">
+            <Modal backdrop="blur" isOpen={isOpen} onClose={onClose} scrollBehavior='inside' placement='bottom' className="w-full max-w-s sm:max-w-sm md:max-w-md lg:max-w-3xl">
                 <ModalContent>
                     {() => (
                         <>

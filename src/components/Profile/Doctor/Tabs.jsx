@@ -17,7 +17,7 @@ const Tabs = ({ tab, setTab }) => {
 
   const handleTabClick = (selectedTab) => {
     setTab(selectedTab);
-    setMenuOpen(false); // Close menu on mobile after selecting tab
+    setMenuOpen(false);
   };
 
   return (
@@ -40,7 +40,15 @@ const Tabs = ({ tab, setTab }) => {
           <FaUser className='text-lg' />
           <span>Overview</span>
         </button>
-
+        <button
+          onClick={() => handleTabClick('dashboard')}
+          className={`${
+            tab === 'dashboard' ? 'bg-indigo-100 text-primaryColor' : 'bg-transparent text-headingColor hover:bg-blue-100 hover:text-primaryColor'
+          } w-full btn mt-0 rounded-md flex items-center space-x-2`}
+        >
+          <FaUser className='text-lg' />
+          <span>Dashboard</span>
+        </button>
         <button
           onClick={() => handleTabClick('appointments')}
           className={`${
@@ -89,6 +97,15 @@ const Tabs = ({ tab, setTab }) => {
         >
           <FaWallet className='text-lg' />
           <span>Wallet</span>
+        </button>
+        <button
+          onClick={() => handleTabClick('notifications')}
+          className={`${
+            tab === 'notifications' ? 'bg-indigo-100 text-primaryColor' : 'bg-transparent text-headingColor hover:bg-blue-100 hover:text-primaryColor'
+          } w-full btn mt-0 rounded-md flex items-center space-x-2`}
+        >
+          <FaWallet className='text-lg' />
+          <span>Notifications</span>
         </button>
 
         <div className='w-full mt-4'>

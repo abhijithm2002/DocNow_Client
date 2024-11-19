@@ -89,16 +89,15 @@ function DoctorLogin() {
 
   return (
 
-    <div className="bg-cover bg-center min-h-screen" style={{ backgroundImage: `url(${BackgroundImage})` }}>
-      <section className="flex items-center justify-center min-h-screen px-5 lg:px-0 bg-opacity-50 bg-black">
+    <div className="bg-cover bg-center min-h-screen  bg-white [background:radial-gradient(125%_125%_at_50%_10%,#fff_40%,#63e_100%)]">
+      <section className="flex items-center justify-center min-h-screen px-5 lg:px-0 ">
         <div className="w-full max-w-[400px] mx-auto rounded-lg shadow-md bg-white md:p-10">
         <Toaster position="top-center" reverseOrder={false} />
-          <h3 className="text-headingColor text-[22px] leading-9 font-bold mb-10">
+          <h3 className="text-headingColor px-5 mt-4 text-[22px] leading-9 font-bold mb-10">
             Doctor <span className="text-primaryColor">Login</span> !
           </h3 >
 
-
-          <form className="py-4 md:py-0" onSubmit={formik.handleSubmit}>
+          <form className="py-4 px-3 md:py-0" onSubmit={formik.handleSubmit}>
             <div className="mb-5">
               <input
                 type="email"

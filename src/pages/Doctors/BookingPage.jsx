@@ -166,7 +166,7 @@ const BookingPage = ({ doctor }) => {
           </div>
         </div>
       )}
-      <Toaster position="top-right" />
+     
     </>
   );
 };

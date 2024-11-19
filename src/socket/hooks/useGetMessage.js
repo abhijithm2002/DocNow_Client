@@ -26,6 +26,8 @@ const useGetMessage = () => {
       try {
         const response = await axios.post(`${CONSTANTS_COMMON.API_BASE_URL}api/message/${selectedConversation._id}/${senderId}`);
         const data = response.data.message || []; 
+        const lastMessage = response.data
+        console.log('lastmessageeeeeeeeeeeeeeeeee', lastMessage)
         setMessages(data);
       } catch (error) {
         toast.error("Failed to fetch messages. Please try again.");

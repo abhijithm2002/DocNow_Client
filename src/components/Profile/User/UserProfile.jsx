@@ -8,7 +8,7 @@ import { logout } from '../../../ReduxStore/authSlice';
 import UserWalletHistory from './UserWalletHistory';
 import Chat from '../../User/Communication/Chat';
 import { fetchMyBookings } from '../../../services/User/userService';
-import toast,{Toaster} from 'react-hot-toast';
+import toast, { Toaster } from 'react-hot-toast';
 
 const UserProfile = () => {
   const [tab, setTab] = useState('bookings');
@@ -19,22 +19,22 @@ const UserProfile = () => {
 
   useEffect(() => {
     fetchAppointments()
-  },[date])
+  }, [date])
 
-  const fetchAppointments=async()=>{
-    const response=await fetchMyBookings(user._id)
-    const selectedDateISO = date.toISOString().split("T")[0]; 
-    if(response.status===200){
-     const todayappointment= response.data.data.filter((item) => {
-        const itemDateString = item.date.split("T")[0]; 
-        return itemDateString === selectedDateISO && item.status==='Active'; 
+  const fetchAppointments = async () => {
+    const response = await fetchMyBookings(user._id)
+    const selectedDateISO = date.toISOString().split("T")[0];
+    if (response.status === 200) {
+      const todayappointment = response.data.data.filter((item) => {
+        const itemDateString = item.date.split("T")[0];
+        return itemDateString === selectedDateISO && item.status === 'Active';
       })
       if (todayappointment.length > 0) {
         todayappointment.forEach((appointment) => {
-          toast.success(`Gentle reminder that you have an appointment today at ${appointment.shift}`,{duration: 5000});
+          toast.success(`Gentle reminder that you have an appointment today at ${appointment.shift}`, { duration: 5000 });
         });
       }
-    }else{
+    } else {
       toast.error('Something Went Wrong')
     }
   }
@@ -48,7 +48,7 @@ const UserProfile = () => {
     navigate('/chat'); // Navigate to chat route
   };
 
-  
+
 
 
 
@@ -71,33 +71,29 @@ const UserProfile = () => {
           <nav className="flex-grow">
             <button
               onClick={() => setTab('bookings')}
-              className={`w-full text-center p-3 rounded-md  ${
-                tab === 'bookings' ? 'bg-primaryColor text-white' : 'text-headingColor bg-gray-100 font-semibold'
-              } mb-2`}
+              className={`w-full text-center p-3 rounded-md  ${tab === 'bookings' ? 'bg-primaryColor text-white' : 'text-headingColor bg-gray-100 font-semibold'
+                } mb-2`}
             >
               My Bookings
             </button>
             <button
               onClick={() => setTab('settings')}
-              className={`w-full text-center p-3 rounded-md ${
-                tab === 'settings' ? 'bg-primaryColor text-white' : 'text-headingColor bg-gray-100 font-semibold'
-              } mb-2`}
+              className={`w-full text-center p-3 rounded-md ${tab === 'settings' ? 'bg-primaryColor text-white' : 'text-headingColor bg-gray-100 font-semibold'
+                } mb-2`}
             >
               Settings
             </button>
             <button
               onClick={() => setTab('userWalletHistory')}
-              className={`w-full text-center p-3 rounded-md ${
-                tab === 'userWalletHistory' ? 'bg-primaryColor text-white' : 'text-headingColor bg-gray-100 font-semibold'
-              } mb-2`}
+              className={`w-full text-center p-3 rounded-md ${tab === 'userWalletHistory' ? 'bg-primaryColor text-white' : 'text-headingColor bg-gray-100 font-semibold'
+                } mb-2`}
             >
               Wallet History
             </button>
             <button
               onClick={handleChatClick} // Navigating to chat route
-              className={`w-full text-center p-3 rounded-md ${
-                tab === 'chat' ? 'bg-primaryColor text-white' : 'text-headingColor bg-gray-100 font-semibold'
-              } mb-2`}
+              className={`w-full text-center p-3 rounded-md ${tab === 'chat' ? 'bg-primaryColor text-white' : 'text-headingColor bg-gray-100 font-semibold'
+                } mb-2`}
             >
               Messages
             </button>

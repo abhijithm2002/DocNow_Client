@@ -12,6 +12,8 @@ import WalletHistory from './WalletHistory';
 import Chat from '../../Doctor/Communication/Chat';
 import Loading from '../../Loader/Loading';
 import toast, { Toaster } from 'react-hot-toast';
+import Dashboard from '../../Doctor/Dashboard/Dashboard';
+import NotificationPage from './NotificationPage';
 
 const DoctorProfile = () => {
   const [tab, setTab] = useState('overview');
@@ -107,6 +109,8 @@ const DoctorProfile = () => {
                   {tab === 'update-slot' && <CreateSlots />}
                   {tab === 'wallet-history' && <WalletHistory />}
                   {tab === 'chat' && <Chat />}
+                  {tab === 'dashboard' && <Dashboard />}
+                  {tab === 'notifications' && <NotificationPage />}
                 </div>
               </div>
             </div>

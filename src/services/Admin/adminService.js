@@ -37,6 +37,13 @@ export const fetchDoctorsList = async () => {
     return response;
 }
 
+export const fetchDoctors = async () => {
+    console.log('fetch doctor list');
+    const response = await AdminApi.get('/api/admin/fetchDoctors'); 
+    console.log('response of doctorlist', response);
+    return response;
+}
+
 export const BlockAndUnblockDoctor = async (userId, status) => {
     console.log('block and unblock user called');
     const response = await AdminApi.patch(`/api/admin/doctor/${userId}/blockUnblock`, { status });
@@ -81,3 +88,5 @@ export const bookingList = async(userData) =>{
     const response = await AdminApi.get(`/api/admin/bookingList`,{params: userData})
     return response;
 }
+
+

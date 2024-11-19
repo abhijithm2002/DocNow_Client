@@ -27,11 +27,28 @@ const CreateSlots = () => {
       toast.error('Please fill in all required fields');
       return;
     }
-  
+
+    // Combine startDate and startTime into a single DateTime for comparison
+    const combinedStartDateTime = new Date(
+      startDate.getFullYear(),
+      startDate.getMonth(),
+      startDate.getDate(),
+      startTime.getHours(),
+      startTime.getMinutes()
+    );
+
+    const currentDateTime = new Date();
+
+    // Validate that the start slot date and time are in the future
+    if (combinedStartDateTime <= currentDateTime) {
+      toast.error('Start date and time must be in the future');
+      return;
+    }
+
     // Create dates in local time to avoid shifting to the previous day in UTC
     const start = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate());
     const end = new Date(endDate.getFullYear(), endDate.getMonth(), endDate.getDate());
-  
+
     // Normalize startTime and endTime to maintain the correct time relative to local date
     const normalizedStartTime = new Date(
       start.getFullYear(),
@@ -40,7 +57,7 @@ const CreateSlots = () => {
       startTime.getHours(),
       startTime.getMinutes()
     );
-  
+
     const normalizedEndTime = new Date(
       end.getFullYear(),
       end.getMonth(),
@@ -48,8 +65,8 @@ const CreateSlots = () => {
       endTime.getHours(),
       endTime.getMinutes()
     );
-  
-    // Adjusting to keep the day in local time without shifting to previous day in UTC
+
+    // Adjust to keep the day in local time without shifting to previous day in UTC
     const slotsData = eachDayOfInterval({
       start,
       end,
@@ -61,14 +78,20 @@ const CreateSlots = () => {
       duration,
       breakTime,
     }));
-  
+
     console.log('slotdata', slotsData);
-  
+
     try {
       const response = await updateSlots(slotsData);
       if (response.status === 201) {
         toast.success('Slots created successfully');
         fetchAndDisplaySlots();
+        setStartDate(null);
+        setEndDate(null);
+        setStartTime(null);
+        setEndTime(null);
+        setDuration(30);
+        setBreakTime(10);
       } else {
         toast.error('Failed to create slots');
       }
@@ -77,25 +100,26 @@ const CreateSlots = () => {
       toast.error('Error creating slots');
     }
   };
-  
-  
-  
-  
-  
+
+
+
+
+
+
 
   const fetchAndDisplaySlots = async () => {
     if (!selectedDateForView) return;
-  
+
     // Convert selectedDateForView to local date string
     const localDate = new Date(selectedDateForView.getTime() - selectedDateForView.getTimezoneOffset() * 60000);
     const formattedDate = localDate.toISOString().split('T')[0];
-    
+
     try {
       const response = await fetchSlots(doctor._id, formattedDate);
       console.log('Fetched slots response:', response);
-  
+
       const fetchedSlots = response.data.slots;
-  
+
       if (fetchedSlots && fetchedSlots.length > 0) {
         setSlotId(fetchedSlots[0]._id);
         setFetchedShifts(fetchedSlots[0].shifts || []);
@@ -110,8 +134,8 @@ const CreateSlots = () => {
       toast.error('Error fetching slots');
     }
   };
-  
-  
+
+
 
   const handleSelectShift = (shift) => {
     setSelectedShifts((prev) =>

@@ -65,6 +65,13 @@ export const fetchMyBookings = async (patientId) => {
     throw error;
   }
 };
+// export const fetchMyBookings = async (patientId, page, limit =7) => {
+//   console.log("patientid",patientId)
+//   const response = await Api.get(`/api/patient/myBookings/${patientId}?page=${page}&limit=${limit}`);
+//   console.log("response from booking",response)
+//   return response.data; // Expect { data: bookings, totalCount }
+// };
+
 
 export const cancelBooking = async (bookingId) => {
   console.log('cancel booking id', bookingId)
@@ -115,5 +122,10 @@ export const fetchDoctorsList = async () => {
 
 export const postRating = async(data) => {
   const response  = await Api.post(`api/patient/postRating`,data)
+  return response;
+}
+
+export const fetchAdmin = async() => {
+  const response = await Api.get(`api/patient/fetchAdmin`)
   return response;
 }
