@@ -16,11 +16,11 @@ const AdminApi = axios.create({
 AdminApi.interceptors.request.use(
     (config) => {
       const { accessToken } = store.getState().admin;
-      console.log('access token ond', accessToken)
+      
       if (accessToken) {
         config.headers.authorization = `Bearer ${accessToken}`;
       }
-      console.log('config',config);
+      
       
       return config;
     },

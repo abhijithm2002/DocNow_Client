@@ -10,7 +10,7 @@ Modal.setAppElement("#root");
 function Message({ message }) {
   const authUser = useSelector((state) => state.doctor.doctor);
   const { selectedConversation } = useConversation();
-  console.log('message in message of doctor', message)
+  
   // Check if the message is from the authenticated user
   const fromMe = message.senderId.toString() === authUser?._id.toString();
   const chatClassName = fromMe ? "justify-end" : "justify-start";
@@ -25,17 +25,17 @@ function Message({ message }) {
     (message.recieverId === authUser._id ||
       message.recieverId === selectedConversation._id);
 
-console.log("selectedConversation:", selectedConversation);
-console.log("message.senderId:", message.senderId);
-console.log("message.receiverId:", message.recieverId);
+
+
+
 
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   if (!showThisMessage) {
-    console.log('message is not there') // Don't render if the message shouldn't be shown
+    
   } else {
-    console.log('messaage is there')
+    
   }
   
 

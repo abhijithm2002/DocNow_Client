@@ -31,12 +31,12 @@ function AdminLogin() {
       setError({ email: '', password: '' }); 
       try {
         const response = await adminLogin(values);
-        console.log('admin login',response)
+        
         if (response.status === 200) {
           const { data } = response;
-          console.log('data',data)
-          console.log('user',data)
-          console.log('accesstoken',data.tokens.accessToken)
+          
+          
+          
           dispatch(setAdminCredentials({ user: data, accessToken: data.tokens.accessToken }));
           toast.success('Login successful!');
           navigate('/admin/dashboard');

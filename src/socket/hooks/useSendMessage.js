@@ -18,11 +18,11 @@ const useSendMessage = () => {
 
     const sendMessage = async(messageContent) => {
         setLoading(true);
-        console.log('message from usesend message', messageContent)
-            console.log('message from sele message', selectedConversation._id)
+        
+            
         try {
             let senderId = user ? user._id : doctor ? doctor._id : null;
-            console.log('senderid',senderId)
+            
              if (!senderId) throw new Error("User ID not found");
              sendnewMessage(selectedConversation?._id, senderId, messageContent);
           const formData = new FormData();
@@ -42,7 +42,7 @@ const useSendMessage = () => {
                     }
                 }
             );
-            console.log('message resp',response.data)
+            
             const data = response.data.newMessage;
             setMessages([...messages, data])
 

@@ -5,10 +5,10 @@ import { useLocation } from 'react-router-dom'
 import { useConversation } from '../../../socket/zustand/useConversation'
 
 const Chat = () => {
-  console.log('enterd doctor chat')
+  
   const location = useLocation();
   const { setSelectedConversation } = useConversation();
-  console.log('patientid',location.state?.data.patientId)
+  
   useEffect(() => {
     if (location.state?.data?.patientId) {
       setSelectedConversation(location.state.data.patientId);

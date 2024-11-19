@@ -12,7 +12,7 @@ const FavouriteDoctors = () => {
             try {
                 const favouriteDoctors = await getFavouriteDoctors(patientId);
                 setDoctors(favouriteDoctors.data);  
-                console.log(favouriteDoctors, 'favouriteDoctorssss list');
+                
             } catch (error) {
                 console.error('Error fetching doctors:', error);
             }

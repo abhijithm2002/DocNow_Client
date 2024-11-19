@@ -79,7 +79,7 @@ const CreateSlots = () => {
       breakTime,
     }));
 
-    console.log('slotdata', slotsData);
+    
 
     try {
       const response = await updateSlots(slotsData);
@@ -116,7 +116,7 @@ const CreateSlots = () => {
 
     try {
       const response = await fetchSlots(doctor._id, formattedDate);
-      console.log('Fetched slots response:', response);
+      
 
       const fetchedSlots = response.data.slots;
 

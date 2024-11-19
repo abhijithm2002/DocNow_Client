@@ -65,7 +65,7 @@ export default MessageContainer;
 
 const NoChatSelected = () => {
   const authUser = useSelector((state) => state.auth.user);
-  console.log('userData', authUser)
+  
   return (
     <div className="flex items-center justify-center w-full h-full bg-gray-700">
       <div className="px-4 text-center sm:text-xl text-green-200 font-semibold flex flex-col items-center gap-2">

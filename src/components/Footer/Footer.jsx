@@ -8,13 +8,13 @@ import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
 function Footer() {
-  console.log('footer details')
+  
   // const [admin, setAdmin] = useState([])
   // useEffect(() => {
   //   const fetchingAdmin = async() => {
   //     try {
   //       const response = await fetchAdmin();
-  //       console.log('admin details', response)
+  //       
   //       if(response.status === 200) {
   //         setAdmin(response.data.data)
   //       } else {

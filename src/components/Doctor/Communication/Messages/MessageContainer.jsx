@@ -13,12 +13,12 @@ import toast, {Toaster} from 'react-hot-toast'
 import Swal from "sweetalert2";
 
 function MessageContainer({bookingId}) {
-  console.log('bookingidin message container', bookingId);
+  
   
   const navigate = useNavigate();
   const { selectedConversation, setSelectedConversation } = useConversation(); 
   const {onlineUsers, typingUsers, startTyping, stopTyping} = useSocketContext();
-  console.log('selected conversation id mescont', selectedConversation?._id)
+  
 
   const handleConsultationCompleted = async () => {
     try {

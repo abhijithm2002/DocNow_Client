@@ -5,8 +5,8 @@ import { useConversation } from "../../../../socket/zustand/useConversation";
 function Conversations() {
   const { loading, conversations } = useGetConversations();
   const { selectedConversation } = useConversation();
-  console.log("selectedConversation111", selectedConversation)
-  console.log('conversations@@@@@@@', conversations )
+  
+  
   const reorderedConversations = selectedConversation
   ? [
     selectedConversation,
@@ -15,7 +15,7 @@ function Conversations() {
   : conversations;
 
 
-    console.log('recordedconversation', reorderedConversations)
+    
   return (
     <div>
       {reorderedConversations.map((conversation, idx) => (

@@ -36,7 +36,7 @@ function MessageInput() {
     const handleSubmit = async(e) =>{
 
         e.preventDefault();
-        console.log('message in message input',message)
+        
         if(!message && !imageFile) return;
         if(message) {
             await sendMessage(message)

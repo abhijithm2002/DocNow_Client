@@ -49,7 +49,7 @@ const BannerManagement = () => {
         const file = event.target.files[0];
         const data = await uploadImageToCloudinary(file);
 
-        console.log('Cloudinary Response:', data);
+        
 
         if (data.url) {
             setBanner(prevBanner => ({
@@ -63,7 +63,7 @@ const BannerManagement = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log('Banner data:', banner);
+        
         try {
             const response = await createBanner(banner);
             if (response) {

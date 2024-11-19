@@ -7,7 +7,7 @@ import AdminRoutes from './Routes/AdminRoutes/AdminRoutes';
 import { Toaster } from 'react-hot-toast';
 
 const App = () => {
-  console.log('coming to app');
+  
   return (
     <>
     <Toaster position='top center' reverseOrder={false}/>

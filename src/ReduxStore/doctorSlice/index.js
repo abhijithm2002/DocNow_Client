@@ -12,7 +12,7 @@ const doctorSlice = createSlice({
   reducers: {
     setCredentials: (state, action) => {
       const { doctor, accessToken } = action.payload;
-      console.log('Access token in redux: ', doctor, accessToken);
+      
       
       state.doctor = doctor;
       state.accessToken = accessToken;

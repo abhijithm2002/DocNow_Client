@@ -4,7 +4,7 @@ import { useLocation } from 'react-router-dom'
 const BookingDetails = () => {
     const location = useLocation()
     const booking = location.state
-    console.log("booking details data .........",booking)
+    
   return (
     <div className="min-h-screen flex  justify-center bg-white p-6">
       <div className="bg-white shadow-panelShadow rounded-xl w-full max-w-5xl p-8 transform transition-transform duration-500 hover:shadow-2xl hover:scale-105">

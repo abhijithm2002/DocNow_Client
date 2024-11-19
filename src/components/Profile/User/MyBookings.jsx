@@ -309,7 +309,7 @@ export default MyBookings;
 //       setLoading(true);
 //       try {
 //         const response = await fetchMyBookings(patientId, currentPage,7);
-//         console.log('response of data in my booking', response)
+//         
 //         setBookings(response.data || []);
 //         setTotalPages(response.data.totalPages || 1);
 //       } catch (error) {

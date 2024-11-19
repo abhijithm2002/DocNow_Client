@@ -9,9 +9,9 @@
 // const LoginWithGoogle = async () => {
 //     try {
 //         const result = await signInWithPopup(auth, provider)
-//         console.log(result)
+//         
 //         const user = result.user
-//         console.log('result response siginwith pop', user);
+//         
 
 //         if (user) {
 //             const response = await googleLogin(
@@ -47,10 +47,10 @@ const LoginWithGoogle = async (userType) => {
             let response;
             if (userType === 'doctor') {
                 response = await googleDoctorLogin(user.email, user.displayName);
-                console.log('response of docto google login',response)
+                
             } else {
                 response = await googleLogin(user.email, user.displayName);
-                console.log('response of patient google login ', response)
+                
             }
             return response;
         }

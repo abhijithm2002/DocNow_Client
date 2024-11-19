@@ -8,7 +8,7 @@ import { FaUserCircle } from 'react-icons/fa';
 import AdminHeader from '../../components/Admin/AdminHeader';
 
 const DoctorList = () => {
-    console.log('entered doctor list');
+    
     
     const [doctors, setDoctors] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
@@ -24,7 +24,7 @@ const DoctorList = () => {
     const fetchdoctors = async () => {
         try {
             const doctorsData = await fetchDoctorsList();
-            console.log('doctors list', doctorsData);
+            
             
             if (doctorsData && Array.isArray(doctorsData.data.doctorData)) {
                 setDoctors(doctorsData.data.doctorData);

@@ -8,7 +8,7 @@ import toast from "react-hot-toast";
 export default function RatingModal({ booking, onClose, isOpen }) {
   const [rating, setRating] = useState(0);
   const [hover, setHover] = useState(0);
-    console.log('bookingin rating modal', booking?.doctorId?._id)
+    
   const handleRatingClick = (selectedRating) => {
     setRating(selectedRating);
   };
@@ -31,7 +31,7 @@ export default function RatingModal({ booking, onClose, isOpen }) {
                 toast.error('something went wrong haiii')
             }
         } catch (error) {
-            console.log('an error occured', error)
+            
             toast.error("helloooo");
         }
     

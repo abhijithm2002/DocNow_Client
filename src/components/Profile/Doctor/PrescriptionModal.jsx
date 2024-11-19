@@ -47,7 +47,7 @@ const PrescriptionModal = ({ isOpen, onClose, appointment }) => {
     } catch (error) {
       toast.error('Something went wrong')
     }
-    console.log("Prescriptions submitted:", formattedPrescriptions);
+    
     onClose();
     setCurrentPrescription({ medicineName: '', time: '', count: 0 });
 

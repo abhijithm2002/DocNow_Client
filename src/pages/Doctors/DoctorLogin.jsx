@@ -39,11 +39,11 @@ function DoctorLogin() {
       setError({ email: '', password: '' }); // Reset errors before submission
       try {
         const response = await doctorLogin(values);
-        console.log('response from doctor login', response)
+        
         if (response.status === 200) {
           toast.success('Login successful!');
           const { data } = response;
-          // console.log('response from doctor login', data);
+          // 
 
           dispatch(setCredentials({ doctor: data.doctor, accessToken: data.accessToken }));
           navigate('/doctor/profile');
@@ -57,7 +57,7 @@ function DoctorLogin() {
         if (error.response && error.response.data) {
           const field = error.response.data.field;
           setError((prevError) => ({ ...prevError, [field]: error.response.data.message }));
-          console.log('error response block',error.response.status)
+          
           if (error.response.status === 403) {
             toast.error('Doctor is blocked');
           } else {
@@ -75,7 +75,7 @@ function DoctorLogin() {
   const GoogleSignIn = async () => {
     try {
       const result = await LoginWithGoogle('doctor');
-      console.log('result of google login', result)
+      
       if (result) {
         toast.success('Google login successful!');
         const { data } = result;

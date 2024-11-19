@@ -41,7 +41,7 @@ const Appointments = () => {
         });
         setAppointments(updatedAppointments);
       } catch (error) {
-        console.log('Error fetching appointments', error);
+        
       }
     };
 

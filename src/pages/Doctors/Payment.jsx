@@ -8,11 +8,11 @@ import { useSelector } from 'react-redux';
 const Payment = () => {
   const location = useLocation();
   const { selectedShift, selectedDate, doctorId, doctor } = location.state || {};
-  console.log('payment doctor details', doctor);
+  
   const navigate = useNavigate()
 
   const userId = useSelector((state) => state.auth.user._id);
-  console.log('userid', userId)
+  
   
   useEffect(() => {
     const script = document.createElement('script');
@@ -43,7 +43,7 @@ const Payment = () => {
         description: 'Booking Confirmation',
         order_id: order.id,
         handler: async function (response) {
-          console.log('Razorpay response:', response);
+          
 
           // Step 3: Verify payment on the backend
           const verifyResponse = await Api.post('api/patient/verify-payment', {

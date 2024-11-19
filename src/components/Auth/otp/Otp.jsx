@@ -224,7 +224,7 @@ function Otp() {
       
       const validateOtp = state.userType === 'patient' ? validateUserOtp : validateDoctorOtp;
       const signup = state.userType === 'patient' ? userSignup : doctorSignup;
-      console.log('user type ', state.userType)
+      
       const response = await validateOtp(enteredOtp, state);
       if (response.status === 200) {
         const signupData = JSON.parse(localStorage.getItem('signupData'));

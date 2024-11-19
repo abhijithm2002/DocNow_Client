@@ -13,7 +13,7 @@ const adminSlice = createSlice({
     initialState,
     reducers: {
         setAdminCredentials: (state, action) => {
-            console.log('payloaddata', action.payload)
+            
             const { accessToken, user } = action.payload
             state.accessToken = accessToken
             state.admin = user

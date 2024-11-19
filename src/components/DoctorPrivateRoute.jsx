@@ -9,7 +9,7 @@ const DoctorPrivateRoute = () => {
     const isDoctorAuthenticated = reduxstate.doctor.isDoctorAuthenticated
     const isUserAuthenticated=reduxstate.auth.isAuthenticated
     const isAdminAuthenticated=reduxstate.admin.isAdminAuthenticated
-    // console.log(' doctor is isAuthenticated', isDoctorAuthenticated)
+    // 
     if(!isDoctorAuthenticated && isUserAuthenticated){
       return <Navigate to='/' />
     }

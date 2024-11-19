@@ -40,9 +40,9 @@ function DoctorSignup() {
             if (result) {
                 toast.success('Google login successful!');
                 const {data} = result;
-                console.log(data.doctor)
-                // console.log('doctor accesstoken', data.accessToken);
-                console.log('resulttttt', result);
+                
+                // 
+                
                 dispatch(setCredentials({ doctor: data.doctor, accessToken: data.accessToken }));
                 navigate('/doctor/profile');
             }

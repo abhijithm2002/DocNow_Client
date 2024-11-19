@@ -55,7 +55,7 @@ export const SocketContextProvider = ({ children }) => {
 
             
             socket.on("typing", (typingUser) => {
-                console.log('Received typing event', typingUser);
+                
                 setTypingUsers((prevTypingUsers) => {
                     // Add the user to the typing list if they are not already there
                     if (!prevTypingUsers.some((user) => user.userId === typingUser.userId)) {
@@ -67,7 +67,7 @@ export const SocketContextProvider = ({ children }) => {
 
             
             socket.on("stopTyping", (stoppedTypingUser) => {
-                console.log('Received stop typing event', stoppedTypingUser);
+                
                 setTypingUsers((prevTypingUsers) =>
                     prevTypingUsers.filter((user) => user.userId !== stoppedTypingUser.userId)
                 );
@@ -79,8 +79,8 @@ export const SocketContextProvider = ({ children }) => {
             });
 
             socket.on("incomingCall", ({ Caller, personalLink }) => {
-                console.log('entered incoming call and ', Caller, personalLink)
-                console.log(Caller.name);
+                
+                
                 
                 toast(
                   (t) => (
@@ -115,7 +115,7 @@ export const SocketContextProvider = ({ children }) => {
                 );
             });
             socket.on("newBooking", (data) => {
-                console.log('coming to new booking notification', data)
+                
                 setNewBooking({
                     message: data.message,
                     bookingDetails: data.bookingDetails, 
@@ -164,7 +164,7 @@ export const SocketContextProvider = ({ children }) => {
 
     
     const startTyping = useCallback(({ conversationId }) => {
-        console.log("Emitted start typing");
+        
         if (socket) {
             socket.emit("typing", {
                 userId,
@@ -175,7 +175,7 @@ export const SocketContextProvider = ({ children }) => {
 
 
     const stopTyping = useCallback(({ conversationId }) => {
-        console.log("Emitted stop typing");
+        
         if (socket) {
             socket.emit("stopTyping", {
                 userId,

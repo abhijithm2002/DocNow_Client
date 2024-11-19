@@ -15,15 +15,15 @@ const DoctorCard = ({ doctor }) => {
         currentWorkingHospital,
         rating
     } = doctor;
-    console.log('doctor id', _id)
+    
 
     const [isChecked, setIsChecked] = useState(false);
     const patientId = useSelector((state) => state.auth.user._id);
-    console.log('patient id', patientId)
+    
 
     const checkIfFavourite = async () => {
         const favouriteDoctors = await getFavouriteDoctors(patientId);
-        console.log('favourite doctors', favouriteDoctors)
+        
         const isFavourite = favouriteDoctors.data.some((favDoctor) => favDoctor._id == _id)
         setIsChecked(isFavourite)
     }

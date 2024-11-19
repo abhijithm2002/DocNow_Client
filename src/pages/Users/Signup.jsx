@@ -19,9 +19,9 @@ function Signup() {
 
     const formik = useSignupFormik(async (values) => {
         try {
-            console.log("Form values before sending OTP:", values);
+            
             const response = await otpGenerator(values.email);
-            console.log("OTP generator response:", response);
+            
             if (response.status === 200) {
                 localStorage.setItem('signupData', JSON.stringify(values));
                 toast.success("Enter OTP sent to your email");
@@ -42,8 +42,8 @@ function Signup() {
             if (result) {
               toast.success('Google login successful!');
               const { data } = result;
-              console.log(data.user)
-              console.log('tokennn',data.accessToken)
+              
+              
               dispatch(setCredentials({ user: data.user, accessToken: data.accessToken }));
               navigate('/');
             }

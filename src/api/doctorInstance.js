@@ -16,11 +16,11 @@ const DoctorApi = axios.create({
 DoctorApi.interceptors.request.use(
     (config) => {
       const { accessToken } = store.getState().doctor;
-      console.log('access token ond', accessToken)
+      
       if (accessToken) {
         config.headers.authorization = `Bearer ${accessToken}`;
       }
-      console.log('config',config);
+      
       
       return config;
     },

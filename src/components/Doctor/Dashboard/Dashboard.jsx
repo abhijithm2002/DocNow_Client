@@ -19,7 +19,7 @@ const Dashboard = () => {
     const fetchAppointment = async () => {
       try {
         const response = await fetchAppointments(Doctor._id)
-        console.log("response from fetchappointments", response)
+        
         if (response.status === 200) {
           const appointmentData = response.data.data;
           setAppointments(appointmentData);

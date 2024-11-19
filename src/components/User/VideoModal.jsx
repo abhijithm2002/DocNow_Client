@@ -26,14 +26,14 @@ export function getUrlParams(url = window.location.href) {
 }
 
 function VideoModal() {
-    console.log('entered video modal in user');
+    
     const location = useLocation();
     const navigate = useNavigate();
     const params = getUrlParams();
     const roomID = params.get("roomID") || randomID(5);
     const userId = params.get("userId");
-    console.log('roomID', roomID);
-    console.log('userId in video call', userId);
+    
+    
     const User = useSelector((state) => state.auth.user);
 
     useEffect(() => {
@@ -66,10 +66,10 @@ function VideoModal() {
                 },
                 showPreJoinView: false,
                 onUserJoin: (user) => {
-                    console.log(`${user} joined the room`);
+                    
                 },
                 onUserLeave: (user) => {
-                    console.log(`${user} left the room`);
+                    
                 },
             });
         };

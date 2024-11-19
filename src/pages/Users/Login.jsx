@@ -41,7 +41,7 @@
 //         if (response.status === 200) {
 //           toast.success('Login successful!');
 //           const { data } = response;
-//           console.log('response from login', data);
+//           
           
 //           dispatch(setCredentials({ user: data.user, accessToken: data.accessToken }));
 //           navigate('/user-profile');

@@ -6,7 +6,7 @@ import DoctorEditProfile from './DoctorEditProfile';
 import UploadDocuments from './UploadDocuments';
 import { FaUserCircle } from 'react-icons/fa';
 import CreateSlots from '../../Doctor/CreateSlots';
-import { drAppointments, getUploadedDocuments } from '../../../services/Doctor/doctorService';
+import { getUploadedDocuments } from '../../../services/Doctor/doctorService';
 import Appointments from './Appointments';
 import WalletHistory from './WalletHistory';
 import Chat from '../../Doctor/Communication/Chat';
@@ -40,22 +40,7 @@ const DoctorProfile = () => {
     fetchDocuments();
   }, [doctor.email]);
 
-  useEffect(() => {
-    fetchAppointments();
-  }, []);
-
-  const fetchAppointments = async () => {
-    const dateto = date.toISOString().split("T")[0];
-    const response = await drAppointments(dateto, doctor._id);
-    if (response.status === 200) {
-      const todayappointment = response.data.appointments.filter((item) => item.status === 'Active');
-      todayappointment.forEach((appointment) => {
-        toast.success(`Gentle reminder that you have an appointment today at ${appointment.shift}`, { duration: 5000 });
-      });
-    } else {
-      toast.error('Something Went Wrong');
-    }
-  };
+  
 
   return (
     <>
