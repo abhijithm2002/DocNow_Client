@@ -11,6 +11,7 @@ import DoctorPublicRoute from '../../components/DoctorPublicRoute'
 import Header from '../../components/Header/Header';
 import VideoModal from '../../components/Doctor/VideoModal';
 import Appointments from '../../components/Profile/Doctor/Appointments';
+import NotificationPage from '../../components/Profile/Doctor/NotificationPage';
 
 const DoctorRoute = () => {
   return (
@@ -27,6 +28,7 @@ const DoctorRoute = () => {
       <Route path='/message' element={<Message />} />
       <Route path='/video-call' element={<VideoModal />} />
       <Route path='/appointments' element={<Appointments />} />
+      <Route path='/notifications' element={<NotificationPage />} />
       
       </Route>
       <Route path='/chat' element={ <><Header /> <Chat /></>} />

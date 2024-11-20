@@ -63,6 +63,7 @@ import VideoModal from '../../components/User/VideoModal'
 import Footer from '../../components/Footer/Footer';
 import CallReject from '../../components/User/CallReject';
 import BookingDetails from '../../components/Profile/User/BookingDetails';
+import NotificationPage from '../../components/Profile/User/NotificationPage';
 // Animation variants for the input div
 const divVariants = {
   hidden: {
@@ -327,6 +328,24 @@ const RouteFile = () => {
                 className="w-full h-screen"
               >
                 <BookingDetails />
+              </motion.div>
+            </>
+          }
+        />
+        <Route
+          path="/notifications"
+          element={
+            <>
+              <Header />
+              <motion.div
+                initial="hidden"
+                animate="visible"
+                exit="hidden"
+                variants={divVariants}
+                transition={divTransition}
+                className="w-full h-screen"
+              >
+                <NotificationPage />
               </motion.div>
             </>
           }

@@ -95,7 +95,6 @@ const DoctorProfile = () => {
                   {tab === 'wallet-history' && <WalletHistory />}
                   {tab === 'chat' && <Chat />}
                   {tab === 'dashboard' && <Dashboard />}
-                  {tab === 'notifications' && <NotificationPage />}
                 </div>
               </div>
             </div>

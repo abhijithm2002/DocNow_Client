@@ -7,7 +7,6 @@ import { useNavigate } from 'react-router-dom';
 import { logout } from '../../../ReduxStore/authSlice';
 import UserWalletHistory from './UserWalletHistory';
 import Chat from '../../User/Communication/Chat';
-import { fetchMyBookings } from '../../../services/User/userService';
 import toast, { Toaster } from 'react-hot-toast';
 
 const UserProfile = () => {
@@ -17,27 +16,7 @@ const UserProfile = () => {
   const { user } = useSelector((state) => state.auth);
   const date = new Date()
 
-  useEffect(() => {
-    fetchAppointments()
-  }, [date])
-
-  const fetchAppointments = async () => {
-    const response = await fetchMyBookings(user._id)
-    const selectedDateISO = date.toISOString().split("T")[0];
-    if (response.status === 200) {
-      const todayappointment = response.data.data.filter((item) => {
-        const itemDateString = item.date.split("T")[0];
-        return itemDateString === selectedDateISO && item.status === 'Active';
-      })
-      if (todayappointment.length > 0) {
-        todayappointment.forEach((appointment) => {
-          toast.success(`Gentle reminder that you have an appointment today at ${appointment.shift}`, { duration: 5000 });
-        });
-      }
-    } else {
-      toast.error('Something Went Wrong')
-    }
-  }
+ 
   const handleLogout = () => {
     dispatch(logout());
     navigate('/login');

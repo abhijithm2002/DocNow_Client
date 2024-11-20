@@ -5,15 +5,16 @@ import { Button } from "@nextui-org/button";
 import { Badge } from "@nextui-org/badge";
 import { useSocketContext } from "../../../socket/SocketContext";
 import { useSelector } from "react-redux";
-import {  markAsRead } from "../../../services/Doctor/doctorService";
 import toast from "react-hot-toast";
 import { useNotifications } from "../../../socket/hooks/useNotifications";
+import { markAsRead } from "../../../services/User/userService";
+
 
 export default function NotificationPage() {
   const { newBooking } = useSocketContext();
-  const doctorId = useSelector((state) => state.doctor.doctor._id)
+  const userId = useSelector((state) => state.auth.user._id)
 
-  const { notifications, setNotifications, unreadCount } = useNotifications(doctorId);
+  const { notifications, setNotifications, unreadCount } = useNotifications(userId);
 
   useEffect(() => {
     if (newBooking) {
@@ -28,14 +29,20 @@ export default function NotificationPage() {
   }, [newBooking]);
 
 
-  const handleMarkAsRead = async(id) => {
-    await markAsRead(id)
+  const handleMarkAsRead = async (id) => {
+  try {
+    await markAsRead(id); 
     setNotifications((prev) =>
       prev.map((notification) =>
         notification.id === id ? { ...notification, read: true } : notification
       )
     );
-  };
+  } catch (error) {
+    console.error("Error marking notification as read:", error);
+  }
+};
+
+
 
   return (
     <div className="min-h-screen bg-gray-100 p-8">

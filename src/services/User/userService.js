@@ -129,3 +129,15 @@ export const fetchAdmin = async() => {
   const response = await Api.get(`api/patient/fetchAdmin`)
   return response;
 }
+
+export const fetchUserNotifications = async(patientId) => {
+  const response = await Api.get(`api/patient/getNotification/${patientId}`)
+  return response;
+}
+
+
+export const markAsRead = async(notificationId) => {
+  console.log('notification id ', notificationId)
+  const response = await Api.patch(`api/patient/markAsRead/${notificationId}/read`)
+  response;
+}

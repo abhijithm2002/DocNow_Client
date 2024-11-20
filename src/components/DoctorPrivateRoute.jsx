@@ -1,32 +1,31 @@
-import React from 'react'
-import { Outlet, Navigate } from 'react-router-dom'
-import Header from './Header/Header'
-import Footer from './Footer/Footer'
-import { useSelector } from 'react-redux'
+import React from 'react';
+import { Outlet, Navigate } from 'react-router-dom';
+import Header from './Header/Header';
+import Footer from './Footer/Footer';
+import { useSelector } from 'react-redux';
 
 const DoctorPrivateRoute = () => {
-  const reduxstate=useSelector(state => state)
-    const isDoctorAuthenticated = reduxstate.doctor.isDoctorAuthenticated
-    const isUserAuthenticated=reduxstate.auth.isAuthenticated
-    const isAdminAuthenticated=reduxstate.admin.isAdminAuthenticated
-    // 
-    if(!isDoctorAuthenticated && isUserAuthenticated){
-      return <Navigate to='/' />
-    }
-    if(!isDoctorAuthenticated && isAdminAuthenticated){
-      return <Navigate to='/admin/dashboard' />
-    }
+  const isDoctorAuthenticated = useSelector(state => state.doctor.isDoctorAuthenticated);
+  const isUserAuthenticated = useSelector(state => state.auth.isAuthenticated);
+  const isAdminAuthenticated = useSelector(state => state.admin.isAdminAuthenticated);
 
-    if(isDoctorAuthenticated) {
+  if (!isDoctorAuthenticated && isUserAuthenticated) {
+    return <Navigate to="/" />;
+  }
+  if (!isDoctorAuthenticated && isAdminAuthenticated) {
+    return <Navigate to="/admin/dashboard" />;
+  }
+
+  if (isDoctorAuthenticated) {
     return (
       <>
-      <Header />
-      <Outlet />
-      <Footer />
-  </>
-    )
+        <Header />
+        <Outlet />
+        <Footer />
+      </>
+    );
   }
-  return <Navigate to='/doctor/login' />
-}
+  return <Navigate to="/doctor/login" />;
+};
 
-export default DoctorPrivateRoute
+export default DoctorPrivateRoute;
