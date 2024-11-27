@@ -31,17 +31,13 @@ export default function PrescriptionModal({ isOpen, onClose, booking }) {
     const downloadPdf = () => {
         const doc = new jsPDF();
     
-        // Centered logo at the top
         doc.addImage(logo, "PNG", 80, 10, 50, 25);
     
-        // Title
         doc.setFontSize(18);
         doc.text("Prescription Details", 105, 50, { align: "center" });
     
-        // Add a horizontal line
         doc.line(10, 55, 200, 55);
     
-        // Patient and Consultation Information
         const patientName = patient.name || "Patient Name";
         const doctorName = booking?.doctorId?.name || "Doctor Name";
         const expertise = booking?.doctorId?.expertise || "Expertise";
@@ -53,10 +49,8 @@ export default function PrescriptionModal({ isOpen, onClose, booking }) {
         const consultationText = `Patient: ${patientName}\n\nThis prescription is issued by Dr. ${doctorName}, who specializes in ${expertise} at ${hospital}. The consultation took place on ${consultationDate} during the ${shift} shift.`;
         doc.text(consultationText, 10, 65, { maxWidth: 190 });
     
-        // Add another horizontal line
         doc.line(10, 90, 200, 90);
     
-        // Doctor & Appointment Details section
         doc.setFontSize(12);
         doc.text(`Doctor: ${doctorName}`, 10, 110);
         doc.text(`Specialization: ${expertise}`, 10, 120);
@@ -64,10 +58,8 @@ export default function PrescriptionModal({ isOpen, onClose, booking }) {
         doc.text(`Date: ${consultationDate}`, 10, 140);
         doc.text(`Shift: ${shift}`, 10, 150);
     
-        // Add another horizontal line
         doc.line(10, 155, 200, 155);
     
-        // Prescription Table Header
         doc.setFontSize(14);
         doc.text("Prescription", 10, 165);
         doc.setFont("helvetica", "bold");
@@ -77,7 +69,6 @@ export default function PrescriptionModal({ isOpen, onClose, booking }) {
         doc.text("Count", 150, yPos);
         doc.setFont("helvetica", "normal");
     
-        // Prescription Table Data with lines
         parsedPrescriptions.forEach((medicine, index) => {
             yPos += 10;
             doc.text(medicine.name, 10, yPos);
@@ -86,7 +77,6 @@ export default function PrescriptionModal({ isOpen, onClose, booking }) {
             doc.line(10, yPos + 5, 200, yPos + 5);
         });
     
-        // Save the PDF
         doc.save("prescription.pdf");
     };
     return (

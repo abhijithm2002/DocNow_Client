@@ -27,6 +27,11 @@ const DoctorEditProfile = () => {
             medicalLicenseNo: doctor.medicalLicenseNo || '',
             photo: doctor.photo || '',
             documents: doctor.documents || [],
+            address: doctor.address?.address || '',
+            pincode: doctor.address?.pincode || '',
+            state: doctor.address?.state || '',
+            country: doctor.address?.country || '',
+            district: doctor.address?.district || '',
         });
         setPreviewURL('');
     }, [doctor]);
@@ -45,6 +50,12 @@ const DoctorEditProfile = () => {
             medicalLicenseNo: '',
             photo: '',
             documents: [],
+            address: '',
+            pincode: '',
+            district: '',
+            state: '',
+            country: '',
+
         },
         validationSchema: Yup.object({
             name: Yup.string().required('Name is required'),
@@ -59,13 +70,31 @@ const DoctorEditProfile = () => {
             currentWorkingHospital: Yup.string().required('Working hospital is required'),
             experienceYears: Yup.number().required('Experience is required').positive('Experience must be positive'),
             medicalLicenseNo: Yup.string().required('Medical License Number is required'),
+            address: Yup.string().required('Address is required'),
+            district: Yup.string().required('District is required'),
+            pincode: Yup.string()
+            .matches(/^[1-9][0-9]{5}$/, 'Enter a valid 6-digit pincode that does not start with 0')
+            .required('Pincode is required'),
+            state: Yup.string().required('State is required'),
+            country: Yup.string().required('Country is required'),
         }),
         onSubmit: async (values) => {
+            const payload = {
+                ...values,
+                address: {
+                    address: values.address,
+                    pincode: values.pincode,
+                    district: values.district,
+                    state: values.state,
+                    country: values.country,
+                },
+            };
+        console.log('payload/////', payload)
             try {
-                const response = await editDoctorProfile(values);
+                const response = await editDoctorProfile(payload);
                 if (response.status === 200) {
                     toast.success('Profile updated successfully');
-                    const updatedDoctor = { ...doctor, ...values };
+                    const updatedDoctor = { ...doctor, ...payload };
                     dispatch(setCredentials({ doctor: updatedDoctor, accessToken: doctor.accessToken }));
                     localStorage.setItem('doctorData', JSON.stringify(updatedDoctor));
                     setPreviewURL('');
@@ -76,7 +105,8 @@ const DoctorEditProfile = () => {
                 console.error('Error updating profile:', error);
                 toast.error('Failed to update profile');
             }
-        },
+        }
+        
     });
 
     const handleFileInputChange = async (event) => {
@@ -238,7 +268,83 @@ const DoctorEditProfile = () => {
                         </div>
                     </div>
                 </div>
-
+                <div className="mb-6">
+                    <label className="form__label block text-lg font-semibold text-gray-700 mb-2">Address*</label>
+                    <input
+                        type="text"
+                        name="address"
+                        value={formik.values.address}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        placeholder="Enter your address"
+                        className="form__input block w-full text-lg py-3 px-4 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:border-black transition duration-150"
+                    />
+                    {formik.touched.address && formik.errors.address ? (
+                        <div className="text-red-500 text-sm">{formik.errors.address}</div>
+                    ) : null}
+                </div>
+                <div className="grid grid-cols-2 gap-4 mb-6">
+                    <div>
+                        <label className="form__label block text-lg font-semibold text-gray-700 mb-2">Pincode*</label>
+                        <input
+                            type="number"
+                            name="pincode"
+                            value={formik.values.pincode}
+                            onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
+                            placeholder="Enter Pincode"
+                            className="form__input block w-full text-lg py-3 px-4 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:border-black transition duration-150"
+                        />
+                        {formik.touched.pincode && formik.errors.pincode ? (
+                            <div className="text-red-500 text-sm">{formik.errors.pincode}</div>
+                        ) : null}
+                    </div>
+                    <div>
+                        <label className="form__label block text-lg font-semibold text-gray-700 mb-2">District*</label>
+                        <input
+                            type="text"
+                            name="district"
+                            value={formik.values.district}
+                            onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
+                            placeholder="Enter district"
+                            className="form__input block w-full text-lg py-3 px-4 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:border-black transition duration-150"
+                        />
+                        {formik.touched.district && formik.errors.district ? (
+                            <div className="text-red-500 text-sm">{formik.errors.district}</div>
+                        ) : null}
+                    </div>
+                    <div>
+                        <label className="form__label block text-lg font-semibold text-gray-700 mb-2">State*</label>
+                        <input
+                            type="text"
+                            name="state"
+                            value={formik.values.state}
+                            onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
+                            placeholder="Enter State"
+                            className="form__input block w-full text-lg py-3 px-4 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:border-black transition duration-150"
+                        />
+                        {formik.touched.state && formik.errors.state ? (
+                            <div className="text-red-500 text-sm">{formik.errors.state}</div>
+                        ) : null}
+                    </div>
+                    <div>
+                        <label className="form__label block text-lg font-semibold text-gray-700 mb-2">Country*</label>
+                        <input
+                            type="text"
+                            name="country"
+                            value={formik.values.country}
+                            onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
+                            placeholder="Enter Country"
+                            className="form__input block w-full text-lg py-3 px-4 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:border-black transition duration-150"
+                        />
+                        {formik.touched.country && formik.errors.country ? (
+                            <div className="text-red-500 text-sm">{formik.errors.country}</div>
+                        ) : null}
+                    </div>
+                </div>
                 <div className="mb-6">
                     <label className="form__label block text-lg font-semibold text-gray-700 mb-2">Bio*</label>
                     <textarea
@@ -255,27 +361,28 @@ const DoctorEditProfile = () => {
                 </div>
 
                 <div className='mb-5 flex items-center gap-3'>
-                        <figure className='w-[60px] h-[60px] rounded-full border-2 border-solid border-primaryColor flex items-center justify-center'>
-                            {previewURL ? (
-                                <img src={previewURL} alt="Profile" className='w-full h-full rounded-full' />
-                            ) : (
-                                <FaUser className='text-headingColor text-[40px]' />
-                            )}
-                        </figure>
-                        <div className='relative w-[130px] h-[50px]'>
-                            <input
-                                type="file"
-                                name='photo'
-                                id='customFile'
-                                onChange={handleFileInputChange}
-                                accept='.jpg, .png'
-                                className='absolute top-0 left-0 h-full opacity-0 cursor-pointer'
-                            />
-                            <label htmlFor="customFile" className='absolute top-0 left-0 h-full w-full flex items-center px-[0.75rem] py-[0.375rem] text-[15px] leading-6 overflow-hidden bg-[#0066ff46] text-headingColor font-semibold rounded-lg truncate cursor-pointer'>
-                                Upload Profile
-                            </label>
-                        </div>
+                    <figure className='w-[60px] h-[60px] rounded-full border-2 border-solid border-primaryColor flex items-center justify-center'>
+                        {previewURL ? (
+                            <img src={previewURL} alt="Profile" className='w-full h-full rounded-full' />
+                        ) : (
+                            <FaUser className='text-headingColor text-[40px]' />
+                        )}
+                    </figure>
+                    <div className='relative w-[130px] h-[50px]'>
+                        <input
+                            type="file"
+                            name='photo'
+                            id='customFile'
+                            onChange={handleFileInputChange}
+                            accept='.jpg, .png'
+                            className='absolute top-0 left-0 h-full opacity-0 cursor-pointer'
+                        />
+                        <label htmlFor="customFile" className='absolute top-0 left-0 h-full w-full flex items-center px-[0.75rem] py-[0.375rem] text-[15px] leading-6 overflow-hidden bg-[#0066ff46] text-headingColor font-semibold rounded-lg truncate cursor-pointer'>
+                            Upload Profile
+                        </label>
                     </div>
+                </div>
+
 
                 <div className="mt-8">
                     <button
@@ -295,35 +402,35 @@ export default DoctorEditProfile;
 
 
 
-    // const handleMultipleFileUpload = async (event) => {
-    //     setIsLoading(true);  // Start loading
-    //     const files = event.target.files;
-    //     const uploadedFiles = [];
+// const handleMultipleFileUpload = async (event) => {
+//     setIsLoading(true);  // Start loading
+//     const files = event.target.files;
+//     const uploadedFiles = [];
 
-    //     for (let i = 0; i < files.length; i++) {
-    //         const data = await uploadImageToCloudinary(files[i]);
-    //         if (data.url) {
-    //             uploadedFiles.push(data.url);
-    //         } else {
-    //             toast.error(`Failed to upload document ${i + 1}`);
-    //         }
-    //     }
+//     for (let i = 0; i < files.length; i++) {
+//         const data = await uploadImageToCloudinary(files[i]);
+//         if (data.url) {
+//             uploadedFiles.push(data.url);
+//         } else {
+//             toast.error(`Failed to upload document ${i + 1}`);
+//         }
+//     }
 
-    //     setUploadedDocuments([...uploadedDocuments, ...uploadedFiles]);
-    //     setFormData({ ...formData, documents: [...formData.documents, ...uploadedFiles] });
-    //     setIsLoading(false);  // Stop loading
-    // };
+//     setUploadedDocuments([...uploadedDocuments, ...uploadedFiles]);
+//     setFormData({ ...formData, documents: [...formData.documents, ...uploadedFiles] });
+//     setIsLoading(false);  // Stop loading
+// };
 
 
-    // const handleDeleteDocument = (index) => {
-    //     const updatedDocuments = uploadedDocuments.filter((_, i) => i !== index);
-    //     setUploadedDocuments(updatedDocuments);
-    //     setFormData({ ...formData, documents: updatedDocuments });
-    // };
+// const handleDeleteDocument = (index) => {
+//     const updatedDocuments = uploadedDocuments.filter((_, i) => i !== index);
+//     setUploadedDocuments(updatedDocuments);
+//     setFormData({ ...formData, documents: updatedDocuments });
+// };
 
 /////////////////////////// return 
 
-      {/* 
+{/* 
                     <div className='mb-5 flex items-center gap-3'>
                         <figure className='w-[60px] h-[60px] rounded-full border-2 border-solid border-primaryColor flex items-center justify-center'>
                             <IoIosImages className='color-primaryColor text-[40px]' />
@@ -344,8 +451,8 @@ export default DoctorEditProfile;
                         </div>
                     </div> */}
 
-                    {/* Render Uploaded Documents */}
-                    {/* {isLoading ? (
+{/* Render Uploaded Documents */ }
+{/* {isLoading ? (
                         <div className="flex justify-center items-center my-5">
                             <HashLoader color={"#0066ff"} loading={isLoading} size={50} />
                         </div>

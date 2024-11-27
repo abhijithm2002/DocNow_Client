@@ -10,62 +10,47 @@ const DoctorsList = () => {
     const [doctors, setDoctors] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
     const [selectedSpecialization, setSelectedSpecialization] = useState(specialization || '');
-    const [minPrice, setMinPrice] = useState('');
-    const [maxPrice, setMaxPrice] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(0);
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-    const itemsPerPage = 7;
+    const itemsPerPage = 8;
 
     useEffect(() => {
-        const listDoctors = async () => {
-            try {
-                const response = await fetchDoctorsList();
-                if (response.status === 200) {
-                    const { doctorData } = response.data;
-                    const filteredDoctors = doctorData.filter(doctor =>
-                        doctor.documents_verified === true && doctor.is_blocked === false
-                    );
-                    setDoctors(filteredDoctors);
-                } else {
-                    console.error('Failed to fetch doctors list');
-                }
-            } catch (error) {
-                console.error('Error fetching doctors:', error);
+        const fetchDoctors = async () => {
+          try {
+            const response = await fetchDoctorsList(currentPage, itemsPerPage, {
+              search: searchQuery,
+              specialization: selectedSpecialization,
+            });
+            if (response.status === 200) {
+              const { doctors, totalPages } = response.data.doctorData;
+              setDoctors(doctors);
+              setTotalPages(totalPages);
             }
+          } catch (error) {
+            console.error('Error fetching doctors:', error);
+          }
         };
-
-        listDoctors();
-    }, []);
-
-    const handleFilterChange = ({ specialization, minPrice, maxPrice }) => {
-        setSelectedSpecialization(specialization);
-        setMinPrice(minPrice);
-        setMaxPrice(maxPrice);
-    };
-
+      
+        fetchDoctors();
+      }, [currentPage, itemsPerPage, searchQuery, selectedSpecialization]);
+      
+    
+    
+      const handleFilterChange = (filter) => {
+        setSelectedSpecialization(filter.specialization || '');
+        setSearchQuery(filter.search || '');
+        setCurrentPage(1); // Reset to the first page
+      };
+      
+    
     const toggleSidebar = () => {
         setIsSidebarOpen(!isSidebarOpen);
     };
 
-    const filteredDoctors = doctors
-        .filter(doctor =>
-            doctor.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            doctor.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            doctor.expertise.toLowerCase().includes(searchQuery.toLowerCase())
-        )
-        .filter(doctor => selectedSpecialization === '' || doctor.expertise === selectedSpecialization)
-        .filter(doctor => {
-            const price = doctor.fee || 0;
-            return (
-                (!minPrice || price >= minPrice) &&
-                (!maxPrice || price <= maxPrice)
-            );
-        });
+   
 
-    const indexOfLastDoctor = currentPage * itemsPerPage;
-    const indexOfFirstDoctor = indexOfLastDoctor - itemsPerPage;
-    const currentDoctors = filteredDoctors.slice(indexOfFirstDoctor, indexOfLastDoctor);
-    const totalPages = Math.ceil(filteredDoctors.length / itemsPerPage);
+    
 
     const handlePageChange = (pageNumber) => {
         setCurrentPage(pageNumber);
@@ -122,9 +107,9 @@ const DoctorsList = () => {
 
                 {/* Doctor Cards */}
                 <div className="flex-grow">
-                    {filteredDoctors.length > 0 ? (
+                    {doctors.length > 0 ? (
                         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3  lg:grid-cols-4 gap-5">
-                            {currentDoctors.map(doctor => (
+                            {doctors.map(doctor => (
                                 <DoctorCard key={doctor._id} doctor={doctor} />
                             ))}
                         </div>
@@ -151,7 +136,7 @@ const DoctorsList = () => {
             </div>
 
             {/* Pagination */}
-            {filteredDoctors.length > 0 && (
+        {doctors.length > 0 && (
         <PaginationComponent
           currentPage={currentPage}
           totalPages={totalPages}

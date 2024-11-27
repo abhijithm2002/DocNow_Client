@@ -112,12 +112,26 @@ export const getFavouriteDoctors = async (patientId) => {
 }
 
 
-export const fetchDoctorsList = async () => {
+// export const fetchDoctorsList = async () => {
   
-  const response = await Api.get('api/patient/fetchDoctorList'); 
+//   const response = await Api.get('api/patient/fetchDoctorList'); 
   
+//   return response;
+// }
+export const fetchDoctorsList = async (page = 1, limit = 8, filters = {}) => {
+  const query = new URLSearchParams({
+    page: String(page),
+    limit: String(limit),
+    search: filters.search || '',
+    specialization: filters.specialization || '',
+  }).toString();
+
+  const response = await Api.get(`api/patient/fetchDoctorList?${query}`);
   return response;
-}
+};
+
+
+
 
 
 export const postRating = async(data) => {

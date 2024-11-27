@@ -24,7 +24,7 @@ const UserProfile = () => {
 
   const handleChatClick = () => {
     setTab('chat');
-    navigate('/chat'); // Navigate to chat route
+    navigate('/chat'); 
   };
 
 

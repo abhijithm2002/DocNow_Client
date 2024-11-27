@@ -106,3 +106,8 @@ export const markAsRead = async(notificationId) => {
   const response = await DoctorApi.patch(`api/doctor/markAsRead/${notificationId}/read`)
   response;
 }
+
+export const fetchAdminInDoctor = async() => {
+  const response = await DoctorApi.get(`api/doctor/fetchAdmin`)
+  return response;
+}

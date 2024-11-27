@@ -32,7 +32,7 @@ const DoctorAbout = ({ name, bio, education, experience,currentWorkingHospital }
                     </div>
                     <div className='bg-[#CCF0f3] text-irishBlueColor py-4 px-6 rounded shadow-md text-[16px] leading-6 font-semibold border border-transparent hover:border-red-200'>
                         <h4 className='text-lg font-bold'>Experience</h4>
-                        <p className='text-red-300'>{experience}</p>
+                        <p className='text-red-300'>{experience} years</p>
                     </div>
                 </div>
 

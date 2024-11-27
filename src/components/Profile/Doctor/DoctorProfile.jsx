@@ -83,7 +83,7 @@ const DoctorProfile = () => {
                         </div>
                       </div>
                       <div className='mt-7'>
-                        <DoctorAbout name={doctor.name} bio={doctor.bio} education={doctor.education} experience={doctor.experience} currentWorkingHospital={doctor.currentWorkingHospital} />
+                        <DoctorAbout name={doctor.name} bio={doctor.bio} education={doctor.education} experience={doctor.experienceYears} currentWorkingHospital={doctor.currentWorkingHospital} />
                       </div>
                     </div>
                   )}

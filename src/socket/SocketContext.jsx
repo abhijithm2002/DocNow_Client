@@ -33,6 +33,7 @@ export const SocketContextProvider = ({ children }) => {
             const newSocket = io(CONSTANTS_COMMON.API_BASE_URL, {
                 withCredentials: true,
                 query: { userId },
+                transports:["websocket"],
             });
 
             setSocket(newSocket);
@@ -138,10 +139,10 @@ export const SocketContextProvider = ({ children }) => {
 
     
     const sendnewMessage = useCallback(
-        (to, from, message) => {
+        (to, from, message, senderName) => {
 
             if (socket) {
-                socket.emit("sendnewMessage", { to, from, message });
+                socket.emit("sendnewMessage", { to, from, message, senderName });
             }
         },
         [socket]

@@ -7,6 +7,7 @@ import { Tooltip } from '@nextui-org/react';
 import { IoIosNotifications } from "react-icons/io";
 import { Badge } from '@nextui-org/react';
 import { useNotifications } from '../../socket/hooks/useNotifications';
+import { FaFacebookMessenger } from "react-icons/fa";
 
 const navLinks = [
   { path: '/', display: 'Home' },
@@ -21,7 +22,7 @@ const Header = () => {
 
   const { user, isAuthenticated } = useSelector((state) => state.auth);
   const { doctor, isDoctorAuthenticated } = useSelector((state) => state.doctor);
-  const { unreadCount } = useNotifications( doctor?._id || user?._id);
+  const { unreadCount } = useNotifications(doctor?._id || user?._id);
 
   const handleStickyHeader = () => {
     const scrollHandler = () => {
@@ -86,12 +87,18 @@ const Header = () => {
                     </div>
                   </Tooltip>
                 </Link>
-                  <Link to={`/notifications`} className="flex items-center pr-6">
-                    <Badge content={unreadCount} shape="circle" color="danger" >
-                      <IoIosNotifications size={30} color='black'  />
-                    </Badge>
-                  </Link>
-                
+                <Link to={`/notifications`} className="flex items-center pr-6">
+                  <Badge content={unreadCount} shape="circle" color="danger" size='sm'>
+                    <IoIosNotifications size={30} color='gray' />
+                  </Badge>
+                </Link>
+                <Link to={`/chat`} className='flex items-center pr-6'>
+                  <Badge content={0} shape="circle" color="danger" size='sm' >
+                    <FaFacebookMessenger size={25} color='gray' />
+                  </Badge>
+
+                </Link>
+
               </div>
             ) : isDoctorAuthenticated && doctor ? (
               <div className='flex items-center gap-2'>
@@ -105,11 +112,11 @@ const Header = () => {
                     <span className='text-gray-800 text-[16px] leading-7 font-[600] pr-5'>{doctor.name}</span>
                   </Link>
                 )}
-                  <Link to={`/doctor/notifications`}  className="flex items-center pr-6">
-                    <Badge content={unreadCount} shape="circle" color="danger" >
-                      <IoIosNotifications size={30} color='black'  />
-                    </Badge>
-                  </Link>
+                <Link to={`/doctor/notifications`} className="flex items-center pr-6">
+                  <Badge content={unreadCount} shape="circle" color="danger" >
+                    <IoIosNotifications size={30} color='black' />
+                  </Badge>
+                </Link>
               </div>
             ) : (
               <Link to='/login'>

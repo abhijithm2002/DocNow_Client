@@ -12,7 +12,7 @@ const BookingPage = ({ doctor }) => {
   const { doctorId } = useParams();
   const [fetchedShifts, setFetchedShifts] = useState([]);
   const [bookedShifts, setBookedShifts] = useState([]);
-  const [canceledShifts, setCanceledShifts] = useState([]); // New state for canceled shifts
+  const [canceledShifts, setCanceledShifts] = useState([]);
   const [selectedDateForView, setSelectedDateForView] = useState(null);
   const [selectedDay, setSelectedDay] = useState('');
   const [selectedShift, setSelectedShift] = useState(null);
@@ -32,10 +32,10 @@ const BookingPage = ({ doctor }) => {
       const fetchedBookingsResponse = await fetchBookings(doctorId, formattedDate);
       const fetchedBookedSlots = fetchedBookingsResponse.data.bookedSlots;
 
-
       const booked = fetchedBookedSlots
         .filter(booking => booking.status === 'Active')
         .map(booking => booking.shift);
+
       const canceled = fetchedBookedSlots
         .filter(booking => booking.status === 'Canceled')
         .map(booking => booking.shift);
@@ -121,20 +121,20 @@ const BookingPage = ({ doctor }) => {
                       <li
                         key={index}
                         onClick={() => handleShiftSelection(shift)}
-                        className={`p-3 border rounded-lg transition duration-300 ease-in-out transform hover:-translate-y-1 cursor-pointer ${bookedShifts.includes(shift)
+                        className={`p-3 border rounded-lg transition duration-300 ease-in-out transform hover:-translate-y-1 cursor-pointer ${
+                          bookedShifts.includes(shift)
                             ? 'bg-red-500 text-white cursor-not-allowed'
                             : selectedShift === shift
-                              ? 'bg-blue-500 text-white' // Ensure selected shift is blue
-                              : canceledShifts.includes(shift)
-                                ? 'bg-green-500 text-white' // Display canceled shifts as green when not selected
-                                : 'bg-green-500 text-white'
-                          }`}
+                            ? 'bg-blue-500 text-white' 
+                            : canceledShifts.includes(shift)
+                            ? 'bg-gray-400 text-white'
+                            : 'bg-green-500 text-white'
+                        }`}
                       >
                         {shift} - {bookedShifts.includes(shift) ? 'Not Available' : 'Available'}
                       </li>
                     ))}
                   </ul>
-
                 ) : (
                   <p className="text-base leading-relaxed text-gray-500">
                     No slots available for this date.
@@ -166,7 +166,7 @@ const BookingPage = ({ doctor }) => {
           </div>
         </div>
       )}
-     
+      <Toaster />
     </>
   );
 };

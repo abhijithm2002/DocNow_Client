@@ -4,26 +4,35 @@ import MessageSkeletons from "../Skeleton/MessageSkeletons";
 import Message from "./Message";
 import useListenMessages from "../../../../socket/hooks/useListenMessages";
 import { useConversation } from "../../../../socket/zustand/useConversation";
+import { useSelector } from "react-redux";
 
 function Messages() {
   const { selectedConversation } = useConversation();
-  const { messages = [], loading } = useGetMessage();
+  const { messages = [], loading } = useGetMessage(); 
   useListenMessages();
-  const lastMessageRef = useRef(null);
+  const lastMessageRef = useRef();
+  const authUser = useSelector((state) => state.doctor.doctor);
+
+  // Filter messages belonging to the selected conversation
+  const filteredMessages = messages.filter(
+    (message) =>
+      (message.senderId === selectedConversation._id ||
+        message.senderId === authUser._id) &&
+      (message.recieverId === authUser._id ||
+        message.recieverId === selectedConversation._id)
+  );
 
   useEffect(() => {
     setTimeout(() => {
-      if (lastMessageRef.current) {
-        lastMessageRef.current.scrollIntoView({ behavior: "smooth" });
-      }
+      lastMessageRef.current?.scrollIntoView({ behavior: "smooth" });
     }, 100);
-  }, [messages]);
+  }, [filteredMessages]);
 
   return (
-    <div className="flex-1 overflow-y-auto px-4">
-      {!loading && messages.length > 0 ? (
-        messages.map((message, index) => (
-          <div key={message._id} ref={index === messages.length - 1 ? lastMessageRef : null}>
+    <div className="px-4 flex-1 overflow-y-auto ">
+      {!loading && filteredMessages.length > 0 ? (
+        filteredMessages.map((message) => (
+          <div key={message._id} ref={lastMessageRef}>
             <Message message={message} />
           </div>
         ))
@@ -35,5 +44,6 @@ function Messages() {
     </div>
   );
 }
+
 
 export default Messages;

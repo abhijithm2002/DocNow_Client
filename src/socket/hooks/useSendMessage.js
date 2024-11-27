@@ -22,10 +22,11 @@ const useSendMessage = () => {
             
         try {
             let senderId = user ? user._id : doctor ? doctor._id : null;
-            
+            let senderName = user? user.name : doctor ? doctor.name : null;
              if (!senderId) throw new Error("User ID not found");
-             sendnewMessage(selectedConversation?._id, senderId, messageContent);
+             sendnewMessage(selectedConversation?._id, senderId, messageContent , senderName);
           const formData = new FormData();
+          formData.append('senderName', senderName);
             if(typeof messageContent == 'string') {
                 formData.append('message', messageContent)
             } else if (messageContent instanceof File) {

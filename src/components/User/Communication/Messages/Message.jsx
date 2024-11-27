@@ -19,24 +19,9 @@ function Message({ message }) {
   // Check if selectedConversation and its participants are defined
 
 
-  const showThisMessage =
-    (message.senderId === selectedConversation._id ||
-      message.senderId === authUser._id) &&
-    (message.recieverId === authUser._id ||
-      message.recieverId === selectedConversation._id);
-
-
-
-
-
-
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  if (!showThisMessage) {
-    
-  } else {
-    
-  }
+
   
 
   const formattedTime = format(new Date(message.createdAt), "p");

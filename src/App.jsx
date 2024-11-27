@@ -5,11 +5,13 @@ import RouteFile from './Routes/userRoutes/RouteFile';
 import DoctorRoute from './Routes/DoctorRoutes/DoctorRoute';
 import AdminRoutes from './Routes/AdminRoutes/AdminRoutes';
 import { Toaster } from 'react-hot-toast';
+import { Toaster as SonnerToaster } from "sonner";
 
 const App = () => {
   
   return (
     <>
+    <SonnerToaster />
     <Toaster position='top center' reverseOrder={false}/>
     <Router>
       <Routes>
