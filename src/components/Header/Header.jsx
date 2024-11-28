@@ -65,9 +65,11 @@ const Header = () => {
             {isAuthenticated && user ? (
               <div className='flex items-center gap-2'>
                 {user.photo && (
+                  <Link to={`/doctor/profile`}>
                   <figure className='w-[35px] h-[35px] rounded-full'>
                     <img src={user.photo} className='w-full h-full rounded-full' alt="User Avatar" />
                   </figure>
+                  </Link>
                 )}
                 {user.name && (
                   <Link to={`/user-profile`}>
@@ -103,9 +105,12 @@ const Header = () => {
             ) : isDoctorAuthenticated && doctor ? (
               <div className='flex items-center gap-2'>
                 {doctor.photo && (
-                  <figure className='w-[35px] h-[35px] rounded-full'>
+                  <Link to={`/doctor/profile`}>
+                   <figure className='w-[35px] h-[35px] rounded-full'>
                     <img src={doctor.photo} className='w-full h-full rounded-full' alt="Doctor Avatar" />
                   </figure>
+                  </Link>
+                 
                 )}
                 {doctor.name && (
                   <Link to={`/doctor/profile`}>
@@ -120,9 +125,12 @@ const Header = () => {
               </div>
             ) : (
               <Link to='/login'>
-                <button className='bg-taupe py-2 px-5 text-white font-[600] h-[34px] flex items-center justify-center rounded-[50px]'>
+                <div className='px-5'>
+                <button className='bg-taupe py-2  px-5 text-white font-[600] h-[34px] flex items-center justify-center rounded-[50px]'>
                   Login
                 </button>
+                </div>
+               
               </Link>
             )}
             <span className='lg:hidden absolute right-2' onClick={toggleMenu}>

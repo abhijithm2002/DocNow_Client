@@ -14,12 +14,12 @@ const DoctorsList = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(0);
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-    const [loading, setLoading] = useState(false); // New loading state
+    const [loading, setLoading] = useState(false); 
     const itemsPerPage = 8;
 
     useEffect(() => {
         const fetchDoctors = async () => {
-            setLoading(true); // Set loading to true when fetching starts
+            setLoading(true); 
             try {
                 const response = await fetchDoctorsList(currentPage, itemsPerPage, {
                     search: searchQuery,
@@ -33,7 +33,7 @@ const DoctorsList = () => {
             } catch (error) {
                 console.error('Error fetching doctors:', error);
             } finally {
-                setLoading(false); // Set loading to false when fetching completes
+                setLoading(false);
             }
         };
 
@@ -43,7 +43,7 @@ const DoctorsList = () => {
     const handleFilterChange = (filter) => {
         setSelectedSpecialization(filter.specialization || '');
         setSearchQuery(filter.search || '');
-        setCurrentPage(1); // Reset to the first page
+        setCurrentPage(1); 
     };
 
     const toggleSidebar = () => {
@@ -56,7 +56,6 @@ const DoctorsList = () => {
 
     return (
         <div className="flex flex-col">
-            {/* Search Bar */}
             <div className="flex items-center justify-center flex-col md:flex-row flex-wrap space-y-4 md:space-y-0 py-4 bg-softGray px-5">
                 <div className="flex items-center space-x-4 w-full max-w-md">
                     <button
@@ -109,7 +108,6 @@ const DoctorsList = () => {
                 </div>
             </div>
 
-            {/* Main Content */}
             <div className="flex flex-col md:flex-row gap-4 mt-4 px-4 md:px-8 lg:px-16">
                 <div
                     className={`md:w-1/4 w-full fixed md:relative z-20 transition-transform transform ${
@@ -118,7 +116,6 @@ const DoctorsList = () => {
                 >
                     <div className="relative md:static">
                         <div className="md:block">
-                            {/* Filter Options */}
                             <div
                                 className={`bg-white rounded-lg shadow-lg p-4 md:p-0 ${
                                     isSidebarOpen ? 'block' : 'hidden'
@@ -130,9 +127,8 @@ const DoctorsList = () => {
                     </div>
                 </div>
 
-                {/* Doctor Cards */}
                 <div className="flex-grow">
-                    {loading ? ( // Show loading spinner if loading
+                    {loading ? ( 
                         <Loading />
                     ) : doctors.length > 0 ? (
                         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-5">

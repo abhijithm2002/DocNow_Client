@@ -69,12 +69,12 @@ function Signup() {
                             <img src={signupImg} alt="Signup" className='w-full h-full object-cover rounded-l-lg' />
                         </figure>
                     </div>
-                    <div className="lg:pl-16 py-10 rounded-r-lg bg-white shadow-lg">
+                    <div className="lg:pl-16 py-10 rounded-r-lg bg-white shadow-lg px-3 sm:mt-9">
                         <h3 className='text-headingColor text-[22px] leading-9 font-bold mb-10'>
                             Create an <span className='text-primaryColor'>account</span>
                         </h3>
                         <form onSubmit={formik.handleSubmit}>
-                            <div className='mb-5'>
+                            <div className='mb-5 '>
                                 <input
                                     type="text"
                                     placeholder='Full Name'

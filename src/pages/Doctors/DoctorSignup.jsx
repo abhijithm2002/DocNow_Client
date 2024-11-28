@@ -68,7 +68,7 @@ function DoctorSignup() {
                             <img src={signupImg} alt="Signup" className='w-full h-full object-cover rounded-l-lg' />
                         </figure>
                     </div>
-                    <div className="lg:pl-16 py-10 rounded-r-lg bg-white shadow-lg">
+                    <div className="lg:pl-16 py-10 rounded-r-lg bg-white shadow-lg px-5">
                         <h3 className='text-headingColor text-[22px] leading-9 font-bold mb-10'>
                             Create an <span className='text-primaryColor'>account</span>
                         </h3>
@@ -208,7 +208,7 @@ function DoctorSignup() {
                                     className='w-full pr-4 py-3 border-b border-solid border-[#0066ff61] focus:outline-none focus:border-b-primaryColor text-[16px] leading-7 text-headingColor placeholder:text-textColor cursor-pointer'
                                 />
                                  <div onClick={toggleShowConfirmPassword} className='absolute inset-y-0 right-0 flex items-center px-3 cursor-pointer'>
-                                    {toggleShowConfirmPassword ? <IoEyeOff size={20}/> : <IoEye size={20}/>}
+                                    {showConfirmPassword ? <IoEyeOff size={20}/> : <IoEye size={20}/>}
                                 </div>
                                 {formik.touched.confirmpassword && formik.errors.confirmpassword ? (
                                     <div className="text-red-500 text-sm">{formik.errors.confirmpassword}</div>
