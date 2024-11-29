@@ -37,22 +37,30 @@ DoctorApi.interceptors.request.use(
   
       if (error.response && error.response.status === 401 && !originalRequest._retry) {
         originalRequest._retry = true;
+      
+        // Handle blocked users explicitly
         if (error.response.data.message === "User has been blocked") {
           store.dispatch(logout());
           return Promise.reject(error);
         }
-  
+      
         try {
           const { doctor } = store.getState().doctor;
           const { accessToken } = await refreshAccessToken();
-          store.dispatch(setCredentials({ accessToken, doctor }));
-          originalRequest.headers.authorization = `Bearer ${accessToken}`;
-          return DoctorApi(originalRequest);
+      
+          if (accessToken) {
+            store.dispatch(setCredentials({ accessToken, doctor }));
+            originalRequest.headers.authorization = `Bearer ${accessToken}`;
+            return DoctorApi(originalRequest);
+          } else {
+            throw new Error("Token refresh failed");
+          }
         } catch (refreshError) {
           store.dispatch(logout());
           return Promise.reject(refreshError);
         }
       }
+      
       return Promise.reject(error);
     }
   );

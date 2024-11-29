@@ -1,5 +1,4 @@
 import Api, { authInstance } from '../../api/axiosInstance'
-import MyBookings from '../../components/Profile/User/MyBookings';
 
 export const editProfile = async (formData) => {
   

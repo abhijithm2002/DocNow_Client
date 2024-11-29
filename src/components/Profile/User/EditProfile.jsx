@@ -9,7 +9,7 @@ import HashLoader from 'react-spinners/HashLoader';
 import { setCredentials } from '../../../ReduxStore/authSlice';
 
 const EditProfile = () => {
-  const { user } = useSelector((state) => state.auth);
+  const { user , accessToken} = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const [previewURL, setPreviewURL] = useState('');
   const [loading, setLoading] = useState(false);
@@ -33,8 +33,7 @@ const EditProfile = () => {
         if (response.status === 200) {
           toast.success('Profile updated successfully!');
           const updatedUser = { ...user, ...values };
-          dispatch(setCredentials({ user: updatedUser, accessToken: user.accessToken }));
-          localStorage.setItem('userData', JSON.stringify(updatedUser));
+          dispatch(setCredentials({ user: updatedUser, accessToken: accessToken }));
           setPreviewURL('');
         } else {
           toast.error('Failed to update profile');

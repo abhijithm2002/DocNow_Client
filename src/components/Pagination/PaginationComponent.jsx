@@ -7,7 +7,7 @@ const PaginationComponent = ({ currentPage, totalPages, onPageChange }) => {
   };
 
   return (
-    <div className="flex justify-center mt-8">
+    <div className="flex justify-center mt-8 " style={{ zIndex: 1 }}>
       <Pagination
         isCompact
         showControls

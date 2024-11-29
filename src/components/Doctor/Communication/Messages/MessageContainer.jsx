@@ -122,3 +122,130 @@ const NoChatSelected = () => {
     </div>
   );
 };
+
+
+
+// import React, { useEffect } from "react";
+// import { Link, useNavigate } from "react-router-dom";
+// import { TiMessages } from "react-icons/ti";
+// import { FaVideo } from "react-icons/fa";
+// import { useSelector } from "react-redux";
+// import Messages from "./Messages";
+// import MessageInput from "./MessageInput";
+// import { useSocketContext } from "../../../../socket/SocketContext";
+// import { useConversation } from "../../../../socket/zustand/useConversation";
+// import TypingAnimation from "../../../Animation/TypingAnimation";
+// import { updateBooking } from "../../../../services/Doctor/doctorService";
+// import toast, {Toaster} from 'react-hot-toast'
+// import Swal from "sweetalert2";
+// import { Button } from '@nextui-org/react'
+
+// function MessageContainer({bookingId}) {
+//   const navigate = useNavigate();
+//   const { selectedConversation, setSelectedConversation } = useConversation(); 
+//   const {onlineUsers, typingUsers} = useSocketContext();
+  
+//   const handleConsultationCompleted = async () => {
+//     try {
+//       const confirmed = await Swal.fire({
+//         title: "Are you sure?",
+//         text: "Once completed, this action cannot be undone!",
+//         icon: "warning",
+//         showCancelButton: true,
+//         confirmButtonColor: "#3085d6",
+//         cancelButtonColor: "#d33",
+//         confirmButtonText: "Yes, mark it as completed!",
+//       });
+
+//       if (confirmed.isConfirmed) {
+//         const response = await updateBooking(bookingId._id)
+//         if (response.status === 200) {
+//           toast.success("Consultation marked as completed successfully");
+//           navigate("/doctor/profile?tab=appointments");
+//         } else {
+//           toast.error("Failed to mark consultation as completed");
+//         }
+//       }
+//     } catch (error) {
+//       console.error("Error marking consultation as completed:", error);
+//       toast.error("Failed to mark consultation as completed");
+//     }
+//   };
+
+//   useEffect(() => {
+//     return () => setSelectedConversation(null); 
+//   }, [setSelectedConversation]);
+  
+//   const isOnline = onlineUsers.includes(selectedConversation?._id);
+
+//   return (
+//     <div className="flex flex-col h-full overflow-hidden">
+//       <Toaster position="top-center"/>
+//       {!selectedConversation ? (
+//         <NoChatSelected />
+//       ) : (
+//         <>
+//           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-4 bg-blue-300 text-white">
+//             <div className="flex items-center mb-2 sm:mb-0">
+//               <img
+//                 src={selectedConversation.photo || "/assets/user.png"}
+//                 alt="User"
+//                 className="w-10 h-10 sm:w-12 sm:h-12 rounded-full mr-4"
+//               />
+//               <div className="flex flex-col">
+//                 <h3 className="text-base sm:text-lg font-semibold">{selectedConversation?.name}</h3>
+//                 <span className="text-xs sm:text-sm text-white-300">
+//                   {
+//                     typingUsers.some(
+//                       (user) => user?.userId === selectedConversation._id
+//                     ) ? <TypingAnimation /> : isOnline ? "Online" : "Offline"
+//                   }
+//                 </span>
+//               </div>
+//             </div>
+//             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2">
+//               <Button 
+//                 onClick={handleConsultationCompleted} 
+//                 className="w-full sm:w-auto bg-green-500 hover:bg-green-600 text-white"
+//               >
+//                 Completed
+//               </Button>
+//               <Link
+//                 to={"/doctor/video-call"}
+//                 state={{data: selectedConversation?._id}}
+//                 className="w-full sm:w-auto"
+//               >
+//                 <Button className="w-full flex items-center justify-center gap-2 bg-blue-500 hover:bg-blue-600 text-white">
+//                   <FaVideo />
+//                   Video Call
+//                 </Button>
+//               </Link>
+//             </div>
+//           </div>
+//           <div className="flex-1 overflow-y-auto">
+//             <Messages />
+//           </div>
+//           <div className="w-full border-t">
+//             <MessageInput />
+//           </div>
+//         </>
+//       )}
+//     </div>
+//   );
+// }
+
+// export default MessageContainer;
+
+// const NoChatSelected = () => {
+//   const authUser = useSelector((state) => state.doctor.doctorData);
+//   return (
+//     <div className="flex items-center justify-center w-full h-full bg-black">
+//       <div className="px-4 text-center sm:text-xl text-green-200 font-semibold flex flex-col items-center gap-2">
+//         <p>Welcome {authUser?.name}</p>
+//         <p>Select a chat to start messaging</p>
+//         <TiMessages className="text-3xl md:text-6xl text-center" />
+//       </div>
+//     </div>
+//   );
+// };
+

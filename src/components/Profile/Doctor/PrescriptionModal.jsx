@@ -60,7 +60,7 @@ const PrescriptionModal = ({ isOpen, onClose, appointment }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center">
+    <div className="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center z-50">
       <Toaster position='top-center'/>
       <div className="bg-white rounded-lg w-[90%] sm:w-[400px] md:w-full max-w-lg p-6 shadow-lg overflow-hidden">
         <div className="flex justify-between items-center mb-4">
