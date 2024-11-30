@@ -65,7 +65,7 @@ const Header = () => {
             {isAuthenticated && user ? (
               <div className='flex items-center gap-2'>
                 {user.photo && (
-                  <Link to={`/doctor/profile`}>
+                  <Link to={`/user-profile`}>
                   <figure className='w-[35px] h-[35px] rounded-full'>
                     <img src={user.photo} className='w-full h-full rounded-full' alt="User Avatar" />
                   </figure>
@@ -95,9 +95,8 @@ const Header = () => {
                   </Badge>
                 </Link>
                 <Link to={`/chat`} className='flex items-center pr-6'>
-                  <Badge content={0} shape="circle" color="danger" size='sm' >
+                 
                     <FaFacebookMessenger size={25} color='gray' />
-                  </Badge>
 
                 </Link>
 

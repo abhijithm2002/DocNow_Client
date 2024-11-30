@@ -6,11 +6,13 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { CalendarX } from 'lucide-react';
 import PrescriptionModal from '../Doctor/PrescriptionModal';
+import Loading from '../../Loader/Loading';
 
 const Appointments = () => {
   const [appointments, setAppointments] = useState([]);
   const [isPrescriptionModalOpen, setPrescriptionModalOpen] = useState(false);
   const [selectedAppointment, setSelectedAppointment] = useState(null);
+  const [loading, setLoading] = useState(false); 
 
   const doctorId = useSelector((state) => state.doctor.doctor?._id);
   const [currentPage, setCurrentPage] = useState(1);
@@ -22,6 +24,7 @@ const Appointments = () => {
 
   useEffect(() => {
     const getAppointments = async () => {
+      setLoading(true); 
       try {
         const response = await fetchAppointments(doctorId);
         const fetchedAppointments = response.data.data;
@@ -41,7 +44,9 @@ const Appointments = () => {
         });
         setAppointments(updatedAppointments);
       } catch (error) {
-        
+        console.error('Error fetching appointments:', error);
+      } finally {
+        setLoading(false); 
       }
     };
 
@@ -63,7 +68,9 @@ const Appointments = () => {
 
   return (
     <>
-      {currentAppointments && currentAppointments.length > 0 ? (
+      {loading ? (
+        <Loading />
+      ) : currentAppointments && currentAppointments.length > 0 ? (
         <div className="relative overflow-x-auto font-sans px-2 sm:px-4 md:px-6 lg:px-8">
           <table className="min-w-full text-xs sm:text-sm text-left text-gray-700">
             <thead className="text-xs uppercase bg-gray-100 text-gray-600">
@@ -139,14 +146,12 @@ const Appointments = () => {
         </div>
       )}
 
-      {/* Prescription Modal */}
       {isPrescriptionModalOpen && (
         <PrescriptionModal
-        isOpen={isPrescriptionModalOpen}
-        onClose={() => setPrescriptionModalOpen(false)}
-        appointment={selectedAppointment}
-      />
-      
+          isOpen={isPrescriptionModalOpen}
+          onClose={() => setPrescriptionModalOpen(false)}
+          appointment={selectedAppointment}
+        />
       )}
     </>
   );

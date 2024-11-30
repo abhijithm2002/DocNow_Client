@@ -123,6 +123,11 @@ export const fetchDoctorsList = async (page = 1, limit = 8, filters = {}) => {
     limit: String(limit),
     search: filters.search || '',
     specialization: filters.specialization || '',
+    minPrice: filters.minPrice || '',
+    maxPrice: filters.maxPrice || '',
+    state: filters.state || '',
+    experienceYears: filters.experienceYears || '',
+
   }).toString();
 
   const response = await Api.get(`api/patient/fetchDoctorList?${query}`);

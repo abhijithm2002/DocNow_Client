@@ -11,6 +11,10 @@ const DoctorsList = () => {
     const [doctors, setDoctors] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
     const [selectedSpecialization, setSelectedSpecialization] = useState(specialization || '');
+    const [minPrice, setMinPrice] = useState('');
+    const [maxPrice, setMaxPrice] = useState('');
+    const [state, setState] = useState('');
+    const [experienceYears, setExperienceYears] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(0);
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -19,12 +23,17 @@ const DoctorsList = () => {
 
     useEffect(() => {
         const fetchDoctors = async () => {
-            setLoading(true); 
+            setLoading(true);
             try {
                 const response = await fetchDoctorsList(currentPage, itemsPerPage, {
                     search: searchQuery,
                     specialization: selectedSpecialization,
+                    minPrice,
+                    maxPrice,
+                    state,
+                    experienceYears,
                 });
+                console.log('Fetched doctors:', response.data.doctorData?.doctors); // Debug
                 if (response.status === 200) {
                     const { doctors, totalPages } = response.data.doctorData;
                     setDoctors(doctors);
@@ -36,15 +45,20 @@ const DoctorsList = () => {
                 setLoading(false);
             }
         };
-
+    
         fetchDoctors();
-    }, [currentPage, itemsPerPage, searchQuery, selectedSpecialization]);
+    }, [currentPage, itemsPerPage, searchQuery, selectedSpecialization, minPrice, maxPrice, state, experienceYears]);
 
     const handleFilterChange = (filter) => {
         setSelectedSpecialization(filter.specialization || '');
         setSearchQuery(filter.search || '');
+        setMinPrice(filter.minPrice || '');
+        setMaxPrice(filter.maxPrice || '');
+        setState(filter.state || '');
+        setExperienceYears(filter.experienceYears || '');
         setCurrentPage(1); 
     };
+    
 
     const toggleSidebar = () => {
         setIsSidebarOpen(!isSidebarOpen);
