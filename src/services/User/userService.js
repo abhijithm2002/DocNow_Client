@@ -155,7 +155,11 @@ export const fetchUserNotifications = async(patientId) => {
 
 
 export const markAsRead = async(notificationId) => {
-  console.log('notification id ', notificationId)
   const response = await Api.patch(`api/patient/markAsRead/${notificationId}/read`)
   response;
+}
+
+export const postContactData = async(formData) => {
+  const response = await Api.post (`api/patient/postContactData`, formData);
+  return response
 }

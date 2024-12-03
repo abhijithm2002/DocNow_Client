@@ -64,6 +64,8 @@ import Footer from '../../components/Footer/Footer';
 import CallReject from '../../components/User/CallReject';
 import BookingDetails from '../../components/Profile/User/BookingDetails';
 import NotificationPage from '../../components/Profile/User/NotificationPage';
+import AboutPage from '../../pages/Users/AboutPage';
+import ContactPage from '../../pages/Users/ContactPage';
 // Animation variants for the input div
 const divVariants = {
   hidden: {
@@ -348,6 +350,46 @@ const RouteFile = () => {
                 <NotificationPage />
               </motion.div>
             </>
+          }
+        />
+        <Route
+          path="/about-us"
+          element={
+            <>
+              <Header />
+
+              <motion.div
+                initial="hidden"
+                animate="visible"
+                exit="hidden"
+                variants={divVariants}
+                transition={divTransition}
+                className="w-full h-screen"
+              >
+                <AboutPage />
+              </motion.div>
+            </>
+            
+          }
+        />
+         <Route
+          path="/contact"
+          element={
+            <>
+              <Header />
+
+              <motion.div
+                initial="hidden"
+                animate="visible"
+                exit="hidden"
+                variants={divVariants}
+                transition={divTransition}
+                className="w-full h-screen"
+              >
+                <ContactPage />
+              </motion.div>
+            </>
+            
           }
         />
       </Routes>

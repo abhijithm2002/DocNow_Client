@@ -12,7 +12,7 @@ import { FaFacebookMessenger } from "react-icons/fa";
 const navLinks = [
   { path: '/', display: 'Home' },
   { path: '/doctors', display: 'Doctors' },
-  { path: '/services', display: 'Services' },
+  { path: '/about-us', display: 'Services' },
   { path: '/contact', display: 'Contact' },
 ];
 
