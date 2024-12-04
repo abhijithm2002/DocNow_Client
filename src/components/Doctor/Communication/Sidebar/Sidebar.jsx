@@ -8,7 +8,7 @@ function Sidebar() {
         <h2>Chats</h2>
         <button className="text-white">New</button>
       </div>
-      <SearchInput />
+      {/* <SearchInput /> */}
       <div className="divider px-3"></div>
       <Conversations />
     </div>
