@@ -53,13 +53,38 @@ const FilterSidebar = ({ onFilterChange }) => {
                     onBlur={formik.handleBlur}
                     className="w-full mt-2 p-3 border border-gray-300 rounded-lg bg-gray-50"
                 >
-                    <option value="">All Specializations</option>
-                    <option value="Cardiology">Cardiology</option>
-                    <option value="Dermatology">Dermatology</option>
-                    <option value="Neurology">Neurology</option>
-                    <option value="Pediatrics">Pediatrics</option>
-                    <option value="Psychiatry">Psychiatry</option>
-                    <option value="Surgery">Surgery</option>
+                    <option value="" label="Select specialization" />
+                    <option value="Allergy and Immunology" label="Allergy and Immunology" />
+                    <option value="Anesthesiology" label="Anesthesiology" />
+                    <option value="Cardiology" label="Cardiology" />
+                    <option value="Critical Care Medicine" label="Critical Care Medicine" />
+                    <option value="Dentistry" label="Dentistry" />
+                    <option value="Dermatology" label="Dermatology" />
+                    <option value="Endocrinology" label="Endocrinology" />
+                    <option value="Family Medicine" label="Family Medicine" />
+                    <option value="Gastroenterology" label="Gastroenterology" />
+                    <option value="Geriatrics" label="Geriatrics" />
+                    <option value="Hematology" label="Hematology" />
+                    <option value="Infectious Disease" label="Infectious Disease" />
+                    <option value="Internal Medicine" label="Internal Medicine" />
+                    <option value="Nephrology" label="Nephrology" />
+                    <option value="Neurology" label="Neurology" />
+                    <option value="Obstetrics and Gynecology" label="Obstetrics and Gynecology" />
+                    <option value="Oncology" label="Oncology" />
+                    <option value="Ophthalmology" label="Ophthalmology" />
+                    <option value="Orthopedics" label="Orthopedics" />
+                    <option value="Otolaryngology" label="Otolaryngology" />
+                    <option value="Pediatrics" label="Pediatrics" />
+                    <option value="Physical Medicine and Rehabilitation" label="Physical Medicine and Rehabilitation" />
+                    <option value="Plastic Surgery" label="Plastic Surgery" />
+                    <option value="Psychiatry" label="Psychiatry" />
+                    <option value="Pulmonology" label="Pulmonology" />
+                    <option value="Radiology" label="Radiology" />
+                    <option value="Rheumatology" label="Rheumatology" />
+                    <option value="Surgery" label="Surgery" />
+                    <option value="Urology" label="Urology" />
+                    <option value="Vascular Surgery" label="Vascular Surgery" />
+
                 </select>
             </div>
 
@@ -77,8 +102,8 @@ const FilterSidebar = ({ onFilterChange }) => {
                             onBlur={formik.handleBlur}
                             placeholder="Min"
                             className={`w-full p-3 border rounded-lg bg-gray-50 ${formik.touched.minPrice && formik.errors.minPrice
-                                    ? 'border-red-500'
-                                    : 'border-gray-300'
+                                ? 'border-red-500'
+                                : 'border-gray-300'
                                 }`}
                         />
                         {formik.touched.minPrice && formik.errors.minPrice && (
@@ -95,8 +120,8 @@ const FilterSidebar = ({ onFilterChange }) => {
                             onBlur={formik.handleBlur}
                             placeholder="Max"
                             className={`w-full p-3 border rounded-lg bg-gray-50 ${formik.touched.maxPrice && formik.errors.maxPrice
-                                    ? 'border-red-500'
-                                    : 'border-gray-300'
+                                ? 'border-red-500'
+                                : 'border-gray-300'
                                 }`}
                         />
                         {formik.touched.maxPrice && formik.errors.maxPrice && (
@@ -169,8 +194,8 @@ const FilterSidebar = ({ onFilterChange }) => {
                     onBlur={formik.handleBlur}
                     placeholder="Enter Years"
                     className={`w-full p-3 border rounded-lg bg-gray-50 ${formik.touched.experienceYears && formik.errors.experienceYears
-                            ? 'border-red-500'
-                            : 'border-gray-300'
+                        ? 'border-red-500'
+                        : 'border-gray-300'
                         }`}
                 />
                 {formik.touched.experienceYears && formik.errors.experienceYears && (

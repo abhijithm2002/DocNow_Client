@@ -39,10 +39,10 @@ function DoctorSignup() {
             const result = await LoginWithGoogle('doctor');
             if (result) {
                 toast.success('Google login successful!');
-                const {data} = result;
-                
+                const { data } = result;
+
                 // 
-                
+
                 dispatch(setCredentials({ doctor: data.doctor, accessToken: data.accessToken }));
                 navigate('/doctor/profile');
             }
@@ -125,12 +125,37 @@ function DoctorSignup() {
                                     className='w-full pr-4 py-3 border-b border-solid border-[#0066ff61] focus:outline-none focus:border-b-primaryColor text-[16px] leading-7 text-headingColor placeholder:text-textColor cursor-pointer'
                                 >
                                     <option value="" label="Select specialization" />
+                                    <option value="Allergy and Immunology" label="Allergy and Immunology" />
+                                    <option value="Anesthesiology" label="Anesthesiology" />
                                     <option value="Cardiology" label="Cardiology" />
+                                    <option value="Critical Care Medicine" label="Critical Care Medicine" />
+                                    <option value="Dentistry" label="Dentistry" />
                                     <option value="Dermatology" label="Dermatology" />
+                                    <option value="Endocrinology" label="Endocrinology" />
+                                    <option value="Family Medicine" label="Family Medicine" />
+                                    <option value="Gastroenterology" label="Gastroenterology" />
+                                    <option value="Geriatrics" label="Geriatrics" />
+                                    <option value="Hematology" label="Hematology" />
+                                    <option value="Infectious Disease" label="Infectious Disease" />
+                                    <option value="Internal Medicine" label="Internal Medicine" />
+                                    <option value="Nephrology" label="Nephrology" />
                                     <option value="Neurology" label="Neurology" />
+                                    <option value="Obstetrics and Gynecology" label="Obstetrics and Gynecology" />
+                                    <option value="Oncology" label="Oncology" />
+                                    <option value="Ophthalmology" label="Ophthalmology" />
+                                    <option value="Orthopedics" label="Orthopedics" />
+                                    <option value="Otolaryngology" label="Otolaryngology" />
                                     <option value="Pediatrics" label="Pediatrics" />
+                                    <option value="Physical Medicine and Rehabilitation" label="Physical Medicine and Rehabilitation" />
+                                    <option value="Plastic Surgery" label="Plastic Surgery" />
                                     <option value="Psychiatry" label="Psychiatry" />
+                                    <option value="Pulmonology" label="Pulmonology" />
+                                    <option value="Radiology" label="Radiology" />
+                                    <option value="Rheumatology" label="Rheumatology" />
                                     <option value="Surgery" label="Surgery" />
+                                    <option value="Urology" label="Urology" />
+                                    <option value="Vascular Surgery" label="Vascular Surgery" />
+
                                 </select>
                                 {formik.touched.expertise && formik.errors.expertise ? (
                                     <div className="text-red-500 text-sm">{formik.errors.expertise}</div>
@@ -191,7 +216,7 @@ function DoctorSignup() {
                                     className='w-full pr-4 py-3 border-b border-solid border-[#0066ff61] focus:outline-none focus:border-b-primaryColor text-[16px] leading-7 text-headingColor placeholder:text-textColor cursor-pointer'
                                 />
                                 <div onClick={toggleShowPassword} className='absolute inset-y-0 right-0 flex items-center px-3 cursor-pointer'>
-                                    {showPassword ? <IoEyeOff size={20}/> : <IoEye size={20}/>}
+                                    {showPassword ? <IoEyeOff size={20} /> : <IoEye size={20} />}
                                 </div>
                                 {formik.touched.password && formik.errors.password ? (
                                     <div className="text-red-500 text-sm">{formik.errors.password}</div>
@@ -207,8 +232,8 @@ function DoctorSignup() {
                                     onBlur={formik.handleBlur}
                                     className='w-full pr-4 py-3 border-b border-solid border-[#0066ff61] focus:outline-none focus:border-b-primaryColor text-[16px] leading-7 text-headingColor placeholder:text-textColor cursor-pointer'
                                 />
-                                 <div onClick={toggleShowConfirmPassword} className='absolute inset-y-0 right-0 flex items-center px-3 cursor-pointer'>
-                                    {showConfirmPassword ? <IoEyeOff size={20}/> : <IoEye size={20}/>}
+                                <div onClick={toggleShowConfirmPassword} className='absolute inset-y-0 right-0 flex items-center px-3 cursor-pointer'>
+                                    {showConfirmPassword ? <IoEyeOff size={20} /> : <IoEye size={20} />}
                                 </div>
                                 {formik.touched.confirmpassword && formik.errors.confirmpassword ? (
                                     <div className="text-red-500 text-sm">{formik.errors.confirmpassword}</div>
