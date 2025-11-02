@@ -8,6 +8,7 @@ import { useSelector } from 'react-redux';
 import { fetchSlots, updateSlots, deleteSlots } from '../../services/Doctor/doctorService';
 
 const CreateSlots = () => {
+  console.log('enteredd slot create')
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
   const [startTime, setStartTime] = useState(null);
@@ -81,6 +82,7 @@ const CreateSlots = () => {
 
     
 
+    console.log('slots data///////////', slotsData)
     try {
       const response = await updateSlots(slotsData);
       if (response.status === 201) {
